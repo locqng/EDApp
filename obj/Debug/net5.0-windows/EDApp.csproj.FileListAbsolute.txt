@@ -1,0 +1,16 @@
+C:\Users\qlocn\Desktop\EDApp\obj\Debug\net5.0-windows\EDApp.csproj.AssemblyReference.cache
+C:\Users\qlocn\Desktop\EDApp\obj\Debug\net5.0-windows\EDApp.GeneratedMSBuildEditorConfig.editorconfig
+C:\Users\qlocn\Desktop\EDApp\obj\Debug\net5.0-windows\EDApp.AssemblyInfoInputs.cache
+C:\Users\qlocn\Desktop\EDApp\obj\Debug\net5.0-windows\EDApp.AssemblyInfo.cs
+C:\Users\qlocn\Desktop\EDApp\obj\Debug\net5.0-windows\EDApp.csproj.CoreCompileInputs.cache
+C:\Users\qlocn\Desktop\EDApp\bin\Debug\net5.0-windows\EDApp.exe
+C:\Users\qlocn\Desktop\EDApp\bin\Debug\net5.0-windows\EDApp.deps.json
+C:\Users\qlocn\Desktop\EDApp\bin\Debug\net5.0-windows\EDApp.runtimeconfig.json
+C:\Users\qlocn\Desktop\EDApp\bin\Debug\net5.0-windows\EDApp.runtimeconfig.dev.json
+C:\Users\qlocn\Desktop\EDApp\bin\Debug\net5.0-windows\EDApp.dll
+C:\Users\qlocn\Desktop\EDApp\bin\Debug\net5.0-windows\ref\EDApp.dll
+C:\Users\qlocn\Desktop\EDApp\bin\Debug\net5.0-windows\EDApp.pdb
+C:\Users\qlocn\Desktop\EDApp\obj\Debug\net5.0-windows\EDApp.dll
+C:\Users\qlocn\Desktop\EDApp\obj\Debug\net5.0-windows\ref\EDApp.dll
+C:\Users\qlocn\Desktop\EDApp\obj\Debug\net5.0-windows\EDApp.pdb
+C:\Users\qlocn\Desktop\EDApp\obj\Debug\net5.0-windows\EDApp.genruntimeconfig.cache

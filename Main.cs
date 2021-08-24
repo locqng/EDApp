@@ -3,7 +3,7 @@ using System;
 using System.Windows.Forms;
 using System.Drawing;
 
-namespace EDAP{
+namespace EDApp{
     
     public class mainProgram: Form {
         public Panel mainPanel,topPanel;
@@ -184,7 +184,6 @@ namespace EDAP{
         {
             mainPanel.Visible = false;
             topPanel.Visible = true;
-
         }  
            
     }
