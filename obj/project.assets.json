@@ -8,19 +8,19 @@
     "net5.0-windows7.0": []
   },
   "packageFolders": {
-    "C:\\Users\\qlocn\\.nuget\\packages\\": {}
+    "C:\\Users\\ellie\\.nuget\\packages\\": {}
   },
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "C:\\Users\\qlocn\\Desktop\\EDApp\\EDApp.csproj",
+      "projectUniqueName": "Z:\\Desktop\\EDApp\\EDApp.csproj",
       "projectName": "EDApp",
-      "projectPath": "C:\\Users\\qlocn\\Desktop\\EDApp\\EDApp.csproj",
-      "packagesPath": "C:\\Users\\qlocn\\.nuget\\packages\\",
-      "outputPath": "C:\\Users\\qlocn\\Desktop\\EDApp\\obj\\",
+      "projectPath": "Z:\\Desktop\\EDApp\\EDApp.csproj",
+      "packagesPath": "C:\\Users\\ellie\\.nuget\\packages\\",
+      "outputPath": "Z:\\Desktop\\EDApp\\obj\\",
       "projectStyle": "PackageReference",
       "configFilePaths": [
-        "C:\\Users\\qlocn\\AppData\\Roaming\\NuGet\\NuGet.Config"
+        "C:\\Users\\ellie\\AppData\\Roaming\\NuGet\\NuGet.Config"
       ],
       "originalTargetFrameworks": [
         "net5.0-windows"
