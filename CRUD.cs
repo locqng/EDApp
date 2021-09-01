@@ -1,7 +1,7 @@
 using System;
 using System.Data;
-using System.Data.SqlClient;
 using System.Windows.Forms;
+using MySql.Data.MySqlClient;
 
 
 
@@ -18,22 +18,22 @@ namespace EDApp
             //string password = "password='';";
             //string trust = "TrustServerCertificate=true;";
 
-            string connectString = ("Server=localhost,3306;Database=employee_database;user=root;password=1234;TrustServerCertificate=true;");
+            string connectString = ("server=localhost;port=3306;database=employee_database;user=root;password=1234");
             //string connectString = string.Format("{0}{1}{2}{3}{4}", host, db, user, password, trust);
             return connectString;
         }
 
-        public static SqlConnection con = new SqlConnection(getConnectionString());
-        public static SqlCommand cmd = default(SqlCommand);
+        public static MySqlConnection con = new MySqlConnection(getConnectionString());
+        public static MySqlCommand cmd = default(MySqlCommand);
         public static string sql = string.Empty;
-        public static DataTable PerformCRUD(SqlCommand command)
+        public static DataTable PerformCRUD(MySqlCommand command)
         {
             
-            SqlDataAdapter adptr = default (SqlDataAdapter);
+            MySqlDataAdapter adptr = default (MySqlDataAdapter);
             DataTable table = new DataTable();
             try
             {
-                adptr = new SqlDataAdapter();
+                adptr = new MySqlDataAdapter();
                 adptr.SelectCommand = command;
                 adptr.Fill(table);
 

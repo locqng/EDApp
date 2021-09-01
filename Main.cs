@@ -2,7 +2,7 @@
 using System;
 using System.Windows.Forms;
 using System.Drawing;
-using System.Data.SqlClient;
+using MySql.Data.MySqlClient;
 
 namespace EDApp{
     
@@ -241,7 +241,7 @@ namespace EDApp{
         //Execute SQL Command
         private void sqlExecute (String sqlCommand, string parameter)
         {
-            CRUD.cmd = new SqlCommand(sqlCommand, CRUD.con);
+            CRUD.cmd = new MySqlCommand(sqlCommand, CRUD.con);
             AddParameters(parameter);
             CRUD.PerformCRUD(CRUD.cmd);
         }
