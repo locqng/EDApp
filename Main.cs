@@ -64,9 +64,6 @@ namespace EDApp{
             Label lblPhoto = new Label();
             Label lblDoc = new Label();
 
-            
-
-
             //Setting menu buttons size and locations
             //Edit button
             btnEdit.Location = new Point(0,0);
@@ -96,7 +93,7 @@ namespace EDApp{
             btnExit.Location = new Point(680,500);
             btnExit.Text = "Exit";
             btnExit.Size = new Size(80,20);
-            //btnExit.Click += new System.EventHandler(btnExitClick);
+            btnExit.Click += new System.EventHandler(btnExitClick);
 
             //Setting labels and text boxes size and location
             //Employee ID
@@ -227,15 +224,21 @@ namespace EDApp{
         {
             if (string.IsNullOrEmpty(txbFname.Text.Trim()) || string.IsNullOrEmpty(txbLname.Text.Trim()))
             {
-                MessageBox.Show("Please enter information", "Information required", MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
+                MessageBox.Show("Please enter information", "Adding Record", MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
                 return;
             }
 
             CRUD.sql = "INSERT INTO employee(empid, FirstName, LastName) VALUES(@empID, @firstName, @lastName)";
 
             sqlExecute(CRUD.sql, "Insert");
-            MessageBox.Show("Record saved", "Information required", MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
+            MessageBox.Show("Record saved", "Adding Record", MessageBoxButtons.OK, MessageBoxIcon.Information);
             menuFrame();
+        }
+
+        //Exit button event handler
+        private void btnExitClick(object sender, EventArgs e)
+        {
+            this.Close();
         }
 
         //Execute SQL Command
