@@ -1,0 +1,31 @@
+{
+    "sqltools.connections": [
+        {
+            "mysqlOptions": {
+                "authProtocol": "default"
+            },
+            "previewLimit": 50,
+            "server": "localhost",
+            "port": 3306,
+            "driver": "MariaDB",
+            "name": "MySQL",
+            "database": "employee_test",
+            "username": "root",
+            "password": "1234",
+            "connectionTimeout": 60
+        },
+        {
+            "mysqlOptions": {
+                "authProtocol": "default"
+            },
+            "previewLimit": 50,
+            "server": "localhost",
+            "port": 3306,
+            "driver": "MariaDB",
+            "username": "root",
+            "password": "1234",
+            "name": "MariaDB",
+            "database": "EMPLOYEE_DATABASE"
+        }
+    ]
+}

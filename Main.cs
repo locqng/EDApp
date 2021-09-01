@@ -2,10 +2,23 @@
 using System;
 using System.Windows.Forms;
 using System.Drawing;
+using System.Data.SqlClient;
 
 namespace EDApp{
     
+    
     public class mainProgram: Form {
+
+        //Generating form text box for input
+        private TextBox txbID = new TextBox();
+        private TextBox txbFname = new TextBox();
+        private TextBox txbLname = new TextBox();  
+        private TextBox txbAddress = new TextBox();                 
+        private TextBox txbPcode = new TextBox();
+        private TextBox txbDOB = new TextBox();
+        private TextBox txbGender = new TextBox();
+        private TextBox txbPhoto = new TextBox();
+        private TextBox txbDoc = new TextBox();
         public Panel mainPanel,topPanel;
         
         public mainProgram(){
@@ -51,16 +64,8 @@ namespace EDApp{
             Label lblPhoto = new Label();
             Label lblDoc = new Label();
 
-            //Generating form text box for input
-            TextBox txbID = new TextBox();
-            TextBox txbFname = new TextBox();
-            TextBox txbLname = new TextBox();  
-            TextBox txbAddress = new TextBox();                 
-            TextBox txbPcode = new TextBox();
-            TextBox txbDOB = new TextBox();
-            TextBox txbGender = new TextBox();
-            TextBox txbPhoto = new TextBox();
-            TextBox txbDoc = new TextBox();
+            
+
 
             //Setting menu buttons size and locations
             //Edit button
@@ -79,7 +84,7 @@ namespace EDApp{
             btnAdd.Location = new Point(20,500);
             btnAdd.Text = "Add";
             btnAdd.Size = new Size(80,20);
-            //btnAdd.Click += new System.EventHandler(btnAddClick);
+            btnAdd.Click += new System.EventHandler(btnAddClick);
             
             //Delete button 
             btnDelete.Location = new Point(130,500);
@@ -215,7 +220,43 @@ namespace EDApp{
         {
             mainPanel.Visible = false;
             topPanel.Visible = true;
-        }  
+        } 
 
+        //Add button event handler
+        private void btnAddClick(object sender, EventArgs e)
+        {
+            if (string.IsNullOrEmpty(txbFname.Text.Trim()) || string.IsNullOrEmpty(txbLname.Text.Trim()))
+            {
+                MessageBox.Show("Please enter information", "Information required", MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
+                return;
+            }
+
+            CRUD.sql = "INSERT INTO employee(empid, FirstName, LastName) VALUES(@empID, @firstName, @lastName)";
+
+            sqlExecute(CRUD.sql, "Insert");
+            MessageBox.Show("Record saved", "Information required", MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
+            menuFrame();
         }
+
+        //Execute SQL Command
+        private void sqlExecute (String sqlCommand, string parameter)
+        {
+            CRUD.cmd = new SqlCommand(sqlCommand, CRUD.con);
+            AddParameters(parameter);
+            CRUD.PerformCRUD(CRUD.cmd);
+        }
+
+        //Add Parameters
+        private void AddParameters(String str)
+        {
+            CRUD.cmd.Parameters.Clear();
+            CRUD.cmd.Parameters.AddWithValue("@empID", txbID.Text.Trim().ToString());
+            CRUD.cmd.Parameters.AddWithValue("@firstName", txbFname.Text.Trim().ToString());
+            CRUD.cmd.Parameters.AddWithValue("@lastName", txbLname.Text.Trim().ToString());
+        }
+
+
+    }
+
+        
 }
