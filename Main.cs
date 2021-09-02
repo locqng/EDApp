@@ -267,7 +267,8 @@ namespace EDApp{
             CRUD.cmd.Parameters.AddWithValue("@photo", txbLname.Text.Trim().ToString());
             CRUD.cmd.Parameters.AddWithValue("@document", txbLname.Text.Trim().ToString());
         }
-            // clear textbox
+        
+        // clear textbox
         private void clearTextbox()
         {
             txbID.Text = "";

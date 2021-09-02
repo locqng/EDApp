@@ -45,6 +45,7 @@ namespace EDApp
         
         public static MySqlCommand cmd = default(MySqlCommand);
         public static string sql = string.Empty;
+        
         public static DataTable PerformCRUD(MySqlCommand command)
         {
             
