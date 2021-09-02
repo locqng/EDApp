@@ -26,6 +26,23 @@ namespace EDApp
         }
 
         public static MySqlConnection con = new MySqlConnection(connectionStringBuilder());
+        
+        //create connection and employee table to employee database
+        public static void createConnection(MySqlConnection con){
+            string createTableQuery = "CREATE TABLE if not exists employee (empid VARCHAR(255) NOT NULL PRIMARY KEY, FirstName VARCHAR(255), LastName VARCHAR(255), address TEXT, postcode VARCHAR(4), DOB VARCHAR(50),gender VARCHAR(50), photo TEXT, document TEXT)";
+            MySqlCommand cmmd = new MySqlCommand(createTableQuery,con);
+            try
+            {
+                cmmd.Connection.Open();
+                cmmd.ExecuteNonQuery();
+                //MessageBox.Show("Connected & Created");
+            }
+            catch(Exception ex)
+            {
+                MessageBox.Show("Error " + ex.Message, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+        }
+        
         public static MySqlCommand cmd = default(MySqlCommand);
         public static string sql = string.Empty;
         public static DataTable PerformCRUD(MySqlCommand command)

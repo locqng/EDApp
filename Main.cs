@@ -23,6 +23,7 @@ namespace EDApp{
         
         public mainProgram(){
             menuFrame();
+            CRUD.createConnection(CRUD.con);
         }
 
         public void menuFrame()
@@ -209,7 +210,8 @@ namespace EDApp{
         //Edit button event handler   
         public void btnEditClick(object sender, EventArgs e) 
         {
-            menuFrame();
+            mainPanel.Visible = true;
+            topPanel.Visible = true;
         } 
 
         //View button event handler
@@ -232,7 +234,9 @@ namespace EDApp{
 
             sqlExecute(CRUD.sql, "Insert");
             MessageBox.Show("Record saved", "Adding Record", MessageBoxButtons.OK, MessageBoxIcon.Information);
-            menuFrame();
+            mainPanel.Visible = true;
+            topPanel.Visible = true;
+            clearTextbox();
         }
 
         //Exit button event handler
@@ -256,10 +260,26 @@ namespace EDApp{
             CRUD.cmd.Parameters.AddWithValue("@empID", txbID.Text.Trim().ToString());
             CRUD.cmd.Parameters.AddWithValue("@firstName", txbFname.Text.Trim().ToString());
             CRUD.cmd.Parameters.AddWithValue("@lastName", txbLname.Text.Trim().ToString());
+            CRUD.cmd.Parameters.AddWithValue("@address", txbID.Text.Trim().ToString());
+            CRUD.cmd.Parameters.AddWithValue("@postcode", txbFname.Text.Trim().ToString());
+            CRUD.cmd.Parameters.AddWithValue("@DOB", txbLname.Text.Trim().ToString());
+            CRUD.cmd.Parameters.AddWithValue("@gender", txbFname.Text.Trim().ToString());
+            CRUD.cmd.Parameters.AddWithValue("@photo", txbLname.Text.Trim().ToString());
+            CRUD.cmd.Parameters.AddWithValue("@document", txbLname.Text.Trim().ToString());
         }
-
-
+            // clear textbox
+        private void clearTextbox()
+        {
+            txbID.Text = "";
+            txbFname.Text = "";
+            txbLname.Text = "";
+            txbPcode.Text = "";
+            txbAddress.Text = "";
+            txbDOB.Text = "";
+            txbGender.Text = "";
+            txbPhoto.Text = "";
+            txbDoc.Text = "";
+        }
     }
-
         
 }
