@@ -221,8 +221,8 @@ namespace EDApp{
         {
             mainPanel.Visible = false;
             topPanel.Visible = true;
-        } 
 
+        } 
 
         //Add button event handler
         private void btnAddClick(object sender, EventArgs e)
@@ -281,7 +281,8 @@ namespace EDApp{
             CRUD.cmd.Parameters.AddWithValue("@document", txbDoc.Text.Trim().ToString());
         }
         
-        // Delete button event handler
+        // Delete button event handler 
+        //(need to search whether the id exists or not)
         private void btnDeleteClick(object sender, EventArgs e)
         {
             if (string.IsNullOrEmpty(txbID.Text.Trim()))

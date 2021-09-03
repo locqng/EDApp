@@ -75,6 +75,7 @@ namespace EDApp
         
         public static MySqlCommand deleteCmd = default(MySqlCommand);
         public static string deleteQuery = string.Empty;
+        
         public static DataTable deleteEmployee(MySqlCommand command)
         {
             MySqlDataAdapter adptr = default (MySqlDataAdapter);
@@ -94,5 +95,8 @@ namespace EDApp
             }
             return table;
         }
+        
+        
+
     }
 }
