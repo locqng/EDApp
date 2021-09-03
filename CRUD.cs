@@ -27,21 +27,27 @@ namespace EDApp
 
         public static MySqlConnection con = new MySqlConnection(connectionStringBuilder());
         
-        //create connection and employee table to employee database
-        public static void createConnection(MySqlConnection con){
-            string createTableQuery = "CREATE TABLE if not exists employee (empid VARCHAR(255) NOT NULL PRIMARY KEY, FirstName VARCHAR(255), LastName VARCHAR(255), address TEXT, postcode VARCHAR(4), DOB VARCHAR(50),gender VARCHAR(50), photo TEXT, document TEXT)";
-            MySqlCommand cmmd = new MySqlCommand(createTableQuery,con);
+        //create connection & employee table
+        public static void createConnection()
+        {
+            MySqlConnection conn = new MySqlConnection(connectionStringBuilder());
             try
             {
-                cmmd.Connection.Open();
-                cmmd.ExecuteNonQuery();
-                //MessageBox.Show("Connected & Created");
+                conn.Open();
+                string createTableCmd = @"CREATE TABLE IF NOT EXISTS `employee`(empid varchar(20) not null, FirstName varchar(255), LastName varchar(255),address varchar(255),postcode varchar(255), DOB varchar(255), gender varchar(255) ,photo varchar(255),document varchar(255), primary key(empid));";
+                MySqlCommand createCmd = new MySqlCommand(createTableCmd,conn);
+                createCmd.ExecuteNonQuery();
+                MessageBox.Show("created");
+
             }
-            catch(Exception ex)
+            
+            catch (Exception ex)
             {
-                MessageBox.Show("Error " + ex.Message, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                MessageBox.Show("Error " + ex.Message, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
+
         }
+
         
         public static MySqlCommand cmd = default(MySqlCommand);
         public static string sql = string.Empty;
@@ -49,6 +55,28 @@ namespace EDApp
         public static DataTable PerformCRUD(MySqlCommand command)
         {
             
+            MySqlDataAdapter adptr = default (MySqlDataAdapter);
+            DataTable table = new DataTable();
+            try
+            {
+                adptr = new MySqlDataAdapter();
+                adptr.SelectCommand = command;
+                adptr.Fill(table);
+
+                return table;
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("Error " + ex.Message, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                table = null;
+            }
+            return table;
+        }
+        
+        public static MySqlCommand deleteCmd = default(MySqlCommand);
+        public static string deleteQuery = string.Empty;
+        public static DataTable deleteEmployee(MySqlCommand command)
+        {
             MySqlDataAdapter adptr = default (MySqlDataAdapter);
             DataTable table = new DataTable();
             try

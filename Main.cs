@@ -10,7 +10,7 @@ namespace EDApp{
     public class mainProgram: Form {
 
         //Generating form text box for input
-        private TextBox txbID = new TextBox();
+        private static TextBox txbID = new TextBox();
         private TextBox txbFname = new TextBox();
         private TextBox txbLname = new TextBox();  
         private TextBox txbAddress = new TextBox();                 
@@ -23,7 +23,7 @@ namespace EDApp{
         
         public mainProgram(){
             menuFrame();
-            CRUD.createConnection(CRUD.con);
+            CRUD.createConnection();
         }
 
         public void menuFrame()
@@ -88,7 +88,7 @@ namespace EDApp{
             btnDelete.Location = new Point(130,500);
             btnDelete.Text = "Delete";
             btnDelete.Size = new Size(80,20);
-            //btnDelete.Click += new System.EventHandler(btnDeleteClick);
+            btnDelete.Click += new System.EventHandler(btnDeleteClick);
 
             //Exit button 
             btnExit.Location = new Point(680,500);
@@ -205,6 +205,8 @@ namespace EDApp{
             mainPanel.Controls.Add(btnDelete);
             mainPanel.Controls.Add(btnExit);
 
+            
+
         }
         
         //Edit button event handler   
@@ -221,31 +223,42 @@ namespace EDApp{
             topPanel.Visible = true;
         } 
 
+
         //Add button event handler
         private void btnAddClick(object sender, EventArgs e)
         {
-            if (string.IsNullOrEmpty(txbFname.Text.Trim()) || string.IsNullOrEmpty(txbLname.Text.Trim()))
+            if (string.IsNullOrEmpty(txbID.Text.Trim())||
+            string.IsNullOrEmpty(txbFname.Text.Trim()) ||
+             string.IsNullOrEmpty(txbLname.Text.Trim())|| 
+             string.IsNullOrEmpty(txbPcode.Text.Trim())|| 
+             string.IsNullOrEmpty(txbAddress.Text.Trim())|| 
+             string.IsNullOrEmpty(txbDOB.Text.Trim())|| 
+             string.IsNullOrEmpty(txbGender.Text.Trim())|| 
+             string.IsNullOrEmpty(txbPhoto.Text.Trim())|| 
+             string.IsNullOrEmpty(txbDoc.Text.Trim()))
             {
                 MessageBox.Show("Please enter information", "Adding Record", MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
                 return;
             }
 
-            CRUD.sql = "INSERT INTO employee(empid, FirstName, LastName) VALUES(@empID, @firstName, @lastName)";
+            try
+            {
+                CRUD.sql = "INSERT INTO employee(empid, FirstName, LastName,address,postcode, DOB ,gender,photo,document) VALUES(@empID, @firstName, @lastName,@address,@postcode,@DOB,@gender,@photo,@document)";
+                sqlExecute(CRUD.sql, "Insert");
+                MessageBox.Show("Record saved", "Adding Record", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                mainPanel.Visible = true;
+                topPanel.Visible = true;
+                clearTextbox();
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("Error " + ex.Message, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
 
-            sqlExecute(CRUD.sql, "Insert");
-            MessageBox.Show("Record saved", "Adding Record", MessageBoxButtons.OK, MessageBoxIcon.Information);
-            mainPanel.Visible = true;
-            topPanel.Visible = true;
-            clearTextbox();
+
         }
-
-        //Exit button event handler
-        private void btnExitClick(object sender, EventArgs e)
-        {
-            this.Close();
-        }
-
-        //Execute SQL Command
+        
+        //Execute SQL add Command
         private void sqlExecute (String sqlCommand, string parameter)
         {
             CRUD.cmd = new MySqlCommand(sqlCommand, CRUD.con);
@@ -260,12 +273,57 @@ namespace EDApp{
             CRUD.cmd.Parameters.AddWithValue("@empID", txbID.Text.Trim().ToString());
             CRUD.cmd.Parameters.AddWithValue("@firstName", txbFname.Text.Trim().ToString());
             CRUD.cmd.Parameters.AddWithValue("@lastName", txbLname.Text.Trim().ToString());
-            CRUD.cmd.Parameters.AddWithValue("@address", txbID.Text.Trim().ToString());
-            CRUD.cmd.Parameters.AddWithValue("@postcode", txbFname.Text.Trim().ToString());
-            CRUD.cmd.Parameters.AddWithValue("@DOB", txbLname.Text.Trim().ToString());
-            CRUD.cmd.Parameters.AddWithValue("@gender", txbFname.Text.Trim().ToString());
-            CRUD.cmd.Parameters.AddWithValue("@photo", txbLname.Text.Trim().ToString());
-            CRUD.cmd.Parameters.AddWithValue("@document", txbLname.Text.Trim().ToString());
+            CRUD.cmd.Parameters.AddWithValue("@address", txbPcode.Text.Trim().ToString());
+            CRUD.cmd.Parameters.AddWithValue("@postcode", txbAddress.Text.Trim().ToString());
+            CRUD.cmd.Parameters.AddWithValue("@DOB", txbDOB.Text.Trim().ToString());
+            CRUD.cmd.Parameters.AddWithValue("@gender", txbGender.Text.Trim().ToString());
+            CRUD.cmd.Parameters.AddWithValue("@photo", txbPhoto.Text.Trim().ToString());
+            CRUD.cmd.Parameters.AddWithValue("@document", txbDoc.Text.Trim().ToString());
+        }
+        
+        // Delete button event handler
+        private void btnDeleteClick(object sender, EventArgs e)
+        {
+            if (string.IsNullOrEmpty(txbID.Text.Trim()))
+            {
+                MessageBox.Show("Please enter information", "Adding Record", MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
+                return;
+            }
+            try
+            {
+                CRUD.deleteQuery = "Delete from employee where empid = @empID;";
+                deleteExecute(CRUD.deleteQuery, "Delete");  
+                MessageBox.Show("Record Deleted", "Deleting Record", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                mainPanel.Visible = true;
+                topPanel.Visible = true;
+                clearTextbox();
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("Error " + ex.Message, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+            
+        }
+
+        // delete paratmetr (employee id )
+        private void deleteParameters(String str)
+        {
+            CRUD.deleteCmd.Parameters.Clear();
+            CRUD.deleteCmd.Parameters.AddWithValue("@empID", txbID.Text.Trim().ToString());
+        }
+        
+        //  execute delete query 
+        private void deleteExecute(String sqlCommand, string parameter)
+        {
+            CRUD.deleteCmd =new MySqlCommand(sqlCommand, CRUD.con);
+            deleteParameters(parameter);
+            CRUD.deleteEmployee(CRUD.deleteCmd);
+        }
+
+        //Exit button event handler
+        private void btnExitClick(object sender, EventArgs e)
+        {
+            this.Close();
         }
         
         // clear textbox
@@ -281,6 +339,7 @@ namespace EDApp{
             txbPhoto.Text = "";
             txbDoc.Text = "";
         }
+            
     }
         
 }

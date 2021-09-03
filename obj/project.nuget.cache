@@ -1,8 +1,8 @@
 {
   "version": 2,
-  "dgSpecHash": "G1jvnt8bwihbrl/Yvh9moqki08IY0M1wZ9PU9JjuvOd4fTQqykkT25QJqgymiID+fyh100o45PUU56fo0Jms7A==",
+  "dgSpecHash": "kN0A7BgcaZQOC7um93Uvy0mkV6JGhHGL60yuX8Rb6uO3jD1kHIukueP00/1lInLqszPJiwxZ3N1IVjvcauP7cQ==",
   "success": true,
-  "projectFilePath": "\\\\Mac\\Home\\Documents\\GitHub\\EDApp\\EDApp.csproj",
+  "projectFilePath": "\\\\mac\\Home\\Documents\\GitHub\\EDApp\\EDApp.csproj",
   "expectedPackageFiles": [
     "C:\\Users\\yyao\\.nuget\\packages\\bouncycastle.netcore\\1.8.3\\bouncycastle.netcore.1.8.3.nupkg.sha512",
     "C:\\Users\\yyao\\.nuget\\packages\\google.protobuf\\3.6.1\\google.protobuf.3.6.1.nupkg.sha512",

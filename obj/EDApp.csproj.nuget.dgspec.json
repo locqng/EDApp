@@ -1,17 +1,17 @@
 {
   "format": 1,
   "restore": {
-    "\\\\Mac\\Home\\Documents\\GitHub\\EDApp\\EDApp.csproj": {}
+    "\\\\mac\\Home\\Documents\\GitHub\\EDApp\\EDApp.csproj": {}
   },
   "projects": {
-    "\\\\Mac\\Home\\Documents\\GitHub\\EDApp\\EDApp.csproj": {
+    "\\\\mac\\Home\\Documents\\GitHub\\EDApp\\EDApp.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "\\\\Mac\\Home\\Documents\\GitHub\\EDApp\\EDApp.csproj",
+        "projectUniqueName": "\\\\mac\\Home\\Documents\\GitHub\\EDApp\\EDApp.csproj",
         "projectName": "EDApp",
-        "projectPath": "\\\\Mac\\Home\\Documents\\GitHub\\EDApp\\EDApp.csproj",
+        "projectPath": "\\\\mac\\Home\\Documents\\GitHub\\EDApp\\EDApp.csproj",
         "packagesPath": "C:\\Users\\yyao\\.nuget\\packages\\",
-        "outputPath": "\\\\Mac\\Home\\Documents\\GitHub\\EDApp\\obj\\",
+        "outputPath": "\\\\mac\\Home\\Documents\\GitHub\\EDApp\\obj\\",
         "projectStyle": "PackageReference",
         "configFilePaths": [
           "C:\\Users\\yyao\\AppData\\Roaming\\NuGet\\NuGet.Config"
