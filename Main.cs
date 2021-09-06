@@ -1,4 +1,3 @@
-
 using System;
 using System.Windows.Forms;
 using System.Drawing;
@@ -23,7 +22,7 @@ namespace EDApp{
         
         public mainProgram(){
             menuFrame();
-            CRUD.createConnection();
+            createTable();
         }
 
         public void menuFrame()
@@ -223,7 +222,7 @@ namespace EDApp{
             topPanel.Visible = true;
 
         } 
-
+        
         //Add button event handler
         private void btnAddClick(object sender, EventArgs e)
         {
@@ -292,8 +291,8 @@ namespace EDApp{
             }
             try
             {
-                CRUD.deleteQuery = "Delete from employee where empid = @empID;";
-                deleteExecute(CRUD.deleteQuery, "Delete");  
+                CRUD.sql= "Delete from employee where empid = @empID;";
+                sqlExecute(CRUD.sql, "Delete");  
                 MessageBox.Show("Record Deleted", "Deleting Record", MessageBoxButtons.OK, MessageBoxIcon.Information);
                 mainPanel.Visible = true;
                 topPanel.Visible = true;
@@ -305,22 +304,7 @@ namespace EDApp{
             }
             
         }
-
-        // delete paratmetr (employee id )
-        private void deleteParameters(String str)
-        {
-            CRUD.deleteCmd.Parameters.Clear();
-            CRUD.deleteCmd.Parameters.AddWithValue("@empID", txbID.Text.Trim().ToString());
-        }
         
-        //  execute delete query 
-        private void deleteExecute(String sqlCommand, string parameter)
-        {
-            CRUD.deleteCmd =new MySqlCommand(sqlCommand, CRUD.con);
-            deleteParameters(parameter);
-            CRUD.deleteEmployee(CRUD.deleteCmd);
-        }
-
         //Exit button event handler
         private void btnExitClick(object sender, EventArgs e)
         {
@@ -339,6 +323,20 @@ namespace EDApp{
             txbGender.Text = "";
             txbPhoto.Text = "";
             txbDoc.Text = "";
+        }
+
+        // create table
+        private void createTable()
+        {
+            try
+            {
+                CRUD.sql= "CREATE TABLE IF NOT EXISTS `employee`(empid char(20) not null, FirstName char(255), LastName char(255),address char(255),postcode char(255), DOB char(255), gender char(255) ,photo char(255),document char(255), primary key(empid));";
+                sqlExecute(CRUD.sql, "Create table");  
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("Error " + ex.Message, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
         }
             
     }
