@@ -1,4 +1,5 @@
 using System;
+using System.Data;
 using System.Windows.Forms;
 using System.Drawing;
 using MySql.Data.MySqlClient;
@@ -8,6 +9,7 @@ namespace EDApp{
     
     public class mainProgram: Form {
 
+        int row = 0;
         //Generating form text box for input
         private static TextBox txbID = new TextBox();
         private TextBox txbFname = new TextBox();
@@ -18,7 +20,9 @@ namespace EDApp{
         private TextBox txbGender = new TextBox();
         private TextBox txbPhoto = new TextBox();
         private TextBox txbDoc = new TextBox();
-        public Panel mainPanel,topPanel;
+        private TextBox txbSearch = new TextBox();
+        public Panel mainPanel, topPanel, subPanel;
+        private DataGridView gridViewTable = new DataGridView();
         
         public mainProgram(){
             menuFrame();
@@ -43,6 +47,11 @@ namespace EDApp{
             mainPanel = new Panel();
             mainPanel.Width = 800;
             mainPanel.Height = 580;
+
+            //Creating the sub panel
+            subPanel = new Panel();
+            subPanel.Width = 800;
+            subPanel.Height = 580;
             
             //Generating Menu buttons
             Button btnEdit = new Button();
@@ -52,6 +61,7 @@ namespace EDApp{
             Button btnAdd = new Button();
             Button btnDelete = new Button();
             Button btnExit = new Button();
+            Button btnSearch = new Button();
             
             //Generating form labels
             Label lblID = new Label();
@@ -167,11 +177,28 @@ namespace EDApp{
             
             txbDoc.Location = new Point(120,370);
             txbDoc.Size = new Size(250,20);
-
             
+            //Search box for view sub panel
+            txbSearch.Location = new Point(20,50);
+            txbSearch.Size = new Size(100,20);
+
+            btnSearch.Location = new Point(125,51);
+            btnSearch.Text = "Search";
+            btnSearch.Size = new Size(80,20);
+            btnSearch.Click += new System.EventHandler(btnSearchClick);
+            
+            //Generate the grid view table for sub panel
+            gridViewTable.Name = "dataTableGridView";
+            gridViewTable.Location = new Point(20,100);
+            gridViewTable.Size = new Size(750,250);
+            gridViewTable.ColumnHeadersDefaultCellStyle.BackColor = Color.Navy;
+            gridViewTable.ColumnHeadersDefaultCellStyle.ForeColor = Color.White; 
+            
+
             //Adding elements to win form
             this.Controls.Add(topPanel);
             this.Controls.Add(mainPanel);
+            this.Controls.Add(subPanel);
 
             // adding buttons in top panel
             topPanel.Controls.Add(btnEdit);
@@ -204,6 +231,10 @@ namespace EDApp{
             mainPanel.Controls.Add(btnDelete);
             mainPanel.Controls.Add(btnExit);
 
+            //Add grid table to the sub view panel
+            subPanel.Controls.Add(gridViewTable);
+            subPanel.Controls.Add(txbSearch);
+            subPanel.Controls.Add(btnSearch);
             
 
         }
@@ -211,15 +242,20 @@ namespace EDApp{
         //Edit button event handler   
         public void btnEditClick(object sender, EventArgs e) 
         {
+            
             mainPanel.Visible = true;
             topPanel.Visible = true;
+            subPanel.Visible = false;
         } 
 
         //View button event handler
         public void btnViewClick(object sender, EventArgs e) 
         {
+            
             mainPanel.Visible = false;
             topPanel.Visible = true;
+            subPanel.Visible = true;
+            viewRecords("");
 
         } 
         
@@ -243,7 +279,7 @@ namespace EDApp{
             try
             {
                 CRUD.sql = "INSERT INTO employee(empid, FirstName, LastName,address,postcode, DOB ,gender,photo,document) VALUES(@empID, @firstName, @lastName,@address,@postcode,@DOB,@gender,@photo,@document)";
-                sqlExecute(CRUD.sql, "Insert");
+                sqlExecute(CRUD.sql);
                 MessageBox.Show("Record saved", "Adding Record", MessageBoxButtons.OK, MessageBoxIcon.Information);
                 mainPanel.Visible = true;
                 topPanel.Visible = true;
@@ -256,17 +292,32 @@ namespace EDApp{
 
 
         }
+
+        //Search button event handler
+        private void btnSearchClick(object sender, EventArgs e)
+        {
+            if (string.IsNullOrEmpty(txbSearch.Text.Trim()))
+            {
+                viewRecords("");
+            }
+            else
+            {
+                viewRecords(txbSearch.Text.Trim());
+            }
+            clearTextbox();
+            
+        }
         
         //Execute SQL add Command
-        private void sqlExecute (String sqlCommand, string parameter)
+        private void sqlExecute (String sqlCommand)
         {
             CRUD.cmd = new MySqlCommand(sqlCommand, CRUD.con);
-            AddParameters(parameter);
+            AddParameters();
             CRUD.PerformCRUD(CRUD.cmd);
         }
 
         //Add Parameters
-        private void AddParameters(String str)
+        private void AddParameters()
         {
             CRUD.cmd.Parameters.Clear();
             CRUD.cmd.Parameters.AddWithValue("@empID", txbID.Text.Trim().ToString());
@@ -283,7 +334,7 @@ namespace EDApp{
         // Delete button event handler 
         //(need to search whether the id exists or not)
         private void btnDeleteClick(object sender, EventArgs e)
-        {
+        { 
             if (string.IsNullOrEmpty(txbID.Text.Trim()))
             {
                 MessageBox.Show("Please enter information", "Adding Record", MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
@@ -292,7 +343,7 @@ namespace EDApp{
             try
             {
                 CRUD.sql= "Delete from employee where empid = @empID;";
-                sqlExecute(CRUD.sql, "Delete");  
+                sqlExecute(CRUD.sql);  
                 MessageBox.Show("Record Deleted", "Deleting Record", MessageBoxButtons.OK, MessageBoxIcon.Information);
                 mainPanel.Visible = true;
                 topPanel.Visible = true;
@@ -323,6 +374,7 @@ namespace EDApp{
             txbGender.Text = "";
             txbPhoto.Text = "";
             txbDoc.Text = "";
+            txbSearch.Text = "";
         }
 
         // create table
@@ -331,12 +383,60 @@ namespace EDApp{
             try
             {
                 CRUD.sql= "CREATE TABLE IF NOT EXISTS `employee`(empid char(20) not null, FirstName char(255), LastName char(255),address char(255),postcode char(255), DOB char(255), gender char(255) ,photo char(255),document char(255), primary key(empid));";
-                sqlExecute(CRUD.sql, "Create table");  
+                sqlExecute(CRUD.sql);  
             }
             catch (Exception ex)
             {
                 MessageBox.Show("Error " + ex.Message, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
+        }
+
+        //View record, accept search keyword as parameter to show results
+        private void viewRecords(string search)
+        {           
+            CRUD.sql = "SELECT empid, FirstName, LastName, address, postcode, DOB, gender, photo, document FROM Employee " +
+                        "WHERE empid LIKE @kw1 OR CONCAT(FirstName, ' ', LastName) LIKE @kw2 ORDER BY empid ASC";
+
+            string kw2 = String.Format("%{0}%", search);
+            CRUD.cmd = new MySqlCommand(CRUD.sql, CRUD.con);
+            CRUD.cmd.Parameters.Clear();
+            CRUD.cmd.Parameters.AddWithValue("kw1", search);
+            CRUD.cmd.Parameters.AddWithValue("kw2", kw2);
+
+            DataTable table = CRUD.PerformCRUD(CRUD.cmd);
+            if (table.Rows.Count > 0)
+            {
+                row = Convert.ToInt32(table.Rows.Count.ToString());
+            }
+            else
+            {
+                row = 0;
+            }
+    
+            gridViewTable.MultiSelect = false;
+            gridViewTable.AutoGenerateColumns = true;
+            gridViewTable.SelectionMode = DataGridViewSelectionMode.FullRowSelect;
+            gridViewTable.DataSource = table;
+            gridViewTable.Columns[0].HeaderText = "EmpID";
+            gridViewTable.Columns[1].HeaderText = "First Name";
+            gridViewTable.Columns[2].HeaderText = "Last Name";
+            gridViewTable.Columns[3].HeaderText = "Address";
+            gridViewTable.Columns[4].HeaderText = "Postcode";
+            gridViewTable.Columns[5].HeaderText = "DOB";
+            gridViewTable.Columns[6].HeaderText = "Gender";
+            gridViewTable.Columns[7].HeaderText = "Photo";
+            gridViewTable.Columns[8].HeaderText = "Document";
+
+            gridViewTable.Columns[0].Width = 50;
+            gridViewTable.Columns[1].Width = 80;
+            gridViewTable.Columns[2].Width = 80;
+            gridViewTable.Columns[3].Width = 190;
+            gridViewTable.Columns[4].Width = 60;
+            gridViewTable.Columns[5].Width = 50;
+            gridViewTable.Columns[6].Width = 50;
+            gridViewTable.Columns[7].Width = 50;
+            gridViewTable.Columns[8].Width = 95;
+
         }
             
     }
