@@ -27,7 +27,7 @@ namespace EDApp{
         //Generating Menu buttons
         private Button btnEdit = new Button();
         private Button btnView = new Button();
-        private Button btnClear = new Button();
+        private Button btnReset = new Button();
 
         //Generating Function buttons 
         private Button btnAdd = new Button();
@@ -111,10 +111,10 @@ namespace EDApp{
             btnDelete.Click += new System.EventHandler(btnDeleteClick);
 
             //Clear button 
-            btnClear.Location = new Point(240, 500);
-            btnClear.Text = "Clear";
-            btnClear.Size = new Size(80,20);
-            btnClear.Click += new System.EventHandler(btnClearClick);
+            btnReset.Location = new Point(240, 500);
+            btnReset.Text = "Reset";
+            btnReset.Size = new Size(80,20);
+            btnReset.Click += new System.EventHandler(btnResetClick);
 
             //Exit button 
             btnExit.Location = new Point(680,500);
@@ -249,7 +249,7 @@ namespace EDApp{
             mainPanel.Controls.Add(btnDelete);
             mainPanel.Controls.Add(btnExit);
             mainPanel.Controls.Add(btnUpdate);
-            mainPanel.Controls.Add(btnClear);
+            mainPanel.Controls.Add(btnReset);
 
             //Add grid table to the sub view panel
             subPanel.Controls.Add(gridViewTable);
@@ -390,7 +390,7 @@ namespace EDApp{
         }
 
         //Clear button event handler
-        private void btnClearClick(object sender, EventArgs e)
+        private void btnResetClick(object sender, EventArgs e)
         {
             clearTextbox();
             txbID.ReadOnly = false;
