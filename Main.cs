@@ -23,6 +23,29 @@ namespace EDApp{
         private TextBox txbSearch = new TextBox();
         public Panel mainPanel, topPanel, subPanel;
         private DataGridView gridViewTable = new DataGridView();
+
+        //Generating Menu buttons
+        private Button btnEdit = new Button();
+        private Button btnView = new Button();
+        private Button btnClear = new Button();
+
+        //Generating Function buttons 
+        private Button btnAdd = new Button();
+        private Button btnDelete = new Button();
+        private Button btnExit = new Button();
+        private Button btnSearch = new Button();
+        private Button btnUpdate = new Button();
+            
+            //Generating form labels
+        private Label lblID = new Label();
+        private Label lblFname = new Label();
+        private Label lblLname = new Label();
+        private Label lblAddress = new Label();
+        private Label lblPcode = new Label();
+        private Label lblDOB = new Label(); 
+        private Label lblGender = new Label();
+        private Label lblPhoto = new Label();
+        private Label lblDoc = new Label();
         
         public mainProgram(){
             menuFrame();
@@ -53,26 +76,7 @@ namespace EDApp{
             subPanel.Width = 800;
             subPanel.Height = 580;
             
-            //Generating Menu buttons
-            Button btnEdit = new Button();
-            Button btnView = new Button();
 
-            //Generating Function buttons 
-            Button btnAdd = new Button();
-            Button btnDelete = new Button();
-            Button btnExit = new Button();
-            Button btnSearch = new Button();
-            
-            //Generating form labels
-            Label lblID = new Label();
-            Label lblFname = new Label();
-            Label lblLname = new Label();
-            Label lblAddress = new Label();
-            Label lblPcode = new Label();
-            Label lblDOB = new Label(); 
-            Label lblGender = new Label();
-            Label lblPhoto = new Label();
-            Label lblDoc = new Label();
 
             //Setting menu buttons size and locations
             //Edit button
@@ -92,12 +96,25 @@ namespace EDApp{
             btnAdd.Text = "Add";
             btnAdd.Size = new Size(80,20);
             btnAdd.Click += new System.EventHandler(btnAddClick);
-            
+
+            //Update Button
+            btnUpdate.Location = new Point(20,500);
+            btnUpdate.Text = "Update";
+            btnUpdate.Size = new Size(80,20);
+            btnUpdate.Visible = false;
+            btnUpdate.Click += new System.EventHandler(btnUpdateClick);
+
             //Delete button 
             btnDelete.Location = new Point(130,500);
             btnDelete.Text = "Delete";
             btnDelete.Size = new Size(80,20);
             btnDelete.Click += new System.EventHandler(btnDeleteClick);
+
+            //Clear button 
+            btnClear.Location = new Point(240, 500);
+            btnClear.Text = "Clear";
+            btnClear.Size = new Size(80,20);
+            btnClear.Click += new System.EventHandler(btnClearClick);
 
             //Exit button 
             btnExit.Location = new Point(680,500);
@@ -193,6 +210,7 @@ namespace EDApp{
             gridViewTable.Size = new Size(750,250);
             gridViewTable.ColumnHeadersDefaultCellStyle.BackColor = Color.Navy;
             gridViewTable.ColumnHeadersDefaultCellStyle.ForeColor = Color.White; 
+            gridViewTable.CellClick += gridViewTable_CellClick;
             
 
             //Adding elements to win form
@@ -230,6 +248,8 @@ namespace EDApp{
             mainPanel.Controls.Add(btnAdd);
             mainPanel.Controls.Add(btnDelete);
             mainPanel.Controls.Add(btnExit);
+            mainPanel.Controls.Add(btnUpdate);
+            mainPanel.Controls.Add(btnClear);
 
             //Add grid table to the sub view panel
             subPanel.Controls.Add(gridViewTable);
@@ -308,27 +328,40 @@ namespace EDApp{
             
         }
         
-        //Execute SQL add Command
-        private void sqlExecute (String sqlCommand)
+        //Update button event Handler
+        private void btnUpdateClick(object sender, EventArgs e)
         {
-            CRUD.cmd = new MySqlCommand(sqlCommand, CRUD.con);
-            AddParameters();
-            CRUD.PerformCRUD(CRUD.cmd);
-        }
-
-        //Add Parameters
-        private void AddParameters()
-        {
-            CRUD.cmd.Parameters.Clear();
-            CRUD.cmd.Parameters.AddWithValue("@empID", txbID.Text.Trim().ToString());
-            CRUD.cmd.Parameters.AddWithValue("@firstName", txbFname.Text.Trim().ToString());
-            CRUD.cmd.Parameters.AddWithValue("@lastName", txbLname.Text.Trim().ToString());
-            CRUD.cmd.Parameters.AddWithValue("@address", txbPcode.Text.Trim().ToString());
-            CRUD.cmd.Parameters.AddWithValue("@postcode", txbAddress.Text.Trim().ToString());
-            CRUD.cmd.Parameters.AddWithValue("@DOB", txbDOB.Text.Trim().ToString());
-            CRUD.cmd.Parameters.AddWithValue("@gender", txbGender.Text.Trim().ToString());
-            CRUD.cmd.Parameters.AddWithValue("@photo", txbPhoto.Text.Trim().ToString());
-            CRUD.cmd.Parameters.AddWithValue("@document", txbDoc.Text.Trim().ToString());
+            if (string.IsNullOrEmpty(txbID.Text.Trim())||
+            string.IsNullOrEmpty(txbFname.Text.Trim()) ||
+             string.IsNullOrEmpty(txbLname.Text.Trim())|| 
+             string.IsNullOrEmpty(txbPcode.Text.Trim())|| 
+             string.IsNullOrEmpty(txbAddress.Text.Trim())|| 
+             string.IsNullOrEmpty(txbDOB.Text.Trim())|| 
+             string.IsNullOrEmpty(txbGender.Text.Trim())|| 
+             string.IsNullOrEmpty(txbPhoto.Text.Trim())|| 
+             string.IsNullOrEmpty(txbDoc.Text.Trim()))
+            {
+                MessageBox.Show("Please enter information", "Updating Record", MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
+                return;
+            }
+            try 
+            {
+                CRUD.sql = "UPDATE employee SET FirstName = @firstName, LastName = @lastName, " + 
+                "address = @address, postcode = @postcode, DOB = @DOB, gender = @gender, photo = @photo, document = @document " +
+                "WHERE empid = @empid";
+                sqlExecute(CRUD.sql);
+                MessageBox.Show("Record saved", "Updating Record", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                mainPanel.Visible = true;
+                topPanel.Visible = true;
+                btnUpdate.Visible = false;
+                btnAdd.Visible = true;
+                txbID.ReadOnly = false;
+                clearTextbox();
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("Error " + ex.Message, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
         }
         
         // Delete button event handler 
@@ -354,6 +387,16 @@ namespace EDApp{
                 MessageBox.Show("Error " + ex.Message, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
             
+        }
+
+        //Clear button event handler
+        private void btnClearClick(object sender, EventArgs e)
+        {
+            clearTextbox();
+            txbID.ReadOnly = false;
+            btnUpdate.Visible = false;
+            btnAdd.Visible = true;
+
         }
         
         //Exit button event handler
@@ -430,13 +473,62 @@ namespace EDApp{
             gridViewTable.Columns[0].Width = 50;
             gridViewTable.Columns[1].Width = 80;
             gridViewTable.Columns[2].Width = 80;
-            gridViewTable.Columns[3].Width = 190;
+            gridViewTable.Columns[3].Width = 170;
             gridViewTable.Columns[4].Width = 60;
-            gridViewTable.Columns[5].Width = 50;
+            gridViewTable.Columns[5].Width = 70;
             gridViewTable.Columns[6].Width = 50;
             gridViewTable.Columns[7].Width = 50;
             gridViewTable.Columns[8].Width = 95;
 
+        }
+
+        //Grid cell click handler for update function
+        private void gridViewTable_CellClick(object sender, DataGridViewCellEventArgs e)
+        {
+            if (e.RowIndex != -1)
+            {
+                clearTextbox();
+                topPanel.Visible = true;
+                mainPanel.Visible = true;
+                subPanel.Visible = false;
+                btnAdd.Visible = false;
+                btnUpdate.Visible = true;
+                
+                txbID.ReadOnly = true;
+                txbID.Text = Convert.ToString(gridViewTable.CurrentRow.Cells[0].Value);
+                txbFname.Text = Convert.ToString(gridViewTable.CurrentRow.Cells[1].Value);
+                txbLname.Text = Convert.ToString(gridViewTable.CurrentRow.Cells[2].Value);
+                txbAddress.Text = Convert.ToString(gridViewTable.CurrentRow.Cells[3].Value);
+                txbPcode.Text = Convert.ToString(gridViewTable.CurrentRow.Cells[4].Value);
+                txbDOB.Text = Convert.ToString(gridViewTable.CurrentRow.Cells[5].Value);
+                txbGender.Text = Convert.ToString(gridViewTable.CurrentRow.Cells[6].Value);
+                txbPhoto.Text = Convert.ToString(gridViewTable.CurrentRow.Cells[7].Value);
+                txbDoc.Text = Convert.ToString(gridViewTable.CurrentRow.Cells[8].Value);
+
+            }
+        }
+
+                //Execute SQL add Command
+        private void sqlExecute (String sqlCommand)
+        {
+            CRUD.cmd = new MySqlCommand(sqlCommand, CRUD.con);
+            AddParameters();
+            CRUD.PerformCRUD(CRUD.cmd);
+        }
+
+        //Add Parameters
+        private void AddParameters()
+        {
+            CRUD.cmd.Parameters.Clear();
+            CRUD.cmd.Parameters.AddWithValue("@empID", txbID.Text.Trim().ToString());
+            CRUD.cmd.Parameters.AddWithValue("@firstName", txbFname.Text.Trim().ToString());
+            CRUD.cmd.Parameters.AddWithValue("@lastName", txbLname.Text.Trim().ToString());
+            CRUD.cmd.Parameters.AddWithValue("@address", txbAddress.Text.Trim().ToString());
+            CRUD.cmd.Parameters.AddWithValue("@postcode", txbPcode.Text.Trim().ToString());
+            CRUD.cmd.Parameters.AddWithValue("@DOB", txbDOB.Text.Trim().ToString());
+            CRUD.cmd.Parameters.AddWithValue("@gender", txbGender.Text.Trim().ToString());
+            CRUD.cmd.Parameters.AddWithValue("@photo", txbPhoto.Text.Trim().ToString());
+            CRUD.cmd.Parameters.AddWithValue("@document", txbDoc.Text.Trim().ToString());
         }
             
     }
