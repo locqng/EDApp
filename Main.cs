@@ -1,4 +1,5 @@
 using System;
+using System.IO;
 using System.Data;
 using System.Windows.Forms;
 using System.Drawing;
@@ -31,7 +32,6 @@ namespace EDApp{
         //Generating Menu buttons
         //private Button btnEdit = new Button();
         //private Button btnView = new Button();
-        private Button btnBack = new Button();
 
         //Generating Function buttons 
         private Button btnAdd = new Button();
@@ -41,6 +41,8 @@ namespace EDApp{
         private Button btnUpdate = new Button();
         private Button btnAddNew = new Button();
         private Button btnClear = new Button();
+        private Button btnBack = new Button();
+        private Button btnBrowse = new Button();
             
             //Generating form labels
         private Label lblID = new Label();
@@ -52,6 +54,9 @@ namespace EDApp{
         private Label lblGender = new Label();
         private Label lblPhoto = new Label();
         private Label lblDoc = new Label();
+
+        //Gerating Image box for photos
+        private PictureBox empPhoto = new PictureBox();
         
         public mainProgram(){
             menuFrame();
@@ -140,6 +145,12 @@ namespace EDApp{
             btnBack.Size = new Size(80,20);
             btnBack.Click += new System.EventHandler(btnBackClick);
 
+            //Browse image button
+            btnBrowse.Location = new Point(400, 332);
+            btnBrowse.Text = "Browse";
+            btnBrowse.Size = new Size(80, 20);
+            btnBrowse.Click += new System.EventHandler(btnBrowseClick);
+
             //Exit button 
             btnExit.Location = new Point(680,500);
             btnExit.Text = "Exit";
@@ -209,6 +220,7 @@ namespace EDApp{
             
             txbPhoto.Location = new Point(120,330);
             txbPhoto.Size = new Size(250,20);
+            txbPhoto.ReadOnly = true;
 
             //Document
             lblDoc.Text = "Document";
@@ -217,6 +229,15 @@ namespace EDApp{
             
             txbDoc.Location = new Point(120,370);
             txbDoc.Size = new Size(250,20);
+            txbDoc.ReadOnly = true;
+
+            //Photo box
+            empPhoto.Location = new Point(400,52);
+            empPhoto.Size = new Size(250, 250);
+            empPhoto.BorderStyle = BorderStyle.Fixed3D;
+            empPhoto.SizeMode = PictureBoxSizeMode.StretchImage;
+
+
             
             //Search box for view sub panel
             txbSearch.Location = new Point(20,50);
@@ -256,7 +277,7 @@ namespace EDApp{
             //topPanel.Controls.Add(btnEdit);
             //topPanel.Controls.Add(btnView);
 
-            // adding labels in main panel
+            // adding labels in form panel
             formPanel.Controls.Add(lblID);
             formPanel.Controls.Add(lblFname);
             formPanel.Controls.Add(lblLname);
@@ -267,7 +288,7 @@ namespace EDApp{
             formPanel.Controls.Add(lblPhoto);
             formPanel.Controls.Add(lblDoc);  
 
-            // adding text field in main panel 
+            // adding text field in form panel 
             formPanel.Controls.Add(txbID);
             formPanel.Controls.Add(txbFname);
             formPanel.Controls.Add(txbLname);       
@@ -278,15 +299,19 @@ namespace EDApp{
             formPanel.Controls.Add(txbPhoto);
             formPanel.Controls.Add(txbDoc);
 
-            // adding function buttons in main panel
+            // adding function buttons in form panel
             formPanel.Controls.Add(btnAdd);
             formPanel.Controls.Add(btnDelete);
             formPanel.Controls.Add(btnExit);
             formPanel.Controls.Add(btnUpdate);
             formPanel.Controls.Add(btnBack);
             formPanel.Controls.Add(btnClear);
+            formPanel.Controls.Add(btnBrowse);
 
-            //Add grid table to the sub view panel
+            // adding photo box in form panel
+            formPanel.Controls.Add(empPhoto);
+
+            //Add grid table to the view panel
             viewPanel.Controls.Add(gridViewTable);
             viewPanel.Controls.Add(txbSearch);
             viewPanel.Controls.Add(btnSearch);
@@ -326,9 +351,8 @@ namespace EDApp{
              string.IsNullOrEmpty(txbPcode.Text.Trim())|| 
              string.IsNullOrEmpty(txbAddress.Text.Trim())|| 
              string.IsNullOrEmpty(dobPicker.Text.Trim())|| 
-             string.IsNullOrEmpty(txbGender.Text.Trim())|| 
-             string.IsNullOrEmpty(txbPhoto.Text.Trim())|| 
-             string.IsNullOrEmpty(txbDoc.Text.Trim()))
+             string.IsNullOrEmpty(txbGender.Text.Trim()))
+             
             {
                 MessageBox.Show("Please enter information", "Adding Record", MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
                 return;
@@ -384,9 +408,8 @@ namespace EDApp{
              string.IsNullOrEmpty(txbPcode.Text.Trim())|| 
              string.IsNullOrEmpty(txbAddress.Text.Trim())|| 
              string.IsNullOrEmpty(dobPicker.Text.Trim())|| 
-             string.IsNullOrEmpty(txbGender.Text.Trim())|| 
-             string.IsNullOrEmpty(txbPhoto.Text.Trim())|| 
-             string.IsNullOrEmpty(txbDoc.Text.Trim()))
+             string.IsNullOrEmpty(txbGender.Text.Trim()))
+             
             {
                 MessageBox.Show("Please enter information", "Updating Record", MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
                 return;
@@ -464,6 +487,7 @@ namespace EDApp{
         //Add new record (change to form panel) button event handler
         private void btnAddNewClick(object sender, EventArgs e)
         {
+            empPhoto.Image = null;
             clearTextbox("clean");
             viewPanel.Visible = false;
             formPanel.Visible = true;
@@ -480,7 +504,21 @@ namespace EDApp{
                 clearTextbox("");
             else
                 clearTextbox("clean");
-        }     
+        }
+
+        private void btnBrowseClick (object sender, EventArgs e)
+        {
+            if (txbID.Text != "")
+            {
+                PhotoUpload upload = new PhotoUpload();
+                empPhoto.Image = upload.browseUpload(txbID.Text);
+                txbPhoto.Text = "D:/EmpPhotos/"+txbID.Text+".png";
+            }
+            else{
+                MessageBox.Show("Please enter the Employee ID", "Uploading photo", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                return;
+            }
+        }    
         //Exit button event handler
         private void btnExitClick(object sender, EventArgs e)
         {
@@ -578,6 +616,7 @@ namespace EDApp{
         {
             if (e.RowIndex != -1)
             {
+                empPhoto.Image = null;
                 clearTextbox("clean");
                 //topPanel.Visible = true;
                 formPanel.Visible = true;
@@ -596,6 +635,19 @@ namespace EDApp{
                 txbGender.Text = Convert.ToString(gridViewTable.CurrentRow.Cells[6].Value);
                 txbPhoto.Text = Convert.ToString(gridViewTable.CurrentRow.Cells[7].Value);
                 txbDoc.Text = Convert.ToString(gridViewTable.CurrentRow.Cells[8].Value);
+                if (txbPhoto.Text != "")
+                    try{
+                        empPhoto.Image = Image.FromFile("D:/EmpPhotos/" +txbID.Text+".png");
+                    }
+                    catch (FileNotFoundException)
+                    {
+                        MessageBox.Show("Photo not found in database", "Photo display", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                        empPhoto.Image = null;
+                    }
+                    
+                else
+                    empPhoto.Image = null;
+
 
             }
         }
@@ -622,7 +674,8 @@ namespace EDApp{
             CRUD.cmd.Parameters.AddWithValue("@photo", txbPhoto.Text.Trim().ToString());
             CRUD.cmd.Parameters.AddWithValue("@document", txbDoc.Text.Trim().ToString());
         }
-            
+
+          
     }
         
 }
