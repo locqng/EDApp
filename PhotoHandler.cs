@@ -2,10 +2,10 @@ using System.IO;
 using System.Drawing;
 using System.Windows.Forms;
 namespace EDApp{
-    public class PhotoUpload
+    public class PhotoHandler
     {
         private Image photo;
-        byte[] ConvertImageToBytes(Image img)
+        public byte[] ConvertImageToBytes(Image img)
         {
             using(MemoryStream ms = new MemoryStream())
             {
@@ -13,6 +13,15 @@ namespace EDApp{
                 return ms.ToArray();
             }
         }
+
+        public Image ConvertByteArrayToImage(byte[] data)
+        {
+            using(MemoryStream ms = new MemoryStream(data))
+            {
+                return Image.FromStream(ms);
+            }
+        }
+
 
         public Image browseUpload(string empid)
         {

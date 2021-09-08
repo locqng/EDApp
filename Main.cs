@@ -61,8 +61,7 @@ namespace EDApp{
         public mainProgram(){
             menuFrame();
             createTable();
-            
-            
+            viewRecords("");
         }
 
         public void menuFrame()
@@ -317,7 +316,7 @@ namespace EDApp{
             viewPanel.Controls.Add(btnSearch);
             viewPanel.Controls.Add(btnAddNew);
 
-            viewRecords("");
+            
             
 
         }
@@ -510,7 +509,7 @@ namespace EDApp{
         {
             if (txbID.Text != "")
             {
-                PhotoUpload upload = new PhotoUpload();
+                PhotoHandler upload = new PhotoHandler();
                 empPhoto.Image = upload.browseUpload(txbID.Text);
                 //Config to your photos directory
                 txbPhoto.Text = "D:/EmpPhotos/"+txbID.Text+".png";
@@ -639,7 +638,13 @@ namespace EDApp{
                 if (txbPhoto.Text != "")
                     try{
                         //Config to your photos directory
-                        empPhoto.Image = Image.FromFile("D:/EmpPhotos/" +txbID.Text+".png");
+                        PhotoHandler photoHandler = new PhotoHandler();
+                        Image photo;
+                        byte[] photoBytes;
+                        photoBytes = File.ReadAllBytes("D:/EmpPhotos/" +txbID.Text+".png");
+                        photo = photoHandler.ConvertByteArrayToImage(photoBytes);            
+                        empPhoto.Image = photo;
+                        
                     }
                     catch (FileNotFoundException)
                     {
