@@ -9,25 +9,29 @@ namespace EDApp{
     
     public class mainProgram: Form {
 
-        int row = 0;
+
         //Generating form text box for input
         private static TextBox txbID = new TextBox();
         private TextBox txbFname = new TextBox();
         private TextBox txbLname = new TextBox();  
         private TextBox txbAddress = new TextBox();                 
         private TextBox txbPcode = new TextBox();
-        private TextBox txbDOB = new TextBox();
+        //private TextBox txbDOB = new TextBox();
         private TextBox txbGender = new TextBox();
         private TextBox txbPhoto = new TextBox();
         private TextBox txbDoc = new TextBox();
         private TextBox txbSearch = new TextBox();
-        public Panel mainPanel, topPanel, subPanel;
+        private Panel viewPanel, formPanel;
+        //public Panel topPanel;
         private DataGridView gridViewTable = new DataGridView();
 
+        //Date time picker
+        private DateTimePicker dobPicker = new DateTimePicker();
+
         //Generating Menu buttons
-        private Button btnEdit = new Button();
-        private Button btnView = new Button();
-        private Button btnReset = new Button();
+        //private Button btnEdit = new Button();
+        //private Button btnView = new Button();
+        private Button btnBack = new Button();
 
         //Generating Function buttons 
         private Button btnAdd = new Button();
@@ -35,6 +39,8 @@ namespace EDApp{
         private Button btnExit = new Button();
         private Button btnSearch = new Button();
         private Button btnUpdate = new Button();
+        private Button btnAddNew = new Button();
+        private Button btnClear = new Button();
             
             //Generating form labels
         private Label lblID = new Label();
@@ -50,6 +56,8 @@ namespace EDApp{
         public mainProgram(){
             menuFrame();
             createTable();
+            
+            
         }
 
         public void menuFrame()
@@ -62,34 +70,36 @@ namespace EDApp{
             this.StartPosition = FormStartPosition.CenterScreen;
 
             //Creating the top panel
-            topPanel = new Panel();
-            topPanel.Width = 800;
-            topPanel.Height = 30;
+            //topPanel = new Panel();
+            //topPanel.Width = 800;
+            //topPanel.Height = 30;
             
             //Creating the main panel
-            mainPanel = new Panel();
-            mainPanel.Width = 800;
-            mainPanel.Height = 580;
+            viewPanel = new Panel();
+            viewPanel.Width = 800;
+            viewPanel.Height = 580;
+            viewPanel.Visible = true;
 
             //Creating the sub panel
-            subPanel = new Panel();
-            subPanel.Width = 800;
-            subPanel.Height = 580;
+            formPanel = new Panel();
+            formPanel.Width = 800;
+            formPanel.Height = 580;
+            formPanel.Visible = false;
             
 
 
             //Setting menu buttons size and locations
             //Edit button
-            btnEdit.Location = new Point(0,0);
-            btnEdit.Text = "Edit";
-            btnEdit.Size = new Size(400,30);
-            btnEdit.Click += new System.EventHandler(btnEditClick);
+            //btnEdit.Location = new Point(0,0);
+            //btnEdit.Text = "Edit";
+            //btnEdit.Size = new Size(400,30);
+            //btnEdit.Click += new System.EventHandler(btnEditClick);
 
             //View button          
-            btnView.Location = new Point(400,0);
-            btnView.Text = "View";
-            btnView.Size = new Size(400,30);
-            btnView.Click += new System.EventHandler(btnViewClick);
+            //btnView.Location = new Point(400,0);
+            //btnView.Text = "View";
+            //btnView.Size = new Size(400,30);
+            //btnView.Click += new System.EventHandler(btnViewClick);
 
             //Add button 
             btnAdd.Location = new Point(20,500);
@@ -97,11 +107,18 @@ namespace EDApp{
             btnAdd.Size = new Size(80,20);
             btnAdd.Click += new System.EventHandler(btnAddClick);
 
+            //Clear button
+            btnClear.Location = new Point(400, 400);
+            btnClear.Text = "Clear";
+            btnClear.Size = new Size(80,20);
+            btnClear.Visible = true;
+            btnClear.Click += new System.EventHandler(btnClearClick);
+
             //Update Button
             btnUpdate.Location = new Point(20,500);
             btnUpdate.Text = "Update";
             btnUpdate.Size = new Size(80,20);
-            btnUpdate.Visible = false;
+            btnUpdate.Visible = true;
             btnUpdate.Click += new System.EventHandler(btnUpdateClick);
 
             //Delete button 
@@ -110,11 +127,18 @@ namespace EDApp{
             btnDelete.Size = new Size(80,20);
             btnDelete.Click += new System.EventHandler(btnDeleteClick);
 
-            //Clear button 
-            btnReset.Location = new Point(240, 500);
-            btnReset.Text = "Reset";
-            btnReset.Size = new Size(80,20);
-            btnReset.Click += new System.EventHandler(btnResetClick);
+            //Add new Record button to change to form panel
+            btnAddNew.Location = new Point(20, 370);
+            btnAddNew.Text = "New Record";
+            btnAddNew.Size = new Size(80,20);
+            btnAddNew.Visible = true;
+            btnAddNew.Click += new System.EventHandler(btnAddNewClick);
+
+            //Go back button 
+            btnBack.Location = new Point(20, 20);
+            btnBack.Text = "Back";
+            btnBack.Size = new Size(80,20);
+            btnBack.Click += new System.EventHandler(btnBackClick);
 
             //Exit button 
             btnExit.Location = new Point(680,500);
@@ -168,8 +192,7 @@ namespace EDApp{
             lblDOB.Location = new Point(20,252);
             lblDOB.Size = new Size(100,20);
             
-            txbDOB.Location = new Point(120,250);
-            txbDOB.Size = new Size(120,20);
+                     
 
             //Gender
             lblGender.Text = "Gender";
@@ -198,6 +221,7 @@ namespace EDApp{
             //Search box for view sub panel
             txbSearch.Location = new Point(20,50);
             txbSearch.Size = new Size(100,20);
+            txbSearch.KeyDown += App_KeyDown;
 
             btnSearch.Location = new Point(125,51);
             btnSearch.Text = "Search";
@@ -209,75 +233,89 @@ namespace EDApp{
             gridViewTable.Location = new Point(20,100);
             gridViewTable.Size = new Size(750,250);
             gridViewTable.ColumnHeadersDefaultCellStyle.BackColor = Color.Navy;
-            gridViewTable.ColumnHeadersDefaultCellStyle.ForeColor = Color.White; 
+            gridViewTable.ColumnHeadersDefaultCellStyle.ForeColor = Color.White;
+            gridViewTable.AllowUserToAddRows = false; 
             gridViewTable.CellClick += gridViewTable_CellClick;
+
+            //Date Time Picker
+            dobPicker.Location = new Point(120,250);
+            dobPicker.Format = DateTimePickerFormat.Custom;
+            dobPicker.CustomFormat = "dd/MMM/yyyy";
+            dobPicker.MinDate = new DateTime(1930, 01, 01);
+            dobPicker.MaxDate = DateTime.Now;
+            
             
 
             //Adding elements to win form
-            this.Controls.Add(topPanel);
-            this.Controls.Add(mainPanel);
-            this.Controls.Add(subPanel);
+            //this.Controls.Add(topPanel);
+            this.Controls.Add(viewPanel);
+            this.Controls.Add(formPanel);
+        
 
             // adding buttons in top panel
-            topPanel.Controls.Add(btnEdit);
-            topPanel.Controls.Add(btnView);
+            //topPanel.Controls.Add(btnEdit);
+            //topPanel.Controls.Add(btnView);
 
             // adding labels in main panel
-            mainPanel.Controls.Add(lblID);
-            mainPanel.Controls.Add(lblFname);
-            mainPanel.Controls.Add(lblLname);
-            mainPanel.Controls.Add(lblPcode);
-            mainPanel.Controls.Add(lblAddress);
-            mainPanel.Controls.Add(lblDOB);
-            mainPanel.Controls.Add(lblGender);
-            mainPanel.Controls.Add(lblPhoto);
-            mainPanel.Controls.Add(lblDoc);  
+            formPanel.Controls.Add(lblID);
+            formPanel.Controls.Add(lblFname);
+            formPanel.Controls.Add(lblLname);
+            formPanel.Controls.Add(lblPcode);
+            formPanel.Controls.Add(lblAddress);
+            formPanel.Controls.Add(lblDOB);
+            formPanel.Controls.Add(lblGender);
+            formPanel.Controls.Add(lblPhoto);
+            formPanel.Controls.Add(lblDoc);  
 
             // adding text field in main panel 
-            mainPanel.Controls.Add(txbID);
-            mainPanel.Controls.Add(txbFname);
-            mainPanel.Controls.Add(txbLname);
-            mainPanel.Controls.Add(txbPcode);
-            mainPanel.Controls.Add(txbAddress);
-            mainPanel.Controls.Add(txbDOB);
-            mainPanel.Controls.Add(txbGender);
-            mainPanel.Controls.Add(txbPhoto);
-            mainPanel.Controls.Add(txbDoc);
+            formPanel.Controls.Add(txbID);
+            formPanel.Controls.Add(txbFname);
+            formPanel.Controls.Add(txbLname);       
+            formPanel.Controls.Add(txbAddress);
+            formPanel.Controls.Add(txbPcode);
+            formPanel.Controls.Add(dobPicker);
+            formPanel.Controls.Add(txbGender);
+            formPanel.Controls.Add(txbPhoto);
+            formPanel.Controls.Add(txbDoc);
 
             // adding function buttons in main panel
-            mainPanel.Controls.Add(btnAdd);
-            mainPanel.Controls.Add(btnDelete);
-            mainPanel.Controls.Add(btnExit);
-            mainPanel.Controls.Add(btnUpdate);
-            mainPanel.Controls.Add(btnReset);
+            formPanel.Controls.Add(btnAdd);
+            formPanel.Controls.Add(btnDelete);
+            formPanel.Controls.Add(btnExit);
+            formPanel.Controls.Add(btnUpdate);
+            formPanel.Controls.Add(btnBack);
+            formPanel.Controls.Add(btnClear);
 
             //Add grid table to the sub view panel
-            subPanel.Controls.Add(gridViewTable);
-            subPanel.Controls.Add(txbSearch);
-            subPanel.Controls.Add(btnSearch);
+            viewPanel.Controls.Add(gridViewTable);
+            viewPanel.Controls.Add(txbSearch);
+            viewPanel.Controls.Add(btnSearch);
+            viewPanel.Controls.Add(btnAddNew);
+
+            viewRecords("");
             
 
         }
         
         //Edit button event handler   
-        public void btnEditClick(object sender, EventArgs e) 
-        {
+        //public void btnEditClick(object sender, EventArgs e) 
+        //{
             
-            mainPanel.Visible = true;
-            topPanel.Visible = true;
-            subPanel.Visible = false;
-        } 
+        //    viewPanel.Visible = true;
+        //    //topPanel.Visible = true;
+        //    formPanel.Visible = false;
+        //} 
 
         //View button event handler
-        public void btnViewClick(object sender, EventArgs e) 
-        {
-            
-            mainPanel.Visible = false;
-            topPanel.Visible = true;
-            subPanel.Visible = true;
-            viewRecords("");
+        //public void btnViewClick(object sender, EventArgs e) 
+        //{
+        //    
+        //    viewPanel.Visible = false;
+           //topPanel.Visible = true;
+        //    formPanel.Visible = true;
+        //    viewRecords("");
 
-        } 
+        //} 
         
         //Add button event handler
         private void btnAddClick(object sender, EventArgs e)
@@ -287,7 +325,7 @@ namespace EDApp{
              string.IsNullOrEmpty(txbLname.Text.Trim())|| 
              string.IsNullOrEmpty(txbPcode.Text.Trim())|| 
              string.IsNullOrEmpty(txbAddress.Text.Trim())|| 
-             string.IsNullOrEmpty(txbDOB.Text.Trim())|| 
+             string.IsNullOrEmpty(dobPicker.Text.Trim())|| 
              string.IsNullOrEmpty(txbGender.Text.Trim())|| 
              string.IsNullOrEmpty(txbPhoto.Text.Trim())|| 
              string.IsNullOrEmpty(txbDoc.Text.Trim()))
@@ -300,10 +338,19 @@ namespace EDApp{
             {
                 CRUD.sql = "INSERT INTO employee(empid, FirstName, LastName,address,postcode, DOB ,gender,photo,document) VALUES(@empID, @firstName, @lastName,@address,@postcode,@DOB,@gender,@photo,@document)";
                 sqlExecute(CRUD.sql);
-                MessageBox.Show("Record saved", "Adding Record", MessageBoxButtons.OK, MessageBoxIcon.Information);
-                mainPanel.Visible = true;
-                topPanel.Visible = true;
-                clearTextbox();
+                clearTextbox("clean");
+                DialogResult dialogResult = MessageBox.Show("Record saved! Add another record?", "Adding Record", MessageBoxButtons.YesNo, MessageBoxIcon.Information);         
+                //topPanel.Visible = true;
+                if (dialogResult == DialogResult.Yes)
+                {
+                    btnAddNew.PerformClick();
+                }
+                else 
+                {
+                    viewPanel.Visible = true;
+                    viewRecords("");
+                }
+                
             }
             catch (Exception ex)
             {
@@ -324,7 +371,7 @@ namespace EDApp{
             {
                 viewRecords(txbSearch.Text.Trim());
             }
-            clearTextbox();
+            clearTextbox("clean");
             
         }
         
@@ -336,7 +383,7 @@ namespace EDApp{
              string.IsNullOrEmpty(txbLname.Text.Trim())|| 
              string.IsNullOrEmpty(txbPcode.Text.Trim())|| 
              string.IsNullOrEmpty(txbAddress.Text.Trim())|| 
-             string.IsNullOrEmpty(txbDOB.Text.Trim())|| 
+             string.IsNullOrEmpty(dobPicker.Text.Trim())|| 
              string.IsNullOrEmpty(txbGender.Text.Trim())|| 
              string.IsNullOrEmpty(txbPhoto.Text.Trim())|| 
              string.IsNullOrEmpty(txbDoc.Text.Trim()))
@@ -351,12 +398,13 @@ namespace EDApp{
                 "WHERE empid = @empid";
                 sqlExecute(CRUD.sql);
                 MessageBox.Show("Record saved", "Updating Record", MessageBoxButtons.OK, MessageBoxIcon.Information);
-                mainPanel.Visible = true;
-                topPanel.Visible = true;
+                viewPanel.Visible = true;
+                //topPanel.Visible = true;
                 btnUpdate.Visible = false;
                 btnAdd.Visible = true;
                 txbID.ReadOnly = false;
-                clearTextbox();
+                clearTextbox("clean");
+                viewRecords("");
             }
             catch (Exception ex)
             {
@@ -375,12 +423,24 @@ namespace EDApp{
             }
             try
             {
-                CRUD.sql= "Delete from employee where empid = @empID;";
-                sqlExecute(CRUD.sql);  
-                MessageBox.Show("Record Deleted", "Deleting Record", MessageBoxButtons.OK, MessageBoxIcon.Information);
-                mainPanel.Visible = true;
-                topPanel.Visible = true;
-                clearTextbox();
+                DialogResult dialogResult = MessageBox.Show("You are about to delete the record of " + txbID.Text, "Deleting Record", MessageBoxButtons.YesNo, MessageBoxIcon.Exclamation);
+                if (dialogResult == DialogResult.Yes)
+                    {
+                        CRUD.sql= "Delete from employee where empid = @empID;";
+                        sqlExecute(CRUD.sql);  
+                        MessageBox.Show("Record deleted!" , "Deleting Record", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                        viewPanel.Visible = true;
+                        //topPanel.Visible = true;
+                        clearTextbox("clean");
+                        txbID.ReadOnly = false;
+                        viewRecords("");
+                    }
+                else if (dialogResult == DialogResult.No)
+                {
+                    return;
+                }
+                
+
             }
             catch (Exception ex)
             {
@@ -390,30 +450,65 @@ namespace EDApp{
         }
 
         //Clear button event handler
-        private void btnResetClick(object sender, EventArgs e)
+        private void btnBackClick(object sender, EventArgs e)
         {
-            clearTextbox();
+            clearTextbox("clean");
             txbID.ReadOnly = false;
             btnUpdate.Visible = false;
             btnAdd.Visible = true;
+            viewPanel.Visible = true;
+            viewRecords("");
 
         }
-        
+
+        //Add new record (change to form panel) button event handler
+        private void btnAddNewClick(object sender, EventArgs e)
+        {
+            clearTextbox("clean");
+            viewPanel.Visible = false;
+            formPanel.Visible = true;
+            btnUpdate.Visible = false;
+            btnAdd.Visible = true;
+            btnDelete.Visible = false;
+
+        }
+
+        //Clear form button
+        private void btnClearClick (object sender, EventArgs e)
+        {  
+            if (btnUpdate.Visible == true)
+                clearTextbox("");
+            else
+                clearTextbox("clean");
+        }     
         //Exit button event handler
         private void btnExitClick(object sender, EventArgs e)
         {
             this.Close();
         }
+
+        private void App_KeyDown(object sender, KeyEventArgs e)
+        {
+            if (e.KeyCode == Keys.Enter)
+            {
+                btnSearch.PerformClick();              
+                e.SuppressKeyPress = true;
+            }
+        }
         
         // clear textbox
-        private void clearTextbox()
+        private void clearTextbox(string function)
         {
-            txbID.Text = "";
+            //If call from Update function won't use "Clean"
+            if (function == "clean")
+            {
+                txbID.Text = "";
+            }
             txbFname.Text = "";
             txbLname.Text = "";
             txbPcode.Text = "";
             txbAddress.Text = "";
-            txbDOB.Text = "";
+            dobPicker.Value = dobPicker.MaxDate;
             txbGender.Text = "";
             txbPhoto.Text = "";
             txbDoc.Text = "";
@@ -438,28 +533,24 @@ namespace EDApp{
         private void viewRecords(string search)
         {           
             CRUD.sql = "SELECT empid, FirstName, LastName, address, postcode, DOB, gender, photo, document FROM Employee " +
-                        "WHERE empid LIKE @kw1 OR CONCAT(FirstName, ' ', LastName) LIKE @kw2 ORDER BY empid ASC";
-
-            string kw2 = String.Format("%{0}%", search);
+                        "WHERE empid LIKE @kwExact OR CONCAT(FirstName, ' ', LastName) LIKE @kw OR address LIKE @kw OR postcode LIKE @kwExact " +
+                        "OR DOB LIKE @kw OR gender LIKE @kw ORDER BY empid ASC";
+            string kw = String.Format("%{0}%", search);
+            
             CRUD.cmd = new MySqlCommand(CRUD.sql, CRUD.con);
             CRUD.cmd.Parameters.Clear();
-            CRUD.cmd.Parameters.AddWithValue("kw1", search);
-            CRUD.cmd.Parameters.AddWithValue("kw2", kw2);
+            CRUD.cmd.Parameters.AddWithValue("kw", kw);
+            CRUD.cmd.Parameters.AddWithValue("kwExact", search);
+
 
             DataTable table = CRUD.PerformCRUD(CRUD.cmd);
-            if (table.Rows.Count > 0)
-            {
-                row = Convert.ToInt32(table.Rows.Count.ToString());
-            }
-            else
-            {
-                row = 0;
-            }
-    
+
+
             gridViewTable.MultiSelect = false;
             gridViewTable.AutoGenerateColumns = true;
             gridViewTable.SelectionMode = DataGridViewSelectionMode.FullRowSelect;
             gridViewTable.DataSource = table;
+
             gridViewTable.Columns[0].HeaderText = "EmpID";
             gridViewTable.Columns[1].HeaderText = "First Name";
             gridViewTable.Columns[2].HeaderText = "Last Name";
@@ -475,10 +566,10 @@ namespace EDApp{
             gridViewTable.Columns[2].Width = 80;
             gridViewTable.Columns[3].Width = 170;
             gridViewTable.Columns[4].Width = 60;
-            gridViewTable.Columns[5].Width = 70;
+            gridViewTable.Columns[5].Width = 80;
             gridViewTable.Columns[6].Width = 50;
             gridViewTable.Columns[7].Width = 50;
-            gridViewTable.Columns[8].Width = 95;
+            gridViewTable.Columns[8].Width = 85;
 
         }
 
@@ -487,12 +578,13 @@ namespace EDApp{
         {
             if (e.RowIndex != -1)
             {
-                clearTextbox();
-                topPanel.Visible = true;
-                mainPanel.Visible = true;
-                subPanel.Visible = false;
+                clearTextbox("clean");
+                //topPanel.Visible = true;
+                formPanel.Visible = true;
+                viewPanel.Visible = false;
                 btnAdd.Visible = false;
                 btnUpdate.Visible = true;
+                btnDelete.Visible = true;
                 
                 txbID.ReadOnly = true;
                 txbID.Text = Convert.ToString(gridViewTable.CurrentRow.Cells[0].Value);
@@ -500,7 +592,7 @@ namespace EDApp{
                 txbLname.Text = Convert.ToString(gridViewTable.CurrentRow.Cells[2].Value);
                 txbAddress.Text = Convert.ToString(gridViewTable.CurrentRow.Cells[3].Value);
                 txbPcode.Text = Convert.ToString(gridViewTable.CurrentRow.Cells[4].Value);
-                txbDOB.Text = Convert.ToString(gridViewTable.CurrentRow.Cells[5].Value);
+                dobPicker.Text = Convert.ToString(gridViewTable.CurrentRow.Cells[5].Value);
                 txbGender.Text = Convert.ToString(gridViewTable.CurrentRow.Cells[6].Value);
                 txbPhoto.Text = Convert.ToString(gridViewTable.CurrentRow.Cells[7].Value);
                 txbDoc.Text = Convert.ToString(gridViewTable.CurrentRow.Cells[8].Value);
@@ -525,7 +617,7 @@ namespace EDApp{
             CRUD.cmd.Parameters.AddWithValue("@lastName", txbLname.Text.Trim().ToString());
             CRUD.cmd.Parameters.AddWithValue("@address", txbAddress.Text.Trim().ToString());
             CRUD.cmd.Parameters.AddWithValue("@postcode", txbPcode.Text.Trim().ToString());
-            CRUD.cmd.Parameters.AddWithValue("@DOB", txbDOB.Text.Trim().ToString());
+            CRUD.cmd.Parameters.AddWithValue("@DOB", dobPicker.Text.Trim().ToString());
             CRUD.cmd.Parameters.AddWithValue("@gender", txbGender.Text.Trim().ToString());
             CRUD.cmd.Parameters.AddWithValue("@photo", txbPhoto.Text.Trim().ToString());
             CRUD.cmd.Parameters.AddWithValue("@document", txbDoc.Text.Trim().ToString());
