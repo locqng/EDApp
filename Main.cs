@@ -512,6 +512,7 @@ namespace EDApp{
             {
                 PhotoUpload upload = new PhotoUpload();
                 empPhoto.Image = upload.browseUpload(txbID.Text);
+                //Config to your photos directory
                 txbPhoto.Text = "D:/EmpPhotos/"+txbID.Text+".png";
             }
             else{
@@ -637,6 +638,7 @@ namespace EDApp{
                 txbDoc.Text = Convert.ToString(gridViewTable.CurrentRow.Cells[8].Value);
                 if (txbPhoto.Text != "")
                     try{
+                        //Config to your photos directory
                         empPhoto.Image = Image.FromFile("D:/EmpPhotos/" +txbID.Text+".png");
                     }
                     catch (FileNotFoundException)

@@ -21,6 +21,7 @@ namespace EDApp{
                if(dialog.ShowDialog() == DialogResult.OK)
                {
                    photo = Image.FromFile(dialog.FileName);
+                   //Config to your photos directory
                    File.WriteAllBytes("D:/EmpPhotos/"+empid+".png", ConvertImageToBytes(photo));
                                                     
                    return photo;
