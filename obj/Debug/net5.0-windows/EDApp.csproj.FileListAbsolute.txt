@@ -72,3 +72,32 @@ C:\Users\qlocn\Desktop\EDApp\bin\Debug\net5.0-windows\System.Xml.XPath.XmlDocume
 \\Mac\Home\Documents\GitHub\EDApp\bin\Debug\net5.0-windows\runtimes\win\lib\netcoreapp2.1\System.Data.SqlClient.dll
 \\Mac\Home\Documents\GitHub\EDApp\obj\Debug\net5.0-windows\EDApp.csproj.CopyComplete
 \\Mac\Home\Documents\GitHub\EDApp\obj\Debug\net5.0-windows\EDApp.genruntimeconfig.cache
+D:\Uni Documents\Applied Research Project\EDApp\bin\Debug\net5.0-windows\EDApp.exe
+D:\Uni Documents\Applied Research Project\EDApp\bin\Debug\net5.0-windows\EDApp.deps.json
+D:\Uni Documents\Applied Research Project\EDApp\bin\Debug\net5.0-windows\EDApp.runtimeconfig.json
+D:\Uni Documents\Applied Research Project\EDApp\bin\Debug\net5.0-windows\EDApp.runtimeconfig.dev.json
+D:\Uni Documents\Applied Research Project\EDApp\bin\Debug\net5.0-windows\EDApp.dll
+D:\Uni Documents\Applied Research Project\EDApp\bin\Debug\net5.0-windows\ref\EDApp.dll
+D:\Uni Documents\Applied Research Project\EDApp\bin\Debug\net5.0-windows\EDApp.pdb
+D:\Uni Documents\Applied Research Project\EDApp\bin\Debug\net5.0-windows\BouncyCastle.Crypto.dll
+D:\Uni Documents\Applied Research Project\EDApp\bin\Debug\net5.0-windows\Google.Protobuf.dll
+D:\Uni Documents\Applied Research Project\EDApp\bin\Debug\net5.0-windows\MySql.Data.dll
+D:\Uni Documents\Applied Research Project\EDApp\bin\Debug\net5.0-windows\Renci.SshNet.dll
+D:\Uni Documents\Applied Research Project\EDApp\bin\Debug\net5.0-windows\SshNet.Security.Cryptography.dll
+D:\Uni Documents\Applied Research Project\EDApp\bin\Debug\net5.0-windows\System.Data.SqlClient.dll
+D:\Uni Documents\Applied Research Project\EDApp\bin\Debug\net5.0-windows\System.Xml.XPath.XmlDocument.dll
+D:\Uni Documents\Applied Research Project\EDApp\bin\Debug\net5.0-windows\runtimes\win-arm64\native\sni.dll
+D:\Uni Documents\Applied Research Project\EDApp\bin\Debug\net5.0-windows\runtimes\win-x64\native\sni.dll
+D:\Uni Documents\Applied Research Project\EDApp\bin\Debug\net5.0-windows\runtimes\win-x86\native\sni.dll
+D:\Uni Documents\Applied Research Project\EDApp\bin\Debug\net5.0-windows\runtimes\unix\lib\netcoreapp2.1\System.Data.SqlClient.dll
+D:\Uni Documents\Applied Research Project\EDApp\bin\Debug\net5.0-windows\runtimes\win\lib\netcoreapp2.1\System.Data.SqlClient.dll
+D:\Uni Documents\Applied Research Project\EDApp\obj\Debug\net5.0-windows\EDApp.csproj.AssemblyReference.cache
+D:\Uni Documents\Applied Research Project\EDApp\obj\Debug\net5.0-windows\EDApp.GeneratedMSBuildEditorConfig.editorconfig
+D:\Uni Documents\Applied Research Project\EDApp\obj\Debug\net5.0-windows\EDApp.AssemblyInfoInputs.cache
+D:\Uni Documents\Applied Research Project\EDApp\obj\Debug\net5.0-windows\EDApp.AssemblyInfo.cs
+D:\Uni Documents\Applied Research Project\EDApp\obj\Debug\net5.0-windows\EDApp.csproj.CoreCompileInputs.cache
+D:\Uni Documents\Applied Research Project\EDApp\obj\Debug\net5.0-windows\EDApp.csproj.CopyComplete
+D:\Uni Documents\Applied Research Project\EDApp\obj\Debug\net5.0-windows\EDApp.dll
+D:\Uni Documents\Applied Research Project\EDApp\obj\Debug\net5.0-windows\ref\EDApp.dll
+D:\Uni Documents\Applied Research Project\EDApp\obj\Debug\net5.0-windows\EDApp.pdb
+D:\Uni Documents\Applied Research Project\EDApp\obj\Debug\net5.0-windows\EDApp.genruntimeconfig.cache

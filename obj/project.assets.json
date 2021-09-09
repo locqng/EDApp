@@ -5918,19 +5918,19 @@
     ]
   },
   "packageFolders": {
-    "C:\\Users\\yyao\\.nuget\\packages\\": {}
+    "C:\\Users\\qlocn\\.nuget\\packages\\": {}
   },
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "\\\\Mac\\Home\\Documents\\GitHub\\EDApp\\EDApp.csproj",
+      "projectUniqueName": "D:\\Uni Documents\\Applied Research Project\\EDApp\\EDApp.csproj",
       "projectName": "EDApp",
-      "projectPath": "\\\\Mac\\Home\\Documents\\GitHub\\EDApp\\EDApp.csproj",
-      "packagesPath": "C:\\Users\\yyao\\.nuget\\packages\\",
-      "outputPath": "\\\\Mac\\Home\\Documents\\GitHub\\EDApp\\obj\\",
+      "projectPath": "D:\\Uni Documents\\Applied Research Project\\EDApp\\EDApp.csproj",
+      "packagesPath": "C:\\Users\\qlocn\\.nuget\\packages\\",
+      "outputPath": "D:\\Uni Documents\\Applied Research Project\\EDApp\\obj\\",
       "projectStyle": "PackageReference",
       "configFilePaths": [
-        "C:\\Users\\yyao\\AppData\\Roaming\\NuGet\\NuGet.Config"
+        "C:\\Users\\qlocn\\AppData\\Roaming\\NuGet\\NuGet.Config"
       ],
       "originalTargetFrameworks": [
         "net5.0-windows"
