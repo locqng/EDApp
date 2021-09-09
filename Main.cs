@@ -370,9 +370,20 @@ namespace EDApp{
 
             try
             {
+                this.id = txbID.Text.Trim();
                 CRUD.sql = "INSERT INTO employee(empid, FirstName, LastName,address,postcode, DOB ,gender,photo,document) VALUES(@empID, @firstName, @lastName,@address,@postcode,@DOB,@gender,@photo,@document)";
                 sqlExecute(CRUD.sql);
                 clearTextbox("clean");
+                try{
+                    File.Delete("D:/EmpPhotos/"+this.id+".png");
+                    File.Move("D:/EmpPhotos/"+this.id+"_new.png", "D:/EmpPhotos/"+this.id+".png");
+                }
+                catch(FileNotFoundException)
+                {
+                    
+                }
+                clearTextbox("clean");
+                viewRecords("");
                 DialogResult dialogResult = MessageBox.Show("Record saved! Add another record?", "Adding Record", MessageBoxButtons.YesNo, MessageBoxIcon.Information);         
                 //topPanel.Visible = true;
                 if (dialogResult == DialogResult.Yes)
@@ -478,6 +489,15 @@ namespace EDApp{
                         //topPanel.Visible = true;
                         clearTextbox("clean");
                         txbID.ReadOnly = false;
+                        try{
+                            File.Delete("D:/EmpPhotos/"+this.id+".png");
+                        }
+                            catch(FileNotFoundException)
+                        {
+                    MessageBox.Show("Cannot update photos", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                }
+                clearTextbox("clean");
+                viewRecords("");
                         viewRecords("");
                     }
                 else if (dialogResult == DialogResult.No)
@@ -535,7 +555,7 @@ namespace EDApp{
             {
                 Image newImage;
                 newImage = upload.browseUpload(txbID.Text+"_new");
-                txbPhoto.Text = "D:/EmpPhotos/"+this.id+".png";
+                txbPhoto.Text = "D:/EmpPhotos/"+txbID.Text+".png";
                 empPhoto.Image = newImage;
             }
             else{
