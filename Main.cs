@@ -9,8 +9,8 @@ namespace EDApp{
     
     
     public class mainProgram: Form {
-
-
+        //ID variables to handle photo upload
+        private String id = "";
         //Generating form text box for input
         private static TextBox txbID = new TextBox();
         private TextBox txbFname = new TextBox();
@@ -227,7 +227,7 @@ namespace EDApp{
             
             txbPhoto.Location = new Point(120,330);
             txbPhoto.Size = new Size(250,20);
-            txbPhoto.ReadOnly = true;
+            //txbPhoto.ReadOnly = fasle;
 
             //Document
             lblDoc.Text = "Document";
@@ -309,7 +309,7 @@ namespace EDApp{
             // adding function buttons in form panel
             formPanel.Controls.Add(btnAdd);
             formPanel.Controls.Add(btnDelete);
-            formPanel.Controls.Add(btnExit);
+            //formPanel.Controls.Add(btnExit);
             formPanel.Controls.Add(btnUpdate);
             formPanel.Controls.Add(btnBack);
             formPanel.Controls.Add(btnClear);
@@ -325,6 +325,7 @@ namespace EDApp{
             viewPanel.Controls.Add(txbSearch);
             viewPanel.Controls.Add(btnSearch);
             viewPanel.Controls.Add(btnAddNew);
+            //viewPanel.Controls.Add(btnExit);
 
             
             
@@ -435,8 +436,20 @@ namespace EDApp{
                 btnUpdate.Visible = false;
                 btnAdd.Visible = true;
                 txbID.ReadOnly = false;
+                this.id = txbID.Text;
+                try{
+                    File.Delete("D:/EmpPhotos/"+this.id+".png");
+                    File.Move("D:/EmpPhotos/"+this.id+"_new.png", "D:/EmpPhotos/"+this.id+".png");
+                }
+                catch(FileNotFoundException)
+                {
+                    MessageBox.Show("Cannot update photos", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                }
                 clearTextbox("clean");
                 viewRecords("");
+                
+                
+
             }
             catch (Exception ex)
             {
@@ -517,12 +530,13 @@ namespace EDApp{
 
         private void btnBrowseClick (object sender, EventArgs e)
         {
+            PhotoHandler upload = new PhotoHandler();
             if (txbID.Text != "")
             {
-                PhotoHandler upload = new PhotoHandler();
-                empPhoto.Image = upload.browseUpload(txbID.Text);
-                //Config to your photos directory
-                txbPhoto.Text = "D:/EmpPhotos/"+txbID.Text+".png";
+                Image newImage;
+                newImage = upload.browseUpload(txbID.Text+"_new");
+                txbPhoto.Text = "D:/EmpPhotos/"+this.id+".png";
+                empPhoto.Image = newImage;
             }
             else{
                 MessageBox.Show("Please enter the Employee ID", "Uploading photo", MessageBoxButtons.OK, MessageBoxIcon.Error);
@@ -579,7 +593,7 @@ namespace EDApp{
 
         //View record, accept search keyword as parameter to show results
         private void viewRecords(string search)
-        {           
+        {      
             CRUD.sql = "SELECT empid, FirstName, LastName, address, postcode, DOB, gender, photo, document FROM Employee " +
                         "WHERE empid LIKE @kwExact OR CONCAT(FirstName, ' ', LastName) LIKE @kw OR address LIKE @kw OR postcode LIKE @kwExact " +
                         "OR DOB LIKE @kw OR gender LIKE @kw ORDER BY empid ASC";
@@ -619,6 +633,12 @@ namespace EDApp{
             gridViewTable.Columns[7].Width = 50;
             gridViewTable.Columns[8].Width = 85;
 
+            try{
+                File.Delete("D:/EmpPhotos/"+this.id+"_new.png");
+            }catch (FileNotFoundException)
+            {
+                return;
+            }
         }
 
         //Grid cell click handler for update function
@@ -626,6 +646,7 @@ namespace EDApp{
         {
             if (e.RowIndex != -1)
             {
+                
                 empPhoto.Image = null;
                 clearTextbox("clean");
                 //topPanel.Visible = true;
@@ -645,20 +666,23 @@ namespace EDApp{
                 txbGender.Text = Convert.ToString(gridViewTable.CurrentRow.Cells[6].Value);
                 txbPhoto.Text = Convert.ToString(gridViewTable.CurrentRow.Cells[7].Value);
                 txbDoc.Text = Convert.ToString(gridViewTable.CurrentRow.Cells[8].Value);
+
+                this.id = txbID.Text;
                 if (txbPhoto.Text != "")
                     try{
                         //Config to your photos directory
                         PhotoHandler photoHandler = new PhotoHandler();
                         Image photo;
                         byte[] photoBytes;
-                        photoBytes = File.ReadAllBytes("D:/EmpPhotos/" +txbID.Text+".png");
+                        photoBytes = File.ReadAllBytes(txbPhoto.Text);
                         photo = photoHandler.ConvertByteArrayToImage(photoBytes);            
                         empPhoto.Image = photo;
                         
                     }
                     catch (FileNotFoundException)
                     {
-                        MessageBox.Show("Photo not found in database", "Photo display", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                        MessageBox.Show("Photo not found in directory, Please add a photo or delete the Photo field", "Notice", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                        txbPhoto.Text = "";
                         empPhoto.Image = null;
                     }
                     
