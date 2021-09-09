@@ -380,7 +380,7 @@ namespace EDApp{
                 }
                 catch(FileNotFoundException)
                 {
-                    
+                    //Do nothing
                 }
                 clearTextbox("clean");
                 viewRecords("");
@@ -399,7 +399,7 @@ namespace EDApp{
             }
             catch (Exception ex)
             {
-                MessageBox.Show("Error " + ex.Message, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                MessageBox.Show("Error adding" + ex.Message, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
 
 
@@ -454,7 +454,8 @@ namespace EDApp{
                 }
                 catch(FileNotFoundException)
                 {
-                    MessageBox.Show("Cannot update photos", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    //MessageBox.Show("Cannot update photos", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    //Do nothing
                 }
                 clearTextbox("clean");
                 viewRecords("");
@@ -492,10 +493,11 @@ namespace EDApp{
                         try{
                             File.Delete("D:/EmpPhotos/"+this.id+".png");
                         }
-                            catch(FileNotFoundException)
+                        catch(FileNotFoundException)
                         {
-                    MessageBox.Show("Cannot update photos", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
-                }
+                            //MessageBox.Show("Cannot update photos", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                            //Do nothing
+                        }
                 clearTextbox("clean");
                 viewRecords("");
                         viewRecords("");
@@ -546,10 +548,22 @@ namespace EDApp{
                 clearTextbox("");
             else
                 clearTextbox("clean");
+
+            try
+            {
+                File.Delete("D:/EmpPhotos/"+this.id+"_new.png");
+            }
+            catch(FileNotFoundException)
+            {
+                //MessageBox.Show("Cannot update photos", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                //Do nothing
+
+            }
         }
 
         private void btnBrowseClick (object sender, EventArgs e)
         {
+            this.id = txbID.Text;
             PhotoHandler upload = new PhotoHandler();
             if (txbID.Text != "")
             {
@@ -602,6 +616,8 @@ namespace EDApp{
             txbPhoto.Text = "";
             txbDoc.Text = "";
             txbSearch.Text = "";
+            empPhoto.Image = null;
+            
         }
 
         // create table
@@ -614,7 +630,7 @@ namespace EDApp{
             }
             catch (Exception ex)
             {
-                MessageBox.Show("Error " + ex.Message, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                MessageBox.Show("Error Creating table" + ex.Message, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
         }
 
@@ -666,15 +682,15 @@ namespace EDApp{
                     File.Delete("D:/EmpPhotos/"+this.id+"_new.png");
                 }catch (FileNotFoundException)
                 {
+                    //Do nothing
                     return;
                 }
             }
-            catch (Exception ex)
+            catch (Exception)
             {
-                MessageBox.Show("Generating table", "ERROR", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                MessageBox.Show("Generating table... Click search again for the new table", "ERROR", MessageBoxButtons.OK, MessageBoxIcon.Information);
                 CRUD.sql= "CREATE TABLE IF NOT EXISTS `employee`(empid char(20) not null, FirstName char(255), LastName char(255),address char(255),postcode char(255), DOB char(255), gender char(255) ,photo char(255),document char(255), primary key(empid));";
-                sqlExecute(CRUD.sql);
-                
+                sqlExecute(CRUD.sql);              
             }
             
 

@@ -42,10 +42,9 @@ namespace EDApp
 
                 return table;
             }
-            catch (Exception ex)
+            catch (Exception)
             {
-                MessageBox.Show("Error " + ex.Message, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
-                table = null;
+                //do nothing
             }
             return table;
         }       
