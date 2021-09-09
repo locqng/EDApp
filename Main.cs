@@ -7,7 +7,7 @@ using MySql.Data.MySqlClient;
 
 namespace EDApp{
     
-    
+    //test for git
     public class mainProgram: Form {
         //ID variables to handle photo upload
         private String id = "";
@@ -555,8 +555,15 @@ namespace EDApp{
             {
                 Image newImage;
                 newImage = upload.browseUpload(txbID.Text+"_new");
-                txbPhoto.Text = "D:/EmpPhotos/"+txbID.Text+".png";
-                empPhoto.Image = newImage;
+                if (newImage != null)
+                {
+                    txbPhoto.Text = "D:/EmpPhotos/"+txbID.Text+".png";
+                    empPhoto.Image = newImage;
+                }
+                else
+                {
+                    return;
+                }
             }
             else{
                 MessageBox.Show("Please enter the Employee ID", "Uploading photo", MessageBoxButtons.OK, MessageBoxIcon.Error);
