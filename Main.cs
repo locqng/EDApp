@@ -43,6 +43,8 @@ namespace EDApp{
         private Button btnClear = new Button();
         private Button btnBack = new Button();
         private Button btnBrowse = new Button();
+        private Button btnUpload = new Button();
+        
             
             //Generating form labels
         private Label lblID = new Label();
@@ -112,7 +114,7 @@ namespace EDApp{
             btnAdd.Click += new System.EventHandler(btnAddClick);
 
             //Clear button
-            btnClear.Location = new Point(400, 400);
+            btnClear.Location = new Point(120, 500);
             btnClear.Text = "Clear";
             btnClear.Size = new Size(80,20);
             btnClear.Visible = true;
@@ -126,7 +128,7 @@ namespace EDApp{
             btnUpdate.Click += new System.EventHandler(btnUpdateClick);
 
             //Delete button 
-            btnDelete.Location = new Point(130,500);
+            btnDelete.Location = new Point(210,500);
             btnDelete.Text = "Delete";
             btnDelete.Size = new Size(80,20);
             btnDelete.Click += new System.EventHandler(btnDeleteClick);
@@ -145,10 +147,16 @@ namespace EDApp{
             btnBack.Click += new System.EventHandler(btnBackClick);
 
             //Browse image button
-            btnBrowse.Location = new Point(400, 332);
+            btnBrowse.Location = new Point(620, 180);
             btnBrowse.Text = "Browse";
             btnBrowse.Size = new Size(80, 20);
             btnBrowse.Click += new System.EventHandler(btnBrowseClick);
+
+            //Upload document button
+            btnUpload.Location = new Point(380, 370);
+            btnUpload.Text = "Upload";
+            btnUpload.Size = new Size(80, 20);
+            //btnUpload.Click += new System.EventHandler(btnUploadClick);
 
             //Exit button 
             btnExit.Location = new Point(680,500);
@@ -231,8 +239,8 @@ namespace EDApp{
             txbDoc.ReadOnly = true;
 
             //Photo box
-            empPhoto.Location = new Point(400,52);
-            empPhoto.Size = new Size(250, 250);
+            empPhoto.Location = new Point(600,52);
+            empPhoto.Size = new Size(120, 120);
             empPhoto.BorderStyle = BorderStyle.Fixed3D;
             empPhoto.SizeMode = PictureBoxSizeMode.StretchImage;
 
@@ -306,6 +314,8 @@ namespace EDApp{
             formPanel.Controls.Add(btnBack);
             formPanel.Controls.Add(btnClear);
             formPanel.Controls.Add(btnBrowse);
+            formPanel.Controls.Add(btnUpload);
+            
 
             // adding photo box in form panel
             formPanel.Controls.Add(empPhoto);
