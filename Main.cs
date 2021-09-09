@@ -620,52 +620,64 @@ namespace EDApp{
 
         //View record, accept search keyword as parameter to show results
         private void viewRecords(string search)
-        {      
-            CRUD.sql = "SELECT empid, FirstName, LastName, address, postcode, DOB, gender, photo, document FROM Employee " +
-                        "WHERE empid LIKE @kwExact OR CONCAT(FirstName, ' ', LastName) LIKE @kw OR address LIKE @kw OR postcode LIKE @kwExact " +
-                        "OR DOB LIKE @kw OR gender LIKE @kw ORDER BY empid ASC";
-            string kw = String.Format("%{0}%", search);
+        {
+            try{      
+                CRUD.sql = "SELECT empid, FirstName, LastName, address, postcode, DOB, gender, photo, document FROM Employee " +
+                            "WHERE empid LIKE @kwExact OR CONCAT(FirstName, ' ', LastName) LIKE @kw OR address LIKE @kw OR postcode LIKE @kwExact " +
+                            "OR DOB LIKE @kw OR gender LIKE @kw ORDER BY empid ASC";
+                string kw = String.Format("%{0}%", search);
+                
+                CRUD.cmd = new MySqlCommand(CRUD.sql, CRUD.con);
+                CRUD.cmd.Parameters.Clear();
+                CRUD.cmd.Parameters.AddWithValue("kw", kw);
+                CRUD.cmd.Parameters.AddWithValue("kwExact", search);
+
+
+                DataTable table = CRUD.PerformCRUD(CRUD.cmd);
+
+
+                gridViewTable.MultiSelect = false;
+                gridViewTable.AutoGenerateColumns = true;
+                gridViewTable.SelectionMode = DataGridViewSelectionMode.FullRowSelect;
+                gridViewTable.DataSource = table;
+
+                gridViewTable.Columns[0].HeaderText = "EmpID";
+                gridViewTable.Columns[1].HeaderText = "First Name";
+                gridViewTable.Columns[2].HeaderText = "Last Name";
+                gridViewTable.Columns[3].HeaderText = "Address";
+                gridViewTable.Columns[4].HeaderText = "Postcode";
+                gridViewTable.Columns[5].HeaderText = "DOB";
+                gridViewTable.Columns[6].HeaderText = "Gender";
+                gridViewTable.Columns[7].HeaderText = "Photo";
+                gridViewTable.Columns[8].HeaderText = "Document";
+
+                gridViewTable.Columns[0].Width = 50;
+                gridViewTable.Columns[1].Width = 80;
+                gridViewTable.Columns[2].Width = 80;
+                gridViewTable.Columns[3].Width = 170;
+                gridViewTable.Columns[4].Width = 60;
+                gridViewTable.Columns[5].Width = 80;
+                gridViewTable.Columns[6].Width = 50;
+                gridViewTable.Columns[7].Width = 50;
+                gridViewTable.Columns[8].Width = 85;
             
-            CRUD.cmd = new MySqlCommand(CRUD.sql, CRUD.con);
-            CRUD.cmd.Parameters.Clear();
-            CRUD.cmd.Parameters.AddWithValue("kw", kw);
-            CRUD.cmd.Parameters.AddWithValue("kwExact", search);
 
-
-            DataTable table = CRUD.PerformCRUD(CRUD.cmd);
-
-
-            gridViewTable.MultiSelect = false;
-            gridViewTable.AutoGenerateColumns = true;
-            gridViewTable.SelectionMode = DataGridViewSelectionMode.FullRowSelect;
-            gridViewTable.DataSource = table;
-
-            gridViewTable.Columns[0].HeaderText = "EmpID";
-            gridViewTable.Columns[1].HeaderText = "First Name";
-            gridViewTable.Columns[2].HeaderText = "Last Name";
-            gridViewTable.Columns[3].HeaderText = "Address";
-            gridViewTable.Columns[4].HeaderText = "Postcode";
-            gridViewTable.Columns[5].HeaderText = "DOB";
-            gridViewTable.Columns[6].HeaderText = "Gender";
-            gridViewTable.Columns[7].HeaderText = "Photo";
-            gridViewTable.Columns[8].HeaderText = "Document";
-
-            gridViewTable.Columns[0].Width = 50;
-            gridViewTable.Columns[1].Width = 80;
-            gridViewTable.Columns[2].Width = 80;
-            gridViewTable.Columns[3].Width = 170;
-            gridViewTable.Columns[4].Width = 60;
-            gridViewTable.Columns[5].Width = 80;
-            gridViewTable.Columns[6].Width = 50;
-            gridViewTable.Columns[7].Width = 50;
-            gridViewTable.Columns[8].Width = 85;
-
-            try{
-                File.Delete("D:/EmpPhotos/"+this.id+"_new.png");
-            }catch (FileNotFoundException)
-            {
-                return;
+                try{
+                    File.Delete("D:/EmpPhotos/"+this.id+"_new.png");
+                }catch (FileNotFoundException)
+                {
+                    return;
+                }
             }
+            catch (Exception ex)
+            {
+                MessageBox.Show("Generating table", "ERROR", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                CRUD.sql= "CREATE TABLE IF NOT EXISTS `employee`(empid char(20) not null, FirstName char(255), LastName char(255),address char(255),postcode char(255), DOB char(255), gender char(255) ,photo char(255),document char(255), primary key(empid));";
+                sqlExecute(CRUD.sql);
+                
+            }
+            
+
         }
 
         //Grid cell click handler for update function
