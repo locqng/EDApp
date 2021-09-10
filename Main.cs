@@ -9,6 +9,10 @@ namespace EDApp{
     
     //test for git
     public class mainProgram: Form {
+        
+        //Directories for photos and documents
+        private String photoDir = "";
+        private String docDir = "";
         //ID variables to handle photo upload
         private String id = "";
         //Generating form text box for input
@@ -60,12 +64,16 @@ namespace EDApp{
         //Gerating Image box for photos
         private PictureBox empPhoto = new PictureBox();
         
-        public mainProgram(){
+
+        //Constructor
+        public mainProgram(String pD, String dD){
             menuFrame();
             createTable();
             viewRecords("");
+            photoDir = pD;
+            docDir = dD;
+            
         }
-
         public void menuFrame()
         {
             //Set the form width & height 
@@ -375,8 +383,8 @@ namespace EDApp{
                 sqlExecute(CRUD.sql);
                 clearTextbox("clean");
                 try{
-                    File.Delete("D:/EmpPhotos/"+this.id+".png");
-                    File.Move("D:/EmpPhotos/"+this.id+"_new.png", "D:/EmpPhotos/"+this.id+".png");
+                    File.Delete(photoDir+"\\"+this.id+".png");
+                    File.Move(photoDir+"\\"+this.id+"_new.png", photoDir+"\\"+this.id+".png");
                 }
                 catch(FileNotFoundException)
                 {
@@ -449,13 +457,22 @@ namespace EDApp{
                 txbID.ReadOnly = false;
                 this.id = txbID.Text;
                 try{
-                    File.Delete("D:/EmpPhotos/"+this.id+".png");
-                    File.Move("D:/EmpPhotos/"+this.id+"_new.png", "D:/EmpPhotos/"+this.id+".png");
+                    File.Move(photoDir+"\\"+this.id+"_new.png", photoDir+"\\"+this.id+".png");
                 }
                 catch(FileNotFoundException)
                 {
                     //MessageBox.Show("Cannot update photos", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
                     //Do nothing
+                }
+                catch(Exception ex)
+                {
+                    Console.WriteLine(ex.Message);
+                    if(ex.Message.Contains("exists"))
+                    {
+                        
+                        File.Delete(photoDir+"\\"+this.id+".png");
+                        File.Move(photoDir+"\\"+this.id+"_new.png", photoDir+"\\"+this.id+".png");
+                    }
                 }
                 clearTextbox("clean");
                 viewRecords("");
@@ -491,7 +508,7 @@ namespace EDApp{
                         clearTextbox("clean");
                         txbID.ReadOnly = false;
                         try{
-                            File.Delete("D:/EmpPhotos/"+this.id+".png");
+                            File.Delete(photoDir+"\\"+this.id+".png");
                         }
                         catch(FileNotFoundException)
                         {
@@ -551,7 +568,7 @@ namespace EDApp{
 
             try
             {
-                File.Delete("D:/EmpPhotos/"+this.id+"_new.png");
+                File.Delete(photoDir+"\\"+this.id+"_new.png");
             }
             catch(FileNotFoundException)
             {
@@ -568,10 +585,10 @@ namespace EDApp{
             if (txbID.Text != "")
             {
                 Image newImage;
-                newImage = upload.browseUpload(txbID.Text+"_new");
+                newImage = upload.browseUpload(photoDir, txbID.Text+"_new");
                 if (newImage != null)
                 {
-                    txbPhoto.Text = "D:/EmpPhotos/"+txbID.Text+".png";
+                    txbPhoto.Text = photoDir + "\\" + txbID.Text+".png";
                     empPhoto.Image = newImage;
                 }
                 else
@@ -679,7 +696,7 @@ namespace EDApp{
             
 
                 try{
-                    File.Delete("D:/EmpPhotos/"+this.id+"_new.png");
+                    File.Delete(photoDir + "\\"+ this.id+"_new.png");
                 }catch (FileNotFoundException)
                 {
                     //Do nothing
@@ -733,6 +750,7 @@ namespace EDApp{
                         photo = photoHandler.ConvertByteArrayToImage(photoBytes);            
                         empPhoto.Image = photo;
                         
+                        
                     }
                     catch (FileNotFoundException)
                     {
@@ -740,10 +758,15 @@ namespace EDApp{
                         txbPhoto.Text = "";
                         empPhoto.Image = null;
                     }
+                    catch (DirectoryNotFoundException)
+                    {
+                        MessageBox.Show("Directory not found, Please add the directory or delete the Photo field", "Notice", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                        txbPhoto.Text = "";
+                        empPhoto.Image = null;
+                    }
                     
                 else
                     empPhoto.Image = null;
-
 
             }
         }

@@ -22,8 +22,7 @@ namespace EDApp{
             }
         }
 
-
-        public Image browseUpload(string empid)
+        public Image browseUpload(string dir, string empid)
         {
             using(OpenFileDialog dialog = new OpenFileDialog() { Filter = "Image files(*.jpg;*.jpeg;)|*.jpg;*.jpeg;*", Multiselect = false })
             {
@@ -31,7 +30,7 @@ namespace EDApp{
                {
                    photo = Image.FromFile(dialog.FileName);
                    //Config to your photos directory
-                   File.WriteAllBytes("D:/EmpPhotos/"+empid+".png", ConvertImageToBytes(photo));
+                   File.WriteAllBytes(dir+"\\"+empid+".png", ConvertImageToBytes(photo));
                                                     
                    return photo;
                } 

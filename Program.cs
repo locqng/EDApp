@@ -10,7 +10,15 @@ namespace EDApp
         [STAThread]
         static void Main(string[] args)
         {
-            Application.Run(new mainProgram());
+            
+            DirConfig config = new DirConfig();
+            String photoDir = config.getPhotoDir();
+            String docDir = config.getDocDir();
+            if (photoDir != "" && docDir != "")
+            
+                Application.Run(new mainProgram(photoDir, docDir));
+            else
+                return;
         }
     }
 }
