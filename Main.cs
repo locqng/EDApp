@@ -48,6 +48,7 @@ namespace EDApp{
         private Button btnBack = new Button();
         private Button btnBrowse = new Button();
         private Button btnUpload = new Button();
+        private Button btnprintToPdf = new Button();
         
             
             //Generating form labels
@@ -98,6 +99,7 @@ namespace EDApp{
             formPanel = new Panel();
             formPanel.Width = 800;
             formPanel.Height = 580;
+            formPanel.Font = new Font("Arial", 10);
             formPanel.Visible = false;
             
 
@@ -118,131 +120,137 @@ namespace EDApp{
             //Add button 
             btnAdd.Location = new Point(20,500);
             btnAdd.Text = "Add";
-            btnAdd.Size = new Size(80,20);
+            btnAdd.Size = new Size(80,25);
             btnAdd.Click += new System.EventHandler(btnAddClick);
 
             //Clear button
             btnClear.Location = new Point(120, 500);
             btnClear.Text = "Clear";
-            btnClear.Size = new Size(80,20);
+            btnClear.Size = new Size(80,25);
             btnClear.Visible = true;
             btnClear.Click += new System.EventHandler(btnClearClick);
 
             //Update Button
             btnUpdate.Location = new Point(20,500);
             btnUpdate.Text = "Update";
-            btnUpdate.Size = new Size(80,20);
+            btnUpdate.Size = new Size(80,25);
             btnUpdate.Visible = true;
             btnUpdate.Click += new System.EventHandler(btnUpdateClick);
 
             //Delete button 
-            btnDelete.Location = new Point(210,500);
+            btnDelete.Location = new Point(220,500);
             btnDelete.Text = "Delete";
-            btnDelete.Size = new Size(80,20);
+            btnDelete.Size = new Size(80,25);
             btnDelete.Click += new System.EventHandler(btnDeleteClick);
 
             //Add new Record button to change to form panel
-            btnAddNew.Location = new Point(20, 370);
+            btnAddNew.Location = new Point(20, 500);
             btnAddNew.Text = "New Record";
-            btnAddNew.Size = new Size(80,20);
+            btnAddNew.Font = new Font("Arial", 10);
+            btnAddNew.Size = new Size(100,25);
             btnAddNew.Visible = true;
             btnAddNew.Click += new System.EventHandler(btnAddNewClick);
 
             //Go back button 
             btnBack.Location = new Point(20, 20);
             btnBack.Text = "Back";
-            btnBack.Size = new Size(80,20);
+            btnBack.Size = new Size(80,25);
             btnBack.Click += new System.EventHandler(btnBackClick);
+
+            //Print to pdf button
+            btnprintToPdf.Location = new Point(630, 500);
+            btnprintToPdf.Text = "Print to PDF";
+            btnprintToPdf.Size = new Size(100,25);
+            btnprintToPdf.Visible = true;
+            //btnprintToPdf.Click += new System.EventHandler(btnAddNewClick);            
 
             //Browse image button
             btnBrowse.Location = new Point(620, 180);
             btnBrowse.Text = "Browse";
-            btnBrowse.Size = new Size(80, 20);
+            btnBrowse.Size = new Size(80, 25);
             btnBrowse.Click += new System.EventHandler(btnBrowseClick);
 
             //Upload document button
-            btnUpload.Location = new Point(380, 370);
+            btnUpload.Location = new Point(390, 378);
             btnUpload.Text = "Upload";
-            btnUpload.Size = new Size(80, 20);
+            btnUpload.Size = new Size(80, 25);
             //btnUpload.Click += new System.EventHandler(btnUploadClick);
 
             //Exit button 
             btnExit.Location = new Point(680,500);
             btnExit.Text = "Exit";
-            btnExit.Size = new Size(80,20);
+            btnExit.Size = new Size(80,25);
             btnExit.Click += new System.EventHandler(btnExitClick);
 
             //Setting labels and text boxes size and location
             //Employee ID
             lblID.Text = "Employee ID";
-            lblID.Location = new Point(20,52);
+            lblID.Location = new Point(20,62);
             lblID.Size = new Size(100,20);
     
-            txbID.Location = new Point(120,50);
-            txbID.Size = new Size(120,20);
+            txbID.Location = new Point(120,60);
+            txbID.Size = new Size(120,25);
             
             //First name 
             lblFname.Text = "First Name";
-            lblFname.Location = new Point(20,92);
+            lblFname.Location = new Point(20,102);
             lblFname.Size = new Size(100,20);
             
-            txbFname.Location = new Point(120,90);
+            txbFname.Location = new Point(120,100);
             txbFname.Size = new Size(120,20);
 
             //Last name
             lblLname.Text = "Last Name";
-            lblLname.Location = new Point(20,132);
+            lblLname.Location = new Point(20,142);
             lblLname.Size = new Size(100,20);
             
-            txbLname.Location = new Point(120,130);
+            txbLname.Location = new Point(120,140);
             txbLname.Size = new Size(120,20);
 
             //Address 
             lblAddress.Text = "Address";
-            lblAddress.Location = new Point(20,172);
+            lblAddress.Location = new Point(20,182);
             lblAddress.Size = new Size(100,20);
             
-            txbAddress.Location = new Point(120,170);
+            txbAddress.Location = new Point(120,180);
             txbAddress.Size = new Size(250,20);
 
             //Postcode
             lblPcode.Text = "Postcode";
-            lblPcode.Location = new Point(20,212);
+            lblPcode.Location = new Point(20,222);
             lblPcode.Size = new Size(100,20);
             
-            txbPcode.Location = new Point(120,210);
+            txbPcode.Location = new Point(120,220);
             txbPcode.Size = new Size(120,20);
             
             //DoB
             lblDOB.Text = "DOB";
-            lblDOB.Location = new Point(20,252);
+            lblDOB.Location = new Point(20,262);
             lblDOB.Size = new Size(100,20);
             
-                     
-
             //Gender
             lblGender.Text = "Gender";
-            lblGender.Location = new Point(20,292);
+            lblGender.Location = new Point(20,302);
             lblGender.Size = new Size(100,20);
             
-            txbGender.Location = new Point(120,290);
+            txbGender.Location = new Point(120,300);
             txbGender.Size = new Size(120,20);
 
             //Photo
             lblPhoto.Text = "Photo";
-            lblPhoto.Location = new Point(20,332);
+            lblPhoto.Location = new Point(20,342);
             lblPhoto.Size = new Size(100,20);
             
-            txbPhoto.Location = new Point(120,330);
+            txbPhoto.Location = new Point(120,340);
             txbPhoto.Size = new Size(250,20);
             //txbPhoto.ReadOnly = fasle;
 
             //Document
             lblDoc.Text = "Document";
-            lblDoc.Location = new Point(20,372);
+            lblDoc.Location = new Point(20,382);
             lblDoc.Size = new Size(100,20);
             
-            txbDoc.Location = new Point(120,370);
+            txbDoc.Location = new Point(120,380);
             txbDoc.Size = new Size(250,20);
             txbDoc.ReadOnly = true;
 
@@ -251,30 +259,29 @@ namespace EDApp{
             empPhoto.Size = new Size(120, 120);
             empPhoto.BorderStyle = BorderStyle.Fixed3D;
             empPhoto.SizeMode = PictureBoxSizeMode.StretchImage;
-
-
             
             //Search box for view sub panel
             txbSearch.Location = new Point(20,50);
-            txbSearch.Size = new Size(100,20);
+            txbSearch.Size = new Size(100,25);
             txbSearch.KeyDown += App_KeyDown;
 
-            btnSearch.Location = new Point(125,51);
+            btnSearch.Location = new Point(130,49);
             btnSearch.Text = "Search";
-            btnSearch.Size = new Size(80,20);
+            btnSearch.Font = new Font("Arial", 10);
+            btnSearch.Size = new Size(80,25);
             btnSearch.Click += new System.EventHandler(btnSearchClick);
             
             //Generate the grid view table for sub panel
             gridViewTable.Name = "dataTableGridView";
             gridViewTable.Location = new Point(20,100);
-            gridViewTable.Size = new Size(750,250);
+            gridViewTable.Size = new Size(750,380);
             gridViewTable.ColumnHeadersDefaultCellStyle.BackColor = Color.Navy;
             gridViewTable.ColumnHeadersDefaultCellStyle.ForeColor = Color.White;
             gridViewTable.AllowUserToAddRows = false; 
             gridViewTable.CellClick += gridViewTable_CellClick;
 
             //Date Time Picker
-            dobPicker.Location = new Point(120,250);
+            dobPicker.Location = new Point(120,260);
             dobPicker.Format = DateTimePickerFormat.Custom;
             dobPicker.CustomFormat = "dd/MMM/yyyy";
             dobPicker.MinDate = new DateTime(1930, 01, 01);
@@ -323,6 +330,7 @@ namespace EDApp{
             formPanel.Controls.Add(btnClear);
             formPanel.Controls.Add(btnBrowse);
             formPanel.Controls.Add(btnUpload);
+            formPanel.Controls.Add(btnprintToPdf);
             
 
             // adding photo box in form panel
@@ -363,6 +371,7 @@ namespace EDApp{
         //Add button event handler
         private void btnAddClick(object sender, EventArgs e)
         {
+           
             if (string.IsNullOrEmpty(txbID.Text.Trim())||
             string.IsNullOrEmpty(txbFname.Text.Trim()) ||
              string.IsNullOrEmpty(txbLname.Text.Trim())|| 
@@ -425,7 +434,6 @@ namespace EDApp{
                 viewRecords(txbSearch.Text.Trim());
             }
             clearTextbox("clean");
-            
         }
         
         //Update button event Handler
