@@ -1,20 +1,20 @@
 {
   "format": 1,
   "restore": {
-    "D:\\Uni Documents\\Applied Research Project\\EDApp\\EDApp.csproj": {}
+    "Z:\\Desktop\\EDApp\\EDApp.csproj": {}
   },
   "projects": {
-    "D:\\Uni Documents\\Applied Research Project\\EDApp\\EDApp.csproj": {
+    "Z:\\Desktop\\EDApp\\EDApp.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "D:\\Uni Documents\\Applied Research Project\\EDApp\\EDApp.csproj",
+        "projectUniqueName": "Z:\\Desktop\\EDApp\\EDApp.csproj",
         "projectName": "EDApp",
-        "projectPath": "D:\\Uni Documents\\Applied Research Project\\EDApp\\EDApp.csproj",
-        "packagesPath": "C:\\Users\\qlocn\\.nuget\\packages\\",
-        "outputPath": "D:\\Uni Documents\\Applied Research Project\\EDApp\\obj\\",
+        "projectPath": "Z:\\Desktop\\EDApp\\EDApp.csproj",
+        "packagesPath": "C:\\Users\\ellie\\.nuget\\packages\\",
+        "outputPath": "Z:\\Desktop\\EDApp\\obj\\",
         "projectStyle": "PackageReference",
         "configFilePaths": [
-          "C:\\Users\\qlocn\\AppData\\Roaming\\NuGet\\NuGet.Config"
+          "C:\\Users\\ellie\\AppData\\Roaming\\NuGet\\NuGet.Config"
         ],
         "originalTargetFrameworks": [
           "net5.0-windows"
@@ -45,6 +45,10 @@
             "System.Data.SqlClient": {
               "target": "Package",
               "version": "[4.8.2, )"
+            },
+            "iTextSharp": {
+              "target": "Package",
+              "version": "[5.5.13.2, )"
             }
           },
           "imports": [

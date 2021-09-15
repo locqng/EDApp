@@ -36,10 +36,6 @@ namespace EDApp{
         //Date time picker
         private DateTimePicker dobPicker = new DateTimePicker();
 
-        //Generating Menu buttons
-        //private Button btnEdit = new Button();
-        //private Button btnView = new Button();
-
         //Generating Function buttons 
         private Button btnAdd = new Button();
         private Button btnDelete = new Button();
@@ -52,9 +48,8 @@ namespace EDApp{
         private Button btnBrowse = new Button();
         private Button btnUpload = new Button();
         private Button btnprintToPdf = new Button();
-        
-            
-            //Generating form labels
+               
+        //Generating form labels
         private Label lblID = new Label();
         private Label lblFname = new Label();
         private Label lblLname = new Label();
@@ -70,7 +65,8 @@ namespace EDApp{
         
 
         //Constructor
-        public mainProgram(String pD, String dD){
+        public mainProgram(String pD, String dD)
+        {
             menuFrame();
             createTable();
             viewRecords("");
@@ -86,11 +82,6 @@ namespace EDApp{
 
             //Set the start position of the form to the center of the screen
             this.StartPosition = FormStartPosition.CenterScreen;
-
-            //Creating the top panel
-            //topPanel = new Panel();
-            //topPanel.Width = 800;
-            //topPanel.Height = 30;
             
             //Creating the main panel
             viewPanel = new Panel();
@@ -105,21 +96,6 @@ namespace EDApp{
             formPanel.Font = new System.Drawing.Font("Arial", 10);
             formPanel.Visible = false;
             
-
-
-            //Setting menu buttons size and locations
-            //Edit button
-            //btnEdit.Location = new Point(0,0);
-            //btnEdit.Text = "Edit";
-            //btnEdit.Size = new Size(400,30);
-            //btnEdit.Click += new System.EventHandler(btnEditClick);
-
-            //View button          
-            //btnView.Location = new Point(400,0);
-            //btnView.Text = "View";
-            //btnView.Size = new Size(400,30);
-            //btnView.Click += new System.EventHandler(btnViewClick);
-
             //Add button 
             btnAdd.Location = new Point(20,500);
             btnAdd.Text = "Add";
@@ -290,18 +266,11 @@ namespace EDApp{
             dobPicker.MinDate = new DateTime(1930, 01, 01);
             dobPicker.MaxDate = DateTime.Now;
             
-            
-
             //Adding elements to win form
             //this.Controls.Add(topPanel);
             this.Controls.Add(viewPanel);
             this.Controls.Add(formPanel);
         
-
-            // adding buttons in top panel
-            //topPanel.Controls.Add(btnEdit);
-            //topPanel.Controls.Add(btnView);
-
             // adding labels in form panel
             formPanel.Controls.Add(lblID);
             formPanel.Controls.Add(lblFname);
@@ -334,9 +303,6 @@ namespace EDApp{
             formPanel.Controls.Add(btnBrowse);
             formPanel.Controls.Add(btnUpload);
             
-            
-            
-
             // adding photo box in form panel
             formPanel.Controls.Add(empPhoto);
 
@@ -347,43 +313,19 @@ namespace EDApp{
             viewPanel.Controls.Add(btnAddNew);
             //viewPanel.Controls.Add(btnExit);
             viewPanel.Controls.Add(btnprintToPdf);
-
-            
-            
-
         }
-        
-        //Edit button event handler   
-        //public void btnEditClick(object sender, EventArgs e) 
-        //{
-            
-        //    viewPanel.Visible = true;
-        //    //topPanel.Visible = true;
-        //    formPanel.Visible = false;
-        //} 
 
-        //View button event handler
-        //public void btnViewClick(object sender, EventArgs e) 
-        //{
-        //    
-        //    viewPanel.Visible = false;
-           //topPanel.Visible = true;
-        //    formPanel.Visible = true;
-        //    viewRecords("");
-
-        //} 
-        
         //Add button event handler
         private void btnAddClick(object sender, EventArgs e)
         {
-           
+            // input validation 
             if (string.IsNullOrEmpty(txbID.Text.Trim())||
             string.IsNullOrEmpty(txbFname.Text.Trim()) ||
-             string.IsNullOrEmpty(txbLname.Text.Trim())|| 
-             string.IsNullOrEmpty(txbPcode.Text.Trim())|| 
-             string.IsNullOrEmpty(txbAddress.Text.Trim())|| 
-             string.IsNullOrEmpty(dobPicker.Text.Trim())|| 
-             string.IsNullOrEmpty(txbGender.Text.Trim()))
+            string.IsNullOrEmpty(txbLname.Text.Trim())|| 
+            string.IsNullOrEmpty(txbPcode.Text.Trim())|| 
+            string.IsNullOrEmpty(txbAddress.Text.Trim())|| 
+            string.IsNullOrEmpty(dobPicker.Text.Trim())|| 
+            string.IsNullOrEmpty(txbGender.Text.Trim()))
              
             {
                 MessageBox.Show("Please enter information", "Adding Record", MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
@@ -392,21 +334,27 @@ namespace EDApp{
 
             try
             {
+                // storing employee details into the table
                 this.id = txbID.Text.Trim();
                 CRUD.sql = "INSERT INTO employee(empid, FirstName, LastName,address,postcode, DOB ,gender,photo,document) VALUES(@empID, @firstName, @lastName,@address,@postcode,@DOB,@gender,@photo,@document)";
                 sqlExecute(CRUD.sql);
                 clearTextbox("clean");
-                try{
+                
+                try
+                {
                     File.Delete(photoDir+"\\"+this.id+".png");
                     File.Move(photoDir+"\\"+this.id+"_new.png", photoDir+"\\"+this.id+".png");
                 }
+                
                 catch(FileNotFoundException)
                 {
                     //Do nothing
                 }
                 clearTextbox("clean");
                 viewRecords("");
+                
                 DialogResult dialogResult = MessageBox.Show("Record saved! Add another record?", "Adding Record", MessageBoxButtons.YesNo, MessageBoxIcon.Information);         
+                
                 //topPanel.Visible = true;
                 if (dialogResult == DialogResult.Yes)
                 {
@@ -708,9 +656,12 @@ namespace EDApp{
                 gridViewTable.Columns[8].Width = 85;
             
 
-                try{
+                try
+                {
                     File.Delete(photoDir + "\\"+ this.id+"_new.png");
-                }catch (FileNotFoundException)
+                }
+                
+                catch (FileNotFoundException)
                 {
                     //Do nothing
                     return;
@@ -817,7 +768,8 @@ namespace EDApp{
                         }
                     }
 
-                    using (FileStream fileStream=new FileStream(saveFileDialog.FileName,FileMode.Create))
+                    //
+                    using (FileStream fileStream = new FileStream(saveFileDialog.FileName,FileMode.Create))
                     {
                         Document document = new Document();
                         document.SetPageSize(iTextSharp.text.PageSize.A4.Rotate());
@@ -827,9 +779,11 @@ namespace EDApp{
                         document.Close();
                         fileStream.Close();
                     }  
+                    // message box showing the message
                     MessageBox.Show("Print to PDF Successfully");
                 } 
             }
+            //catch exception for saving to pdf
             catch (Exception ex)
             {
                 MessageBox.Show("Error saving to PDF " + ex.Message);
@@ -841,7 +795,6 @@ namespace EDApp{
         private void btnprintToPdfClick(object sender, EventArgs e)
         {
            saveToPDF();
-
         }
 
         //Add Parameters
