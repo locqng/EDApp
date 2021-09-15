@@ -4,6 +4,9 @@ using System.Data;
 using System.Windows.Forms;
 using System.Drawing;
 using MySql.Data.MySqlClient;
+using iTextSharp.text;
+using iTextSharp.text.pdf;
+
 
 namespace EDApp{
     
@@ -99,7 +102,7 @@ namespace EDApp{
             formPanel = new Panel();
             formPanel.Width = 800;
             formPanel.Height = 580;
-            formPanel.Font = new Font("Arial", 10);
+            formPanel.Font = new System.Drawing.Font("Arial", 10);
             formPanel.Visible = false;
             
 
@@ -138,7 +141,7 @@ namespace EDApp{
             btnUpdate.Click += new System.EventHandler(btnUpdateClick);
 
             //Delete button 
-            btnDelete.Location = new Point(220,500);
+            btnDelete.Location = new Point(210,500);
             btnDelete.Text = "Delete";
             btnDelete.Size = new Size(80,25);
             btnDelete.Click += new System.EventHandler(btnDeleteClick);
@@ -146,7 +149,7 @@ namespace EDApp{
             //Add new Record button to change to form panel
             btnAddNew.Location = new Point(20, 500);
             btnAddNew.Text = "New Record";
-            btnAddNew.Font = new Font("Arial", 10);
+            btnAddNew.Font = new System.Drawing.Font("Arial", 10);
             btnAddNew.Size = new Size(100,25);
             btnAddNew.Visible = true;
             btnAddNew.Click += new System.EventHandler(btnAddNewClick);
@@ -157,12 +160,12 @@ namespace EDApp{
             btnBack.Size = new Size(80,25);
             btnBack.Click += new System.EventHandler(btnBackClick);
 
-            //Print to pdf button
-            btnprintToPdf.Location = new Point(630, 500);
+            //print to pdf button
+            btnprintToPdf.Location = new Point(670, 500);
             btnprintToPdf.Text = "Print to PDF";
             btnprintToPdf.Size = new Size(100,25);
             btnprintToPdf.Visible = true;
-            //btnprintToPdf.Click += new System.EventHandler(btnAddNewClick);            
+            btnprintToPdf.Click += new System.EventHandler(btnprintToPdfClick);            
 
             //Browse image button
             btnBrowse.Location = new Point(620, 180);
@@ -267,7 +270,7 @@ namespace EDApp{
 
             btnSearch.Location = new Point(130,49);
             btnSearch.Text = "Search";
-            btnSearch.Font = new Font("Arial", 10);
+            btnSearch.Font = new System.Drawing.Font("Arial", 10);
             btnSearch.Size = new Size(80,25);
             btnSearch.Click += new System.EventHandler(btnSearchClick);
             
@@ -330,7 +333,8 @@ namespace EDApp{
             formPanel.Controls.Add(btnClear);
             formPanel.Controls.Add(btnBrowse);
             formPanel.Controls.Add(btnUpload);
-            formPanel.Controls.Add(btnprintToPdf);
+            
+            
             
 
             // adding photo box in form panel
@@ -342,6 +346,7 @@ namespace EDApp{
             viewPanel.Controls.Add(btnSearch);
             viewPanel.Controls.Add(btnAddNew);
             //viewPanel.Controls.Add(btnExit);
+            viewPanel.Controls.Add(btnprintToPdf);
 
             
             
@@ -592,7 +597,7 @@ namespace EDApp{
             PhotoHandler upload = new PhotoHandler();
             if (txbID.Text != "")
             {
-                Image newImage;
+                System.Drawing.Image newImage;
                 newImage = upload.browseUpload(photoDir, txbID.Text+"_new");
                 if (newImage != null)
                 {
@@ -752,13 +757,11 @@ namespace EDApp{
                     try{
                         //Config to your photos directory
                         PhotoHandler photoHandler = new PhotoHandler();
-                        Image photo;
+                        System.Drawing.Image photo;
                         byte[] photoBytes;
                         photoBytes = File.ReadAllBytes(txbPhoto.Text);
                         photo = photoHandler.ConvertByteArrayToImage(photoBytes);            
                         empPhoto.Image = photo;
-                        
-                        
                     }
                     catch (FileNotFoundException)
                     {
@@ -772,19 +775,73 @@ namespace EDApp{
                         txbPhoto.Text = "";
                         empPhoto.Image = null;
                     }
-                    
                 else
                     empPhoto.Image = null;
-
             }
         }
 
-                //Execute SQL add Command
+        //Execute SQL add Command
         private void sqlExecute (String sqlCommand)
         {
             CRUD.cmd = new MySqlCommand(sqlCommand, CRUD.con);
             AddParameters();
             CRUD.PerformCRUD(CRUD.cmd);
+        }
+
+        //save employee table to pdf 
+        public void saveToPDF()
+        {
+
+            SaveFileDialog saveFileDialog = new SaveFileDialog();
+            saveFileDialog.Filter = "PDF (*.pdf)|*.pdf";
+            saveFileDialog.FileName = "";
+
+            try
+            {
+                if (saveFileDialog.ShowDialog()==DialogResult.OK)
+                {
+                    PdfPTable PdfTable = new PdfPTable(gridViewTable.Columns.Count);
+                    PdfTable.DefaultCell.Padding = 2;
+                    PdfTable.WidthPercentage = 100;
+
+                    foreach (DataGridViewColumn col in gridViewTable.Columns)
+                    {
+                        PdfPCell pdfCell = new PdfPCell(new Phrase(col.HeaderText));
+                        PdfTable.AddCell(pdfCell);
+                    }
+                    foreach (DataGridViewRow row in gridViewTable.Rows)
+                    {
+                        foreach (DataGridViewCell cell in row.Cells)
+                        {
+                            PdfTable.AddCell(cell.Value.ToString());
+                        }
+                    }
+
+                    using (FileStream fileStream=new FileStream(saveFileDialog.FileName,FileMode.Create))
+                    {
+                        Document document = new Document();
+                        document.SetPageSize(iTextSharp.text.PageSize.A4.Rotate());
+                        PdfWriter.GetInstance(document, fileStream);
+                        document.Open();
+                        document.Add(PdfTable);
+                        document.Close();
+                        fileStream.Close();
+                    }  
+                    MessageBox.Show("Print to PDF Successfully");
+                } 
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("Error saving to PDF " + ex.Message);
+            }
+
+        }
+        
+        //print to pdf event handler
+        private void btnprintToPdfClick(object sender, EventArgs e)
+        {
+           saveToPDF();
+
         }
 
         //Add Parameters
@@ -800,9 +857,7 @@ namespace EDApp{
             CRUD.cmd.Parameters.AddWithValue("@gender", txbGender.Text.Trim().ToString());
             CRUD.cmd.Parameters.AddWithValue("@photo", txbPhoto.Text.Trim().ToString());
             CRUD.cmd.Parameters.AddWithValue("@document", txbDoc.Text.Trim().ToString());
-        }
-
-          
+        }     
     }
         
 }
