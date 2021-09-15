@@ -2,7 +2,7 @@
 using System.Windows.Forms;
 using System.Drawing;
 
-
+// start the program 
 namespace EDApp
 {
     class Program
@@ -10,7 +10,6 @@ namespace EDApp
         [STAThread]
         static void Main(string[] args)
         {
-            
             DirConfig config = new DirConfig();
             String photoDir = config.getPhotoDir();
             String docDir = config.getDocDir();

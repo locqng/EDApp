@@ -9,7 +9,7 @@ using iTextSharp.text.pdf;
 
 
 namespace EDApp{
-    
+
     //test for git
     public class mainProgram: Form {
         
@@ -35,10 +35,6 @@ namespace EDApp{
 
         //Date time picker
         private DateTimePicker dobPicker = new DateTimePicker();
-
-        //Generating Menu buttons
-        //private Button btnEdit = new Button();
-        //private Button btnView = new Button();
 
         //Generating Function buttons 
         private Button btnAdd = new Button();

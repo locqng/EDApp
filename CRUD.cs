@@ -25,6 +25,7 @@ namespace EDApp
             return connectString;
         }
 
+        // create new connection 
         public static MySqlConnection con = new MySqlConnection(connectionStringBuilder());  
         public static MySqlCommand cmd = default(MySqlCommand);
         public static string sql = string.Empty;
