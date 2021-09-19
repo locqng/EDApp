@@ -333,7 +333,8 @@ namespace EDApp{
 
             if (searchEmployeeID()>0)
             {
-                MessageBox.Show("ID exists.Please enter another one");
+                
+                MessageBox.Show("Employee ID exists.");
                 return;
             }
 
@@ -375,18 +376,16 @@ namespace EDApp{
         }
         
         // check for the entered empid, see if it already exists
-        public int searchEmployeeID()
+        private int searchEmployeeID()
         {
             CRUD.sql = "select count(*) from employee where empid = @empID";
-            sqlExecute(CRUD.sql);
+            CRUD.cmd = new MySqlCommand(CRUD.sql, CRUD.con);
+            AddParameters();
             DataTable table = CRUD.PerformCRUD(CRUD.cmd);
-            bool result = false;
-            
-            if (gridViewTable.Rows.Count>0)
-            {
-                result = true;
-            }
+            gridViewTable.DataSource = table;
+
             return gridViewTable.Rows.Count;
+            
         }
 
         //Search button event handler
