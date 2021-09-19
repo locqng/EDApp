@@ -334,7 +334,7 @@ namespace EDApp{
             if (searchEmployeeID()>0)
             {
                 
-                MessageBox.Show("Employee ID exists.");
+                MessageBox.Show("Employee ID exists");
                 return;
             }
 
@@ -378,13 +378,14 @@ namespace EDApp{
         // check for the entered empid, see if it already exists
         private int searchEmployeeID()
         {
-            CRUD.sql = "select count(*) from employee where empid = @empID";
+            CRUD.sql = "select * from employee where empid = @empID";
             CRUD.cmd = new MySqlCommand(CRUD.sql, CRUD.con);
-            AddParameters();
+            CRUD.cmd.Parameters.Clear();
+            CRUD.cmd.Parameters.AddWithValue("@empID", txbID.Text.Trim().ToString());
             DataTable table = CRUD.PerformCRUD(CRUD.cmd);
-            gridViewTable.DataSource = table;
-
-            return gridViewTable.Rows.Count;
+            
+            return table.Rows.Count;
+            
             
         }
 
