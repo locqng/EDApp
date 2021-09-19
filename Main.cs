@@ -622,16 +622,14 @@ namespace EDApp{
         {
             try{      
                 CRUD.sql = "SELECT empid, FirstName, LastName, address, postcode, DOB, gender, photo, document FROM Employee " +
-                            "WHERE empid LIKE @kwExact OR CONCAT(FirstName, ' ', LastName) LIKE @kw OR address LIKE @kw OR postcode LIKE @kwExact " +
+                            "WHERE empid LIKE @kw OR CONCAT(FirstName, ' ', LastName) LIKE @kw OR address LIKE @kw OR postcode LIKE @kwExact " +
                             "OR DOB LIKE @kw OR gender LIKE @kw ORDER BY empid ASC";
                 string kw = String.Format("%{0}%", search);
                 
                 CRUD.cmd = new MySqlCommand(CRUD.sql, CRUD.con);
                 CRUD.cmd.Parameters.Clear();
                 CRUD.cmd.Parameters.AddWithValue("kw", kw);
-                CRUD.cmd.Parameters.AddWithValue("kwExact", search);
-
-
+            
                 DataTable table = CRUD.PerformCRUD(CRUD.cmd);
 
 
