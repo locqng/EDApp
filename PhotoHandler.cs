@@ -24,7 +24,7 @@ namespace EDApp{
 
         public Image browseUpload(string dir, string empid)
         {
-            using(OpenFileDialog dialog = new OpenFileDialog() { Filter = "Image files(*.jpg;*.jpeg;)|*.jpg;*.jpeg;*", Multiselect = false })
+            using(OpenFileDialog dialog = new OpenFileDialog() { Filter = "Image files(*.jpg;*.jpeg)|*.jpg;*.jpeg*", Multiselect = false })
             {
                if(dialog.ShowDialog() == DialogResult.OK)
                {

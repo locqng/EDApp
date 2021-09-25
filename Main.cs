@@ -18,6 +18,8 @@ namespace EDApp{
         private String docDir = "";
         //ID variables to handle photo upload
         private String id = "";
+        //Int variables to count documents
+        private int docCount = 0;
         //Generating form text box for input
         private static TextBox txbID = new TextBox();
         private TextBox txbFname = new TextBox();
@@ -151,7 +153,7 @@ namespace EDApp{
             btnUpload.Location = new Point(390, 378);
             btnUpload.Text = "Upload";
             btnUpload.Size = new Size(80, 25);
-            //btnUpload.Click += new System.EventHandler(btnUploadClick);
+            btnUpload.Click += new System.EventHandler(btnUploadClick);
 
             //Exit button 
             btnExit.Location = new Point(680,500);
@@ -566,7 +568,23 @@ namespace EDApp{
                 MessageBox.Show("Please enter the Employee ID", "Uploading photo", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 return;
             }
-        }    
+        }
+
+        private void btnUploadClick (object sender, EventArgs e)
+        {
+            this.id = txbID.Text;
+            DocHandler upload = new DocHandler();
+            if (txbID.Text != "")
+            {
+                int newDoc = upload.browseUpload(docDir, txbID.Text);
+                this.docCount = docCount + newDoc;
+                txbDoc.Text = docCount.ToString() + " files";
+            }
+            else{
+                MessageBox.Show("Please enter the Employee ID", "Uploading documents", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                return;
+            }
+        }  
         //Exit button event handler
         private void btnExitClick(object sender, EventArgs e)
         {
@@ -707,8 +725,24 @@ namespace EDApp{
                 txbGender.Text = Convert.ToString(gridViewTable.CurrentRow.Cells[6].Value);
                 txbPhoto.Text = Convert.ToString(gridViewTable.CurrentRow.Cells[7].Value);
                 txbDoc.Text = Convert.ToString(gridViewTable.CurrentRow.Cells[8].Value);
-
                 this.id = txbID.Text;
+                if (txbDoc.Text == "")
+                {
+                    txbDoc.Text = "0 files";
+                    this.docCount = Convert.ToInt32(new String(txbDoc.Text[0], 1));
+                }
+                else if (txbDoc.Text != "" && txbDoc.Text != "0 files"){
+                    try
+                    {
+                        this.docCount = Directory.GetFiles(docDir+"\\"+id+" Docs", "*", SearchOption.TopDirectoryOnly).Length;
+                    }
+                    catch (Exception ex)
+                    {
+                        MessageBox.Show("The employee document directory not found", "Notice", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                        this.docCount = 0;
+                    }
+                }
+                txbDoc.Text = docCount.ToString() + " files";
                 if (txbPhoto.Text != "")
                     try
                     {
