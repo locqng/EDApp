@@ -50,6 +50,7 @@ namespace EDApp{
         private Button btnBrowse = new Button();
         private Button btnUpload = new Button();
         private Button btnprintToPdf = new Button();
+        private Button btnPrintEmp = new Button();
              
         //Generating form labels
         private Label lblID = new Label();
@@ -141,7 +142,15 @@ namespace EDApp{
             btnprintToPdf.Text = "Print to PDF";
             btnprintToPdf.Size = new Size(100,25);
             btnprintToPdf.Visible = true;
-            btnprintToPdf.Click += new System.EventHandler(btnprintToPdfClick);            
+            btnprintToPdf.Click += new System.EventHandler(btnprintToPdfClick);
+
+            //Print an individual employee
+            btnPrintEmp.Location = new Point(670, 500);     
+            btnPrintEmp.Text = "Print";
+            btnPrintEmp.Size = new Size(100,25);
+            btnPrintEmp.Visible = true;
+            btnPrintEmp.Click += new System.EventHandler(btnPrintEmpClick);
+
 
             //Browse image button
             btnBrowse.Location = new Point(620, 180);
@@ -303,6 +312,7 @@ namespace EDApp{
             formPanel.Controls.Add(btnClear);
             formPanel.Controls.Add(btnBrowse);
             formPanel.Controls.Add(btnUpload);
+            formPanel.Controls.Add(btnPrintEmp);
             
             // adding photo box in form panel
             formPanel.Controls.Add(empPhoto);
@@ -546,6 +556,8 @@ namespace EDApp{
             }
         }
 
+
+        //Upload image - Browse button event handler
         private void btnBrowseClick (object sender, EventArgs e)
         {
             this.id = txbID.Text;
@@ -570,6 +582,8 @@ namespace EDApp{
             }
         }
 
+
+        //Upload document - Upload button event handler
         private void btnUploadClick (object sender, EventArgs e)
         {
             this.id = txbID.Text;
@@ -588,6 +602,18 @@ namespace EDApp{
                 return;
             }
         }  
+        //Print one employee button event handler
+        private void btnPrintEmpClick(object sender, EventArgs e) 
+        {
+            PrintForm print = new PrintForm();
+            print.ValueID.Text = txbID.Text;
+            print.ValueName.Text = txbFname.Text + " " + txbLname.Text;
+            print.ValueGender.Text = txbGender.Text;
+            print.ValueDOB.Text = dobPicker.Text;
+            print.EmpPhoto.Image = empPhoto.Image;
+            print.ShowDialog();
+        }
+
         //Exit button event handler
         private void btnExitClick(object sender, EventArgs e)
         {
@@ -837,6 +863,8 @@ namespace EDApp{
            saveToPDF();
 
         }
+
+        
 
         //Add Parameters
         private void AddParameters()
