@@ -31,7 +31,7 @@ namespace EDApp{
         private TextBox txbPhoto = new TextBox();
         private TextBox txbDoc = new TextBox();
         private TextBox txbSearch = new TextBox();
-        private Panel viewPanel, formPanel;
+        private Panel viewPanel, formPanel, selectPanel;
         //public Panel topPanel;
         private DataGridView gridViewTable = new DataGridView();
 
@@ -51,6 +51,7 @@ namespace EDApp{
         private Button btnUpload = new Button();
         private Button btnprintToPdf = new Button();
         private Button btnPrintEmp = new Button();
+        private Button btnSubmit = new Button();
              
         //Generating form labels
         private Label lblID = new Label();
@@ -62,19 +63,89 @@ namespace EDApp{
         private Label lblGender = new Label();
         private Label lblPhoto = new Label();
         private Label lblDoc = new Label();
+        
+        private Label lblWelcome = new Label();
+        private Label lblInstruction = new Label();
+        
+        //create radio button 
+        private RadioButton  radioBtnEmp = new  RadioButton  ();
+        private RadioButton  radioBtnDept = new  RadioButton  ();
 
         //Gerating Image box for photos
         private PictureBox empPhoto = new PictureBox();
         
         //Constructor
         public mainProgram(String pD, String dD){
-            menuFrame();
-            createTable();
-            viewRecords("");
-            photoDir = pD;
-            docDir = dD; 
+            // menuFrame();
+            // createTable();
+            // viewRecords("");
+            // photoDir = pD;
+            // docDir = dD; 
+            startFrame();
         }
-        
+         
+        //haven't done for department table 
+        public void startFrame()
+        {
+            //Set the form width & height 
+            this.Width = 800;
+            this.Height = 600;
+
+            this.StartPosition = FormStartPosition.CenterScreen;
+
+            selectPanel = new Panel();
+            selectPanel .Width = 800;
+            selectPanel.Height = 580;
+            selectPanel .Visible = true;
+            
+
+            lblWelcome.Text = "Welcome to the Employee Desktop Application";
+            lblWelcome.Font = new System.Drawing.Font("Arial", 18,FontStyle.Bold);
+            lblWelcome.Location = new Point(120,80);
+            lblWelcome.Size = new Size(700,40);
+
+            lblInstruction.Text = "Select a table to work on";
+            lblInstruction.Font = new System.Drawing.Font("Arial", 13);
+            lblInstruction.Location = new Point(290,160);
+            lblInstruction.Size = new Size(700,40);
+
+            radioBtnEmp.Text  = "Employee";
+            radioBtnEmp.Font = new System.Drawing.Font("Arial", 11);
+            radioBtnEmp.Location = new Point(250,220);
+            radioBtnEmp.Size = new Size(120,40);
+
+            radioBtnDept.Text  = "Department";
+            radioBtnDept.Font = new System.Drawing.Font("Arial", 11);
+            radioBtnDept.Location = new Point(420,220);
+            radioBtnDept.Size = new Size(120,40);
+
+            btnSubmit.Text  = "Submit";
+            btnSubmit.Font = new System.Drawing.Font("Arial", 12);
+            btnSubmit.Location = new Point(340,420);
+            btnSubmit.Size = new Size(100,30);
+            btnSubmit.Click += new System.EventHandler(btnSubmitClick);
+
+            this.Controls.Add(selectPanel);
+            selectPanel.Controls.Add(lblWelcome);
+            selectPanel.Controls.Add(radioBtnEmp);
+            selectPanel.Controls.Add(radioBtnDept);
+            selectPanel.Controls.Add(btnSubmit);
+            selectPanel.Controls.Add(lblInstruction);
+
+        }
+
+        public void btnSubmitClick(object sender, EventArgs e)
+        {
+            if (radioBtnEmp.Checked == true)
+            {
+                menuFrame();
+                createTable();
+                viewRecords("");
+                selectPanel.Visible = false;
+            }
+
+        }
+
         public void menuFrame()
         {
             //Set the form width & height 
