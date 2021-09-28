@@ -101,5 +101,3 @@ D:\Uni Documents\Applied Research Project\EDApp\obj\Debug\net5.0-windows\EDApp.d
 D:\Uni Documents\Applied Research Project\EDApp\obj\Debug\net5.0-windows\ref\EDApp.dll
 D:\Uni Documents\Applied Research Project\EDApp\obj\Debug\net5.0-windows\EDApp.pdb
 D:\Uni Documents\Applied Research Project\EDApp\obj\Debug\net5.0-windows\EDApp.genruntimeconfig.cache
-D:\Uni Documents\Applied Research Project\EDApp\bin\Debug\net5.0-windows\EDApp.dll.config
-D:\Uni Documents\Applied Research Project\EDApp\bin\Debug\net5.0-windows\itextsharp.dll

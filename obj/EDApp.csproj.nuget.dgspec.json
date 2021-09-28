@@ -45,10 +45,6 @@
             "System.Data.SqlClient": {
               "target": "Package",
               "version": "[4.8.2, )"
-            },
-            "iTextSharp": {
-              "target": "Package",
-              "version": "[5.5.13.2, )"
             }
           },
           "imports": [
