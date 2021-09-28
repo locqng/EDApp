@@ -133,7 +133,7 @@ namespace EDApp{
 
             //Go back button 
             btnBack.Location = new Point(570, 500);
-            btnBack.Text = "Back";
+            btnBack.Text = "Cancel";
             btnBack.Size = new Size(80,25);
             btnBack.Click += new System.EventHandler(btnBackClick);
 
