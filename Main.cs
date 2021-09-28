@@ -79,8 +79,8 @@ namespace EDApp{
             // menuFrame();
             // createTable();
             // viewRecords("");
-            // photoDir = pD;
-            // docDir = dD; 
+            photoDir = pD;
+            docDir = dD; 
             startFrame();
         }
          
@@ -516,6 +516,25 @@ namespace EDApp{
                 txbID.ReadOnly = false;
                 this.id = txbID.Text;
                 try{
+                    File.Move(docDir+"\\"+this.id+"_new.pdf", docDir+"\\"+this.id+".pdf");
+                }
+                catch(FileNotFoundException)
+                {
+                    //MessageBox.Show("Cannot update doc", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    //Do nothing
+                }
+                //The employee already have a document
+                catch(Exception ex)
+                {
+                    Console.WriteLine(ex.Message);
+                    if(ex.Message.Contains("exists"))
+                    {
+                        
+                        File.Delete(docDir+"\\"+this.id+".pdf");
+                        File.Move(docDir+"\\"+this.id+"_new.pdf", docDir+"\\"+this.id+".pdf");
+                    }
+                }
+                try{
                     File.Move(photoDir+"\\"+this.id+"_new.png", photoDir+"\\"+this.id+".png");
                 }
                 catch(FileNotFoundException)
@@ -523,6 +542,7 @@ namespace EDApp{
                     //MessageBox.Show("Cannot update photos", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
                     //Do nothing
                 }
+                //The employee already have an image
                 catch(Exception ex)
                 {
                     Console.WriteLine(ex.Message);
@@ -661,12 +681,20 @@ namespace EDApp{
             FileHandler upload = new FileHandler();
             if (txbID.Text != "")
             {
-                String newDoc = upload.docUpload(docDir, txbID.Text);
-                //For multiple docs
-                //this.docCount = docCount + newDoc;
-                //txbDoc.Text = docCount.ToString();
-                txbDoc.Text = newDoc;
+                String newDoc = upload.docUpload(docDir, txbID.Text+"_new");
+                if (newDoc != "")
+                {
+                    txbDoc.Text = docDir + "\\" + txbID.Text+".pdf";
+                    //For multiple docs
+                    //this.docCount = docCount + newDoc;
+                    //txbDoc.Text = docCount.ToString();
+                }
 
+                else
+                {
+                    return;
+                }
+                
             }
             else{
                 MessageBox.Show("Please enter the Employee ID", "Uploading documents", MessageBoxButtons.OK, MessageBoxIcon.Error);
@@ -784,6 +812,7 @@ namespace EDApp{
                 try
                 {
                     File.Delete(photoDir + "\\"+ this.id+"_new.png");
+                    File.Delete(docDir + "\\"+ this.id+"_new.pdf");
                 }
                 
                 catch (FileNotFoundException)
@@ -791,6 +820,8 @@ namespace EDApp{
                     //Do nothing
                     return;
                 }
+
+                
             }
             catch (Exception)
             {
