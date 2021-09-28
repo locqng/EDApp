@@ -118,7 +118,7 @@ namespace EDApp{
             btnUpdate.Click += new System.EventHandler(btnUpdateClick);
 
             //Delete button 
-            btnDelete.Location = new Point(210,500);
+            btnDelete.Location = new Point(220,500);
             btnDelete.Text = "Delete";
             btnDelete.Size = new Size(80,25);
             btnDelete.Click += new System.EventHandler(btnDeleteClick);
@@ -132,7 +132,7 @@ namespace EDApp{
             btnAddNew.Click += new System.EventHandler(btnAddNewClick);
 
             //Go back button 
-            btnBack.Location = new Point(20, 20);
+            btnBack.Location = new Point(570, 500);
             btnBack.Text = "Back";
             btnBack.Size = new Size(80,25);
             btnBack.Click += new System.EventHandler(btnBackClick);
@@ -147,7 +147,7 @@ namespace EDApp{
             //Print an individual employee
             btnPrintEmp.Location = new Point(670, 500);     
             btnPrintEmp.Text = "Print";
-            btnPrintEmp.Size = new Size(100,25);
+            btnPrintEmp.Size = new Size(80,25);
             btnPrintEmp.Visible = true;
             btnPrintEmp.Click += new System.EventHandler(btnPrintEmpClick);
 
@@ -250,10 +250,10 @@ namespace EDApp{
             
             //Search box for view sub panel
             txbSearch.Location = new Point(20,50);
-            txbSearch.Size = new Size(100,25);
+            txbSearch.Size = new Size(250,25);
             txbSearch.KeyDown += App_KeyDown;
 
-            btnSearch.Location = new Point(130,49);
+            btnSearch.Location = new Point(280,49);
             btnSearch.Text = "Search";
             btnSearch.Font = new System.Drawing.Font("Arial", 10);
             btnSearch.Size = new Size(80,25);
@@ -610,6 +610,8 @@ namespace EDApp{
             print.ValueName.Text = txbFname.Text + " " + txbLname.Text;
             print.ValueGender.Text = txbGender.Text;
             print.ValueDOB.Text = dobPicker.Text;
+            print.ValueAddress.Text = txbAddress.Text;
+            print.ValuePcode.Text = txbPcode.Text;
             print.EmpPhoto.Image = empPhoto.Image;
             print.ShowDialog();
         }
