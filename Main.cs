@@ -69,13 +69,14 @@ namespace EDApp{
         private Label lblempTable = new Label();
         private Label lbldeptTable = new Label();
         private Label lblbottom = new Label();
+        private Label lbltop = new Label();
         
-
-
         // image 
         System.Drawing.Image empIconImg = System.Drawing.Image.FromFile( @"Resources\emp.PNG" );
         System.Drawing.Image deptIconImg = System.Drawing.Image.FromFile( @"Resources\department.png" );
         System.Drawing.Image homeImg = System.Drawing.Image.FromFile( @"Resources\home.png");
+        System.Drawing.Image empInfo = System.Drawing.Image.FromFile( @"Resources\emp_detail.png");
+
 
         //Gerating Image box for photos
         private PictureBox empPhoto = new PictureBox();
@@ -270,8 +271,8 @@ namespace EDApp{
 
 
             //Browse image button
-            btnBrowse.Location = new Point(620, 180);
-            btnBrowse.Text = "Browse";
+            btnBrowse.Location = new Point(390, 342);
+            btnBrowse.Text = "Upload";
             btnBrowse.Size = new Size(80, 25);
             btnBrowse.Click += new System.EventHandler(btnBrowseClick);
 
@@ -391,6 +392,16 @@ namespace EDApp{
             dobPicker.CustomFormat = "dd/MMM/yyyy";
             dobPicker.MinDate = new DateTime(1930, 01, 01);
             dobPicker.MaxDate = DateTime.Now;
+
+            //top background
+            lbltop.Location = new Point(0,0);
+            lbltop.Size = new Size(800,30);
+            lbltop.BackColor = Color.LightSkyBlue;
+            lbltop.Text = "Employee Information";
+            lbltop.Font = new System.Drawing.Font("Arial", 11,FontStyle.Bold);
+            lbltop.TextAlign = ContentAlignment.MiddleCenter;
+            lbltop.Image = empInfo;
+            lbltop.ImageAlign = ContentAlignment.MiddleLeft;
             
             //Adding elements to win form
             //this.Controls.Add(topPanel);
@@ -407,6 +418,7 @@ namespace EDApp{
             formPanel.Controls.Add(lblGender);
             formPanel.Controls.Add(lblPhoto);
             formPanel.Controls.Add(lblDoc);  
+            formPanel.Controls.Add(lbltop);
 
             // adding text field in form panel 
             formPanel.Controls.Add(txbID);
