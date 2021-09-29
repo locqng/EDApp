@@ -51,7 +51,8 @@ namespace EDApp{
         private Button btnUpload = new Button();
         private Button btnprintToPdf = new Button();
         private Button btnPrintEmp = new Button();
-        private Button btnSubmit = new Button();
+        private Button btnempImg = new Button();
+        private Button btndeptImg = new Button();
              
         //Generating form labels
         private Label lblID = new Label();
@@ -65,20 +66,27 @@ namespace EDApp{
         private Label lblDoc = new Label();
         
         private Label lblWelcome = new Label();
-        private Label lblInstruction = new Label();
-        
-        //create radio button 
-        private RadioButton  radioBtnEmp = new  RadioButton  ();
-        private RadioButton  radioBtnDept = new  RadioButton  ();
+        private Label lblempTable = new Label();
+        private Label lbldeptTable = new Label();
+        private Label lblbottom = new Label();
+        
+
+
+        // image 
+        System.Drawing.Image empIconImg = System.Drawing.Image.FromFile( @"Resources\emp.PNG" );
+        System.Drawing.Image deptIconImg = System.Drawing.Image.FromFile( @"Resources\department.png" );
+        System.Drawing.Image homeImg = System.Drawing.Image.FromFile( @"Resources\home.png");
 
         //Gerating Image box for photos
         private PictureBox empPhoto = new PictureBox();
+
+        //create menu bar 
+        private MenuStrip ms;
+        private ToolStripMenuItem mnuSelectTable;
+        private ToolStripMenuItem mnuEmp,mnuDept;
         
         //Constructor
         public mainProgram(String pD, String dD){
-            // menuFrame();
-            // createTable();
-            // viewRecords("");
             photoDir = pD;
             docDir = dD; 
             startFrame();
@@ -99,51 +107,57 @@ namespace EDApp{
             selectPanel .Visible = true;
             
 
-            lblWelcome.Text = "Welcome to the Employee Desktop Application";
-            lblWelcome.Font = new System.Drawing.Font("Arial", 18,FontStyle.Bold);
-            lblWelcome.Location = new Point(120,80);
-            lblWelcome.Size = new Size(700,40);
+            lblWelcome.Text = "Desktop Application";
+            lblWelcome.Font = new System.Drawing.Font("Arial", 24,FontStyle.Bold);
+            lblWelcome.Location = new Point(0,0);
+            lblWelcome.Size = new Size(800,100);
+            lblWelcome.TextAlign = ContentAlignment.MiddleCenter;
+            lblWelcome.BackColor = Color.LightSkyBlue;
+            lblWelcome.Image = homeImg;
+            lblWelcome.ImageAlign = ContentAlignment.MiddleLeft;
 
-            lblInstruction.Text = "Select a table to work on";
-            lblInstruction.Font = new System.Drawing.Font("Arial", 13);
-            lblInstruction.Location = new Point(290,160);
-            lblInstruction.Size = new Size(700,40);
+            btnempImg.Location = new Point(160,200);
+            btnempImg.Size = new Size(160,160);
+            btnempImg.BackgroundImage = empIconImg;
+            btnempImg.Click += new System.EventHandler(btnempImgClick);
 
-            radioBtnEmp.Text  = "Employee";
-            radioBtnEmp.Font = new System.Drawing.Font("Arial", 11);
-            radioBtnEmp.Location = new Point(250,220);
-            radioBtnEmp.Size = new Size(120,40);
+            lblempTable.Text = "Employee";
+            lblempTable.Font = new System.Drawing.Font("Arial", 11,FontStyle.Bold);
+            lblempTable.Location = new Point(160,360);
+            lblempTable.Size = new Size(160,30);
+            lblempTable.TextAlign = ContentAlignment.MiddleCenter;
 
-            radioBtnDept.Text  = "Department";
-            radioBtnDept.Font = new System.Drawing.Font("Arial", 11);
-            radioBtnDept.Location = new Point(420,220);
-            radioBtnDept.Size = new Size(120,40);
+            lbldeptTable.Text = "Department";
+            lbldeptTable.Font = new System.Drawing.Font("Arial", 11,FontStyle.Bold);
+            lbldeptTable.Location = new Point(480,360);
+            lbldeptTable.Size = new Size(160,30);
+            lbldeptTable.TextAlign = ContentAlignment.MiddleCenter;
 
-            btnSubmit.Text  = "Submit";
-            btnSubmit.Font = new System.Drawing.Font("Arial", 12);
-            btnSubmit.Location = new Point(340,420);
-            btnSubmit.Size = new Size(100,30);
-            btnSubmit.Click += new System.EventHandler(btnSubmitClick);
+            lblbottom.Location = new Point(0,520);
+            lblbottom.Size = new Size(800,50);
+            lblbottom.BackColor = Color.LightSkyBlue;
+
+
+            btndeptImg .Location = new Point(480,200);
+            btndeptImg .Size = new Size(160,160);
+            btndeptImg .BackgroundImage = deptIconImg;
+            //btndeptImg.Click += new System.EventHandler(btndeptImgClick);
 
             this.Controls.Add(selectPanel);
             selectPanel.Controls.Add(lblWelcome);
-            selectPanel.Controls.Add(radioBtnEmp);
-            selectPanel.Controls.Add(radioBtnDept);
-            selectPanel.Controls.Add(btnSubmit);
-            selectPanel.Controls.Add(lblInstruction);
-
+            selectPanel.Controls.Add(btnempImg);
+            selectPanel.Controls.Add(btndeptImg );
+            selectPanel.Controls.Add(lblempTable);
+            selectPanel.Controls.Add(lbldeptTable);
+            selectPanel.Controls.Add(lblbottom);
         }
 
-        public void btnSubmitClick(object sender, EventArgs e)
+         public void btnempImgClick(object sender, EventArgs e)
         {
-            if (radioBtnEmp.Checked == true)
-            {
-                menuFrame();
-                createTable();
-                viewRecords("");
-                selectPanel.Visible = false;
-            }
-
+            menuFrame();
+            createTable();
+            viewRecords("");
+            selectPanel.Visible = false;
         }
 
         public void menuFrame()
@@ -167,6 +181,38 @@ namespace EDApp{
             formPanel.Height = 580;
             formPanel.Font = new System.Drawing.Font("Arial", 10);
             formPanel.Visible = false;
+
+            // Create a MenuStrip control 
+            ms = new MenuStrip();
+            mnuSelectTable = new ToolStripMenuItem("Switch Table");
+            mnuSelectTable.Font = new System.Drawing.Font("Arial", 12,FontStyle.Bold);
+            ms.BackColor = Color.LightSkyBlue;
+
+
+            mnuEmp = new ToolStripMenuItem("Employee");
+            mnuDept = new ToolStripMenuItem("Department");
+            
+            ((ToolStripDropDownMenu)(mnuSelectTable.DropDown)).ShowImageMargin = false;
+            //((ToolStripDropDownMenu)(mnuSelectTable.DropDown)).ShowCheckMargin = true;
+
+            mnuEmp.Click += new System.EventHandler(mnuEmp_Click);
+            //mnuDept.Click += new System.EventHandler(mnuDept_Click);
+
+            // Assign the ToolStripMenuItem that displays 
+            ms.MdiWindowListItem = mnuSelectTable;
+            
+            // Add the window ToolStripMenuItem to the MenuStrip.
+            ms.Items.Add(mnuSelectTable);
+
+            // Dock the MenuStrip at the top of the form.
+            ms.Dock = DockStyle.Top;
+
+            //Add the ToolStripMenuItem to the MenuStrip
+            mnuSelectTable.DropDownItems.Add(mnuEmp);
+            mnuSelectTable.DropDownItems.Add(mnuDept);
+
+            // Add the MenuStrip
+            viewPanel.Controls.Add(ms);
 
             //Add button 
             btnAdd.Location = new Point(20,500);
@@ -396,6 +442,20 @@ namespace EDApp{
             //viewPanel.Controls.Add(btnExit);
             viewPanel.Controls.Add(btnprintToPdf);    
         }
+
+        //create function when employee table is clicked
+        public void mnuEmp_Click(object sender, EventArgs e)
+        {
+            viewPanel.Visible =true;
+        }
+        
+        //create function when employee table is clicked 
+        //need to be done for department table!!
+//         public void mnuDept_Click(object sender, EventArgs e)
+//         {
+            
+//         }
+        
         
         //Add button event handler
         private void btnAddClick(object sender, EventArgs e)
