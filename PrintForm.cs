@@ -18,6 +18,7 @@ namespace EDApp
         private PictureBox empPhoto = new PictureBox();
 
         private Button btnPrint = new Button();
+        private Button btnCancel = new Button();
 
         public Label ValueID { get => valueID; set => valueID = value; }
         public Label ValueName { get => valueName; set => valueName = value; }
@@ -180,11 +181,17 @@ namespace EDApp
             empPhoto.Image = empPhoto.InitialImage;
 
             //set location for print button 
-            btnPrint.Location = new Point(600, 750);
+            btnPrint.Location = new Point(520, 750);
             btnPrint.Text = "Print";
             btnPrint.MaximumSize = new Size(80,25);
             btnPrint.Click += new System.EventHandler(btnPrintClick);
             btnPrint.Show();
+
+            btnCancel.Location = new Point(620, 750);
+            btnCancel.Text = "Cancel";
+            btnCancel.Size = new Size(80,25);
+            btnCancel.Click += new System.EventHandler(btnCancelClick);
+            btnCancel.Show();
             
             // add labels and values in the print panel
             printPanel.Controls.Add(lblID);
@@ -201,6 +208,7 @@ namespace EDApp
             printPanel.Controls.Add(valuePcode);
             printPanel.Controls.Add(empPhoto);
             printPanel.Controls.Add(btnPrint);
+            printPanel.Controls.Add(btnCancel);
         }
 
         // event handler for print button 
@@ -214,6 +222,11 @@ namespace EDApp
             printPreview.Document = printDoc;
             printDoc.PrintPage += new PrintPageEventHandler(printDoc_PrintPage);
             printPreview.ShowDialog();
+        }
+
+        private void btnCancelClick(object sender, EventArgs e)
+        {
+            this.Visible = false;
         }
 
         private void printDoc_PrintPage(object sender, PrintPageEventArgs e)
