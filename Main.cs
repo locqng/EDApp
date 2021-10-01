@@ -233,7 +233,7 @@ namespace EDApp{
             btnUpdate.Text = "Update";
             btnUpdate.Size = new Size(80,25);
             btnUpdate.Visible = true;
-            btnUpdate.Click += new System.EventHandler(btnUpdateClick);
+            btnUpdate.Click += (s, e) => {updateRecord(); };
 
             //Delete button 
             btnDelete.Location = new Point(220,500);
@@ -341,6 +341,9 @@ namespace EDApp{
             
             txbGender.Location = new Point(120,300);
             txbGender.Size = new Size(120,20);
+            txbGender.ReadOnly = true;
+            txbGender.Enter += (s, e) => {txbGender.Parent.Focus(); };
+            txbGender.Click += (s, e) => {txbGender.Text = genderChange(txbGender.Text);};
 
             //Photo
             lblPhoto.Text = "Photo";
@@ -349,7 +352,8 @@ namespace EDApp{
             
             txbPhoto.Location = new Point(120,340);
             txbPhoto.Size = new Size(250,20);
-            //txbPhoto.ReadOnly = fasle;
+            txbPhoto.Enter += (s, e) => {txbPhoto.Parent.Focus(); };
+            txbPhoto.ReadOnly = true;
 
             //Document
             lblDoc.Text = "Document";
@@ -359,6 +363,7 @@ namespace EDApp{
             txbDoc.Location = new Point(120,380);
             txbDoc.Size = new Size(250,20);
             txbDoc.ReadOnly = true;
+            txbDoc.Enter += (s, e) => {txbDoc.Parent.Focus(); };
 
             //Photo box
             empPhoto.Location = new Point(600,52);
@@ -544,6 +549,12 @@ namespace EDApp{
             
         }
 
+        private void txbGenderClick(object sender, EventArgs e)
+        {
+            Console.WriteLine("GENDER CLICK");
+            
+        }
+
         //Search button event handler
         private void btnSearchClick(object sender, EventArgs e)
         {
@@ -558,8 +569,8 @@ namespace EDApp{
             clearTextbox("clean");
         }
         
-        //Update button event Handler
-        private void btnUpdateClick(object sender, EventArgs e)
+        //Update event handler use for cell click and button
+        private void updateRecord()
         {
             if (string.IsNullOrEmpty(txbID.Text.Trim())||
             string.IsNullOrEmpty(txbFname.Text.Trim()) ||
@@ -857,7 +868,7 @@ namespace EDApp{
 
                 gridViewTable.MultiSelect = false;
                 gridViewTable.AutoGenerateColumns = true;
-                gridViewTable.SelectionMode = DataGridViewSelectionMode.FullRowSelect;
+                //gridViewTable.SelectionMode = DataGridViewSelectionMode.FullRowSelect;
                 gridViewTable.DataSource = table;
 
                 gridViewTable.Columns[0].HeaderText = "EmpID";
@@ -908,72 +919,89 @@ namespace EDApp{
         //Grid cell click handler for update function
         private void gridViewTable_CellClick(object sender, DataGridViewCellEventArgs e)
         {
+            
+            this.id = txbID.Text;
+            txbID.Text = Convert.ToString(gridViewTable.CurrentRow.Cells[0].Value);
+            txbFname.Text = Convert.ToString(gridViewTable.CurrentRow.Cells[1].Value);
+            txbLname.Text = Convert.ToString(gridViewTable.CurrentRow.Cells[2].Value);
+            txbAddress.Text = Convert.ToString(gridViewTable.CurrentRow.Cells[3].Value);
+            txbPcode.Text = Convert.ToString(gridViewTable.CurrentRow.Cells[4].Value);
+            dobPicker.Text = Convert.ToString(gridViewTable.CurrentRow.Cells[5].Value);
+            txbGender.Text = Convert.ToString(gridViewTable.CurrentRow.Cells[6].Value);
+            txbPhoto.Text = Convert.ToString(gridViewTable.CurrentRow.Cells[7].Value);
+            txbDoc.Text = Convert.ToString(gridViewTable.CurrentRow.Cells[8].Value);
+            
             if (e.RowIndex != -1)
             {
-                
-                empPhoto.Image = null;
-                clearTextbox("clean");
-                //topPanel.Visible = true;
-                formPanel.Visible = true;
-                viewPanel.Visible = false;
-                btnAdd.Visible = false;
-                btnUpdate.Visible = true;
-                btnDelete.Visible = true;
-                
-                txbID.ReadOnly = true;
-                txbID.Text = Convert.ToString(gridViewTable.CurrentRow.Cells[0].Value);
-                txbFname.Text = Convert.ToString(gridViewTable.CurrentRow.Cells[1].Value);
-                txbLname.Text = Convert.ToString(gridViewTable.CurrentRow.Cells[2].Value);
-                txbAddress.Text = Convert.ToString(gridViewTable.CurrentRow.Cells[3].Value);
-                txbPcode.Text = Convert.ToString(gridViewTable.CurrentRow.Cells[4].Value);
-                dobPicker.Text = Convert.ToString(gridViewTable.CurrentRow.Cells[5].Value);
-                txbGender.Text = Convert.ToString(gridViewTable.CurrentRow.Cells[6].Value);
-                txbPhoto.Text = Convert.ToString(gridViewTable.CurrentRow.Cells[7].Value);
-                txbDoc.Text = Convert.ToString(gridViewTable.CurrentRow.Cells[8].Value);
-                this.id = txbID.Text;
-                //if (txbDoc.Text == "")
-                //{
-                //    txbDoc.Text = "0 files";
-                //    this.docCount = Convert.ToInt32(new String(txbDoc.Text[0], 1));
-                //}
-                //else if (txbDoc.Text != "" && txbDoc.Text != "0 files"){
-                //    try
-                //    {
-                //        this.docCount = Directory.GetFiles(docDir+"\\"+id+" Docs", "*", SearchOption.TopDirectoryOnly).Length;
-                //    }
-                //    catch (Exception ex)
-                //    {
-                //       MessageBox.Show("The employee document directory not found", "Notice", MessageBoxButtons.OK, MessageBoxIcon.Information);
-                //        this.docCount = 0;
-                //    }
-                //}
-                //txbDoc.Text = docCount.ToString() + " files";
-                if (txbPhoto.Text != "")
-                    try
-                    {
-                        //Config to your photos directory
-                        FileHandler photoHandler = new FileHandler();
-                        System.Drawing.Image photo;
-                        byte[] photoBytes;
-                        photoBytes = File.ReadAllBytes(txbPhoto.Text);
-                        photo = photoHandler.ConvertByteArrayToImage(photoBytes);            
-                        empPhoto.Image = photo;
-                    }
-                    catch (FileNotFoundException)
-                    {
-                        MessageBox.Show("Photo not found in directory, Please add a photo or delete the Photo field", "Notice", MessageBoxButtons.OK, MessageBoxIcon.Information);
-                        txbPhoto.Text = "";
-                        empPhoto.Image = null;
-                    }
-                    catch (DirectoryNotFoundException)
-                    {
-                        MessageBox.Show("Directory not found, Please add the directory or delete the Photo field", "Notice", MessageBoxButtons.OK, MessageBoxIcon.Information);
-                        txbPhoto.Text = "";
-                        empPhoto.Image = null;
-                    }
+
+                // If click on the gender cell 
+                if (e.ColumnIndex == 6)
+                {
+                    
+                    DataGridViewTextBoxCell cell = (DataGridViewTextBoxCell) gridViewTable.Rows[e.RowIndex].Cells[e.ColumnIndex];    
+                    cell.Value = genderChange(txbGender.Text);
+                    txbGender.Text = Convert.ToString(cell.Value);
+                    updateRecord();
+                    gridViewTable.CurrentCell = null;                   
+                }
                 else
+                {
+                          
                     empPhoto.Image = null;
+                    
+                    //topPanel.Visible = true;
+                    formPanel.Visible = true;
+                    viewPanel.Visible = false;
+                    btnAdd.Visible = false;
+                    btnUpdate.Visible = true;
+                    btnDelete.Visible = true;
+                    txbID.ReadOnly = true;
+                    
+                    //if (txbDoc.Text == "")
+                    //{
+                    //    txbDoc.Text = "0 files";
+                    //    this.docCount = Convert.ToInt32(new String(txbDoc.Text[0], 1));
+                    //}
+                    //else if (txbDoc.Text != "" && txbDoc.Text != "0 files"){
+                    //    try
+                    //    {
+                    //        this.docCount = Directory.GetFiles(docDir+"\\"+id+" Docs", "*", SearchOption.TopDirectoryOnly).Length;
+                    //    }
+                    //    catch (Exception ex)
+                    //    {
+                    //       MessageBox.Show("The employee document directory not found", "Notice", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                    //        this.docCount = 0;
+                    //    }
+                    //}
+                    //txbDoc.Text = docCount.ToString() + " files";
+                    if (txbPhoto.Text != "")
+                        try
+                        {
+                            //Config to your photos directory
+                            FileHandler photoHandler = new FileHandler();
+                            System.Drawing.Image photo;
+                            byte[] photoBytes;
+                            photoBytes = File.ReadAllBytes(txbPhoto.Text);
+                            photo = photoHandler.ConvertByteArrayToImage(photoBytes);            
+                            empPhoto.Image = photo;
+                        }
+                        catch (FileNotFoundException)
+                        {
+                            MessageBox.Show("Photo not found in directory, Please add a photo or delete the Photo field", "Notice", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                            txbPhoto.Text = "";
+                            empPhoto.Image = null;
+                        }
+                        catch (DirectoryNotFoundException)
+                        {
+                            MessageBox.Show("Directory not found, Please add the directory or delete the Photo field", "Notice", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                            txbPhoto.Text = "";
+                            empPhoto.Image = null;
+                        }
+                    else
+                        empPhoto.Image = null;
+                }
             }
+            
         }
 
         //Execute SQL add Command
@@ -1040,7 +1068,23 @@ namespace EDApp{
 
         }
 
-        
+        //Change gender base on the current value
+        private String genderChange(String gender)
+        {
+            switch(gender)
+            {
+                case "Male":
+                    gender = "Female";
+                    break;
+                case "Female":
+                    gender = "Other";
+                    break;
+                case "Other":
+                    gender = "Male";
+                    break;
+            }
+            return gender;
+        }
 
         //Add Parameters
         private void AddParameters()

@@ -10,6 +10,15 @@ namespace EDApp
 {
     public class PrintForm : Form
     {
+
+        private ToolStripButton closeButton = new ToolStripButton();
+        //Generate ToolStrip to reconfig the ToolStrip buttons for printer
+        private ToolStrip toolBar = new ToolStrip();
+        private ToolStripButton printButton = new ToolStripButton();
+        private ToolStripComboBox printersList = new ToolStripComboBox();
+    
+        private PrintPreviewDialog printPreview = new PrintPreviewDialog();
+        private PrintDocument printDoc = new PrintDocument();
         private Panel printPanel;
         private Label lblID, lblName, lblAddress, lblPcode, lblDOB, lblGender, lblDoc;
         private Label valueID, valueName, valueAddress, valuePcode, valueDOB, valueGender, valueDoc;
@@ -52,6 +61,13 @@ namespace EDApp
             valueDOB = new Label();
             valueGender = new Label();
             valueDoc = new Label();
+
+            printersList.Text = "Select a printer";
+            printersList.TextChanged += new System.EventHandler(printersList_SelectionChanged);
+            foreach (String printer in PrinterSettings.InstalledPrinters)
+            {
+                printersList.Items.Add(printer);
+            }
         }
 
         //create the print frame 
@@ -61,16 +77,16 @@ namespace EDApp
             Console.WriteLine("Cool!");
             
             //set the form width & height 
-            this.Width = 750;
-            this.Height = 850;
+            this.Width = 768;
+            this.Height = 1024;
 
             //set the start position of the form to the center of the screen
             this.StartPosition = FormStartPosition.CenterScreen;
 
             //create the main panel
             printPanel = new Panel();
-            printPanel.Width = 750;
-            printPanel.Height = 850;
+            printPanel.Width = 768;
+            printPanel.Height = 1024;
             printPanel.BackColor = Color.White;
             printPanel.Visible = true;
 
@@ -78,7 +94,7 @@ namespace EDApp
             this.Controls.Add(printPanel);
 
             //set location and font for Employee ID label
-            lblID.Location = new Point(400,150);
+            lblID.Location = new Point(400 ,150);
             lblID.Text = "Employee ID: ";
             lblID.MaximumSize = new Size(120, 20);
             lblID.AutoSize = true;
@@ -185,13 +201,13 @@ namespace EDApp
             btnPrint.Text = "Print";
             btnPrint.MaximumSize = new Size(80,25);
             btnPrint.Click += new System.EventHandler(btnPrintClick);
-            btnPrint.Show();
+            
 
             btnCancel.Location = new Point(620, 750);
             btnCancel.Text = "Cancel";
             btnCancel.Size = new Size(80,25);
             btnCancel.Click += new System.EventHandler(btnCancelClick);
-            btnCancel.Show();
+            
             
             // add labels and values in the print panel
             printPanel.Controls.Add(lblID);
@@ -214,14 +230,42 @@ namespace EDApp
         // event handler for print button 
         private void btnPrintClick(object sender, EventArgs e)
         {
-            btnPrint.Hide();
-            PrinterSettings printer = new PrinterSettings();
-            PrintPreviewDialog printPreview = new PrintPreviewDialog();
-            PrintDocument printDoc = new PrintDocument();
+            
+            
+            
+            foreach (Control control in printPreview.Controls)
+            {
+                Console.WriteLine(control.Name);
+                if (control.Name.Equals("toolStrip1"))
+                    toolBar = control as ToolStrip;
+            }
+            toolBar.Items.Add(printersList);
+
+            
+            foreach (ToolStripItem item in toolBar.Items)
+            {
+                Console.WriteLine(item.Name);
+                if (item.Name.Equals("printToolStripButton"))
+                {
+                    printButton = item as ToolStripButton;
+                    
+                }
+                else if(item.Name.Equals("closeToolStripButton"))
+                {
+                    closeButton = item as ToolStripButton;
+                }
+            }
+
             getPrintArea(this.printPanel);
             printPreview.Document = printDoc;
             printDoc.PrintPage += new PrintPageEventHandler(printDoc_PrintPage);
-            printPreview.ShowDialog();
+            printPreview.UseAntiAlias = true;
+            printButton.Click += new EventHandler(printButton_Click);
+            
+            printPreview.ShowDialog();   
+            
+            printButton.CheckOnClick = true;      
+            
         }
 
         private void btnCancelClick(object sender, EventArgs e)
@@ -241,8 +285,26 @@ namespace EDApp
             int width = panel.Width;
             int height = panel.Height;
             memoryImage = new Bitmap(width, height);
-            panel.DrawToBitmap(memoryImage, new Rectangle(0, 0, width, height));
+            panel.DrawToBitmap(memoryImage, new Rectangle(0, 0, width, height - 100));
         }
+
+        private void printButton_Click(object sender, EventArgs e)
+        {
+            Console.WriteLine("Close clicked");
+            printersList.SelectedIndex = -1;
+            printersList.Text = "Select a printer";
+            closeButton.PerformClick();
+        }
+
+        private void printersList_SelectionChanged(object sender, System.EventArgs e)
+        {
+            if (printersList.SelectedIndex != -1)
+            {
+                printDoc.PrinterSettings.PrinterName = printersList.Text;
+                Console.WriteLine(printersList.Text);
+            }
+        }
+
     }
 
 }
