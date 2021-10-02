@@ -22,7 +22,7 @@ namespace EDApp
         private Panel printPanel;
         private Label lblID, lblName, lblAddress, lblPcode, lblDOB, lblGender, lblDoc;
         private Label valueID, valueName, valueAddress, valuePcode, valueDOB, valueGender, valueDoc;
-        private Bitmap memoryImage;
+        private Bitmap btmPhoto;
 
         private PictureBox empPhoto = new PictureBox();
 
@@ -79,6 +79,7 @@ namespace EDApp
             //set the form width & height 
             this.Width = 768;
             this.Height = 1024;
+            this.BackColor = Color.White;
 
             //set the start position of the form to the center of the screen
             this.StartPosition = FormStartPosition.CenterScreen;
@@ -86,7 +87,7 @@ namespace EDApp
             //create the main panel
             printPanel = new Panel();
             printPanel.Width = 768;
-            printPanel.Height = 1024;
+            printPanel.Height = 824;
             printPanel.BackColor = Color.White;
             printPanel.Visible = true;
 
@@ -94,116 +95,116 @@ namespace EDApp
             this.Controls.Add(printPanel);
 
             //set location and font for Employee ID label
-            lblID.Location = new Point(400 ,150);
+            lblID.Location = new Point(320, 250);
             lblID.Text = "Employee ID: ";
-            lblID.MaximumSize = new Size(120, 20);
+            lblID.MaximumSize = new Size(150, 50);
             lblID.AutoSize = true;
-            lblID.Font = new System.Drawing.Font("Century Gothic", 11, FontStyle.Bold);
+            lblID.Font = new System.Drawing.Font("Century Gothic", 15, FontStyle.Bold);
             lblID.Visible = true;
 
             //set location and font for Employee ID value
-            valueID.Location = new Point(520,149);
+            valueID.Location = new Point(520, 250);
             valueID.Text = "Testing ID";
-            valueID.MaximumSize = new Size(120, 20);
+            valueID.MaximumSize = new Size(150, 50);
             valueID.AutoSize = true;
-            valueID.Font = new System.Drawing.Font("Century Gothic", 11);
+            valueID.Font = new System.Drawing.Font("Century Gothic", 15);
             valueID.Visible = true;
 
             //set location and font for Name label
-            lblName.Location = new Point(400, 200);
+            lblName.Location = new Point(320, 300);
             lblName.Text = "Name: ";
-            lblName.MaximumSize = new Size (120, 20);
+            lblName.MaximumSize = new Size (150, 50);
             lblName.AutoSize = true;
-            lblName.Font = new System.Drawing.Font("Century Gothic", 11, FontStyle.Bold);
+            lblName.Font = new System.Drawing.Font("Century Gothic", 15, FontStyle.Bold);
             lblName.Visible = true;
 
             //set location and font for Name value
-            valueName.Location = new Point(520, 199);
+            valueName.Location = new Point(520, 300);
             valueName.Text = "Testing Name";
             valueName.MaximumSize = new Size (200, 20);
             valueName.AutoSize = true;
-            valueName.Font = new System.Drawing.Font("Century Gothic", 11);
+            valueName.Font = new System.Drawing.Font("Century Gothic", 15);
             valueName.Visible = true;
 
             //set location and font for Gender label
-            lblGender.Location = new Point(400, 250);
+            lblGender.Location = new Point(320, 350);
             lblGender.Text = "Gender: ";
-            lblGender.MaximumSize = new Size (120, 20);
+            lblGender.MaximumSize = new Size (150, 50);
             lblGender.AutoSize = true;
-            lblGender.Font = new System.Drawing.Font("Century Gothic", 11, FontStyle.Bold);
+            lblGender.Font = new System.Drawing.Font("Century Gothic", 15, FontStyle.Bold);
             lblGender.Visible = true;
             
             //set location and font for Gender value
-            valueGender.Location = new Point(520, 249);
+            valueGender.Location = new Point(520, 349);
             valueGender.Text = "Female";
-            valueGender.MaximumSize = new Size (120, 20);
+            valueGender.MaximumSize = new Size (150, 50);
             valueGender.AutoSize = true;
-            valueGender.Font = new System.Drawing.Font("Century Gothic", 11);
+            valueGender.Font = new System.Drawing.Font("Century Gothic", 15);
             valueGender.Visible = true;
 
             //set location and font for DOB label
-            lblDOB.Location = new Point(400, 300);
+            lblDOB.Location = new Point(320, 400);
             lblDOB.Text = "DOB: ";
-            lblDOB.MaximumSize = new Size (120, 20);
+            lblDOB.MaximumSize = new Size (150, 50);
             lblDOB.AutoSize = true;
-            lblDOB.Font = new System.Drawing.Font("Century Gothic", 11, FontStyle.Bold);
+            lblDOB.Font = new System.Drawing.Font("Century Gothic", 15, FontStyle.Bold);
             lblDOB.Visible = true;
 
             //set location and font for DOB value
-            valueDOB.Location = new Point(520, 299);
+            valueDOB.Location = new Point(520, 400);
             valueDOB.Text = "21/Jan/1996";
-            valueDOB.MaximumSize = new Size (120, 20);
+            valueDOB.MaximumSize = new Size (150, 50);
             valueDOB.AutoSize = true;
-            valueDOB.Font = new System.Drawing.Font("Century Gothic", 11);
+            valueDOB.Font = new System.Drawing.Font("Century Gothic", 15);
             valueDOB.Visible = true;
 
             //set location and font for Address label
-            lblAddress.Location = new Point(400, 350);
+            lblAddress.Location = new Point(320, 450);
             lblAddress.Text = "Address: ";
-            lblAddress.MaximumSize = new Size (120, 20);
+            lblAddress.MaximumSize = new Size (150, 50);
             lblAddress.AutoSize = true;
-            lblAddress.Font = new System.Drawing.Font("Century Gothic", 11, FontStyle.Bold);
+            lblAddress.Font = new System.Drawing.Font("Century Gothic", 15, FontStyle.Bold);
             lblAddress.Visible = true;
 
             //set location and font for Address value
-            valueAddress.Location = new Point(520, 349);
+            valueAddress.Location = new Point(520, 449);
             valueAddress.Text = "Testing Address";
-            valueAddress.MaximumSize = new Size (120, 20);
+            valueAddress.MaximumSize = new Size (250, 50);
             valueAddress.AutoSize = true;
-            valueAddress.Font = new System.Drawing.Font("Century Gothic", 11);
+            valueAddress.Font = new System.Drawing.Font("Century Gothic", 15);
             valueAddress.Visible = true;
 
             //set location and font for Postcode label
-            lblPcode.Location = new Point(400, 400);
+            lblPcode.Location = new Point(320, 500);
             lblPcode.Text = "Postcode: ";
-            lblPcode.MaximumSize = new Size (120, 20);
+            lblPcode.MaximumSize = new Size (150, 50);
             lblPcode.AutoSize = true;
-            lblPcode.Font = new System.Drawing.Font("Century Gothic", 11, FontStyle.Bold);
+            lblPcode.Font = new System.Drawing.Font("Century Gothic", 15, FontStyle.Bold);
             lblPcode.Visible = true;
 
             //set location and font for Postcode value
-            valuePcode.Location = new Point(520, 399);
+            valuePcode.Location = new Point(520, 500);
             valuePcode.Text = "Testing Postcode";
-            valuePcode.MaximumSize = new Size (120, 20);
+            valuePcode.MaximumSize = new Size (150, 50);
             valuePcode.AutoSize = true;
-            valuePcode.Font = new System.Drawing.Font("Century Gothic", 11);
+            valuePcode.Font = new System.Drawing.Font("Century Gothic", 15);
             valuePcode.Visible = true;
 
             //set location for employee profile picture
-            empPhoto.Location = new Point(120,160);
-            empPhoto.Size = new Size(150, 150);
+            empPhoto.Location = new Point(30,260);
+            empPhoto.Size = new Size(250, 250);
             empPhoto.BorderStyle = BorderStyle.Fixed3D;
             empPhoto.SizeMode = PictureBoxSizeMode.StretchImage;
             empPhoto.Image = empPhoto.InitialImage;
 
             //set location for print button 
-            btnPrint.Location = new Point(520, 750);
+            btnPrint.Location = new Point(520, 850);
             btnPrint.Text = "Print";
             btnPrint.MaximumSize = new Size(80,25);
             btnPrint.Click += new System.EventHandler(btnPrintClick);
             
 
-            btnCancel.Location = new Point(620, 750);
+            btnCancel.Location = new Point(620, 850);
             btnCancel.Text = "Cancel";
             btnCancel.Size = new Size(80,25);
             btnCancel.Click += new System.EventHandler(btnCancelClick);
@@ -223,8 +224,9 @@ namespace EDApp
             printPanel.Controls.Add(lblPcode);
             printPanel.Controls.Add(valuePcode);
             printPanel.Controls.Add(empPhoto);
-            printPanel.Controls.Add(btnPrint);
-            printPanel.Controls.Add(btnCancel);
+            
+            this.Controls.Add(btnPrint);
+            this.Controls.Add(btnCancel);
         }
 
         // event handler for print button 
@@ -256,7 +258,7 @@ namespace EDApp
                 }
             }
 
-            getPrintArea(this.printPanel);
+            //getPrintArea(this.printPanel);
             printPreview.Document = printDoc;
             printDoc.PrintPage += new PrintPageEventHandler(printDoc_PrintPage);
             printPreview.UseAntiAlias = true;
@@ -275,18 +277,33 @@ namespace EDApp
 
         private void printDoc_PrintPage(object sender, PrintPageEventArgs e)
         {
+            Font font_bold = new System.Drawing.Font("Century Gothic", 15, FontStyle.Bold);
+            Font font = new System.Drawing.Font("Century Gothic", 15, FontStyle.Regular);
+            Brush blackBrush = new SolidBrush(Color.Black);
+            Graphics graphics = e.Graphics;
             Rectangle printPage = e.PageBounds;
-            e.Graphics.DrawImage(memoryImage, this.printPanel.Location.X, this.printPanel.Location.Y);            
+            graphics.DrawString("Employee ID:", font_bold, blackBrush, lblID.Location.X, lblID.Location.Y);
+            graphics.DrawString(valueID.Text, font, blackBrush, valueID.Location.X, valueID.Location.Y);
+            graphics.DrawString("Name:" ,font_bold, blackBrush, lblName.Location.X, lblName.Location.Y);
+            graphics.DrawString(valueName.Text, font, blackBrush, valueName.Location.X, valueName.Location.Y);
+            graphics.DrawString("Gender:", font_bold, blackBrush, lblGender.Location.X, lblGender.Location.Y);
+            graphics.DrawString(valueGender.Text, font, blackBrush, valueGender.Location.X, valueGender.Location.Y);
+            graphics.DrawString("DOB", font_bold, blackBrush, lblDOB.Location.X, lblDOB.Location.Y);
+            graphics.DrawString(valueDOB.Text, font, blackBrush, valueDOB.Location.X, valueDOB.Location.Y);
+            graphics.DrawString("Address", font_bold, blackBrush, lblAddress.Location.X, lblAddress.Location.Y);
+            graphics.DrawString(valueAddress.Text, font, blackBrush, valueAddress.Location.X, valueAddress.Location.Y);
+            graphics.DrawString("Postcode", font_bold, blackBrush, lblPcode.Location.X, lblPcode.Location.Y);
+            graphics.DrawString(valuePcode.Text, font, blackBrush, valuePcode.Location.X, valuePcode.Location.Y);
+            btmPhoto = new Bitmap(empPhoto.Image, empPhoto.Size);
+            graphics.DrawImage(btmPhoto, empPhoto.Location.X, empPhoto.Location.Y);            
         }
 
         // set printing area
-        private void getPrintArea(Panel panel)
-        {
-            int width = panel.Width;
-            int height = panel.Height;
-            memoryImage = new Bitmap(width, height);
-            panel.DrawToBitmap(memoryImage, new Rectangle(0, 0, width, height - 100));
-        }
+        //private void getPrintArea(Panel panel)
+        //{
+        //    memoryImage = new Bitmap(panel.Width, panel.Height);
+        //    panel.DrawToBitmap(memoryImage, new Rectangle(0, 0, panel.Width, panel.Height));
+        //}
 
         private void printButton_Click(object sender, EventArgs e)
         {
