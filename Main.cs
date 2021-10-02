@@ -72,11 +72,11 @@ namespace EDApp{
         private Label lbltop = new Label();
         
         // image 
-        System.Drawing.Image empIconImg = System.Drawing.Image.FromFile( @"Resources\emp.PNG" );
-        System.Drawing.Image deptIconImg = System.Drawing.Image.FromFile( @"Resources\department.png" );
-        System.Drawing.Image homeImg = System.Drawing.Image.FromFile( @"Resources\home.png");
-        System.Drawing.Image empInfo = System.Drawing.Image.FromFile( @"Resources\emp_detail.png");
-
+        System.Drawing.Image empIconImg = System.Drawing.Image.FromFile( @"resources\emp.PNG" );
+        System.Drawing.Image deptIconImg = System.Drawing.Image.FromFile( @"resources\department.png" );
+        System.Drawing.Image homeImg = System.Drawing.Image.FromFile( @"resources\home.png");
+        System.Drawing.Image empInfo = System.Drawing.Image.FromFile( @"resources\emp_detail.png");
+        System.Drawing.Image emptyPhoto = System.Drawing.Image.FromFile( @"resources\profile.jpeg");
 
         //Gerating Image box for photos
         private PictureBox empPhoto = new PictureBox();
@@ -700,7 +700,7 @@ namespace EDApp{
         //Add new record (change to form panel) button event handler
         private void btnAddNewClick(object sender, EventArgs e)
         {
-            empPhoto.Image = null;
+            empPhoto.Image = emptyPhoto;
             clearTextbox("clean");
             viewPanel.Visible = false;
             formPanel.Visible = true;
@@ -830,7 +830,7 @@ namespace EDApp{
             txbPhoto.Text = "";
             txbDoc.Text = "";
             txbSearch.Text = "";
-            empPhoto.Image = null;
+            empPhoto.Image = emptyPhoto;
             
         }
 
@@ -920,7 +920,7 @@ namespace EDApp{
         private void gridViewTable_CellClick(object sender, DataGridViewCellEventArgs e)
         {
             
-            this.id = txbID.Text;
+            
             txbID.Text = Convert.ToString(gridViewTable.CurrentRow.Cells[0].Value);
             txbFname.Text = Convert.ToString(gridViewTable.CurrentRow.Cells[1].Value);
             txbLname.Text = Convert.ToString(gridViewTable.CurrentRow.Cells[2].Value);
@@ -930,24 +930,25 @@ namespace EDApp{
             txbGender.Text = Convert.ToString(gridViewTable.CurrentRow.Cells[6].Value);
             txbPhoto.Text = Convert.ToString(gridViewTable.CurrentRow.Cells[7].Value);
             txbDoc.Text = Convert.ToString(gridViewTable.CurrentRow.Cells[8].Value);
+            this.id = txbID.Text;
             
             if (e.RowIndex != -1)
             {
 
                 // If click on the gender cell 
                 if (e.ColumnIndex == 6)
-                {
-                    
-                    DataGridViewTextBoxCell cell = (DataGridViewTextBoxCell) gridViewTable.Rows[e.RowIndex].Cells[e.ColumnIndex];    
-                    cell.Value = genderChange(txbGender.Text);
-                    txbGender.Text = Convert.ToString(cell.Value);
+                {  
+                    formPanel.Show();      
+                    gridViewTable.CurrentRow.Cells[6].Value = genderChange(txbGender.Text);
+                    txbGender.Text = Convert.ToString(gridViewTable.CurrentRow.Cells[6].Value);
                     updateRecord();
+                    formPanel.Hide();
                     gridViewTable.CurrentCell = null;                   
                 }
                 else
                 {
                           
-                    empPhoto.Image = null;
+                    empPhoto.Image = emptyPhoto;
                     
                     //topPanel.Visible = true;
                     formPanel.Visible = true;
@@ -989,16 +990,16 @@ namespace EDApp{
                         {
                             MessageBox.Show("Photo not found in directory, Please add a photo or delete the Photo field", "Notice", MessageBoxButtons.OK, MessageBoxIcon.Information);
                             txbPhoto.Text = "";
-                            empPhoto.Image = null;
+                            empPhoto.Image = emptyPhoto;
                         }
                         catch (DirectoryNotFoundException)
                         {
                             MessageBox.Show("Directory not found, Please add the directory or delete the Photo field", "Notice", MessageBoxButtons.OK, MessageBoxIcon.Information);
                             txbPhoto.Text = "";
-                            empPhoto.Image = null;
+                            empPhoto.Image = emptyPhoto;
                         }
                     else
-                        empPhoto.Image = null;
+                        empPhoto.Image = emptyPhoto;
                 }
             }
             

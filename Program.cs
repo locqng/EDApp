@@ -13,6 +13,7 @@ namespace EDApp
             DirConfig config = new DirConfig();
             String photoDir = config.getPhotoDir();
             String docDir = config.getDocDir();
+            Console.WriteLine(photoDir + " " + docDir);
             if (photoDir != "" && docDir != "")
             
                 Application.Run(new mainProgram(photoDir, docDir));
