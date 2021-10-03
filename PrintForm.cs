@@ -14,7 +14,9 @@ namespace EDApp
         private ToolStripButton closeButton = new ToolStripButton();
         //Generate ToolStrip to reconfig the ToolStrip buttons for printer
         private ToolStrip toolBar = new ToolStrip();
+        //New print button variable to add new action to the button
         private ToolStripButton printButton = new ToolStripButton();
+        //Variable to store installed printers in the system
         private ToolStripComboBox printersList = new ToolStripComboBox();
     
         private PrintPreviewDialog printPreview = new PrintPreviewDialog();
@@ -169,7 +171,7 @@ namespace EDApp
             //set location and font for Address value
             valueAddress.Location = new Point(520, 449);
             valueAddress.Text = "Testing Address";
-            valueAddress.MaximumSize = new Size (250, 50);
+            valueAddress.MaximumSize = new Size (200, 50);
             valueAddress.AutoSize = true;
             valueAddress.Font = new System.Drawing.Font("Century Gothic", 15);
             valueAddress.Visible = true;
@@ -234,16 +236,18 @@ namespace EDApp
         {
             
             
-            
+            //Find the default control of the print preview dialogue
             foreach (Control control in printPreview.Controls)
             {
                 Console.WriteLine(control.Name);
+                //Get the exact name of the control we need
                 if (control.Name.Equals("toolStrip1"))
                     toolBar = control as ToolStrip;
             }
+            //Add installed printers to the newly created control
             toolBar.Items.Add(printersList);
 
-            
+            //Find the two buttons from the tool bar to add new action to add new actions to them
             foreach (ToolStripItem item in toolBar.Items)
             {
                 Console.WriteLine(item.Name);
@@ -258,7 +262,7 @@ namespace EDApp
                 }
             }
 
-            //getPrintArea(this.printPanel);
+            
             printPreview.Document = printDoc;
             printDoc.PrintPage += new PrintPageEventHandler(printDoc_PrintPage);
             printPreview.UseAntiAlias = true;
@@ -275,25 +279,36 @@ namespace EDApp
             this.Visible = false;
         }
 
+        //Print page setup, print strings instead of the form
         private void printDoc_PrintPage(object sender, PrintPageEventArgs e)
         {
+            Graphics graphics = e.Graphics;
+
+            //Set font for the print
             Font font_bold = new System.Drawing.Font("Century Gothic", 15, FontStyle.Bold);
             Font font = new System.Drawing.Font("Century Gothic", 15, FontStyle.Regular);
+
+            //Calculate string size
+            
+
+            //Color the string
             Brush blackBrush = new SolidBrush(Color.Black);
-            Graphics graphics = e.Graphics;
-            Rectangle printPage = e.PageBounds;
-            graphics.DrawString("Employee ID:", font_bold, blackBrush, lblID.Location.X, lblID.Location.Y);
-            graphics.DrawString(valueID.Text, font, blackBrush, valueID.Location.X, valueID.Location.Y);
-            graphics.DrawString("Name:" ,font_bold, blackBrush, lblName.Location.X, lblName.Location.Y);
-            graphics.DrawString(valueName.Text, font, blackBrush, valueName.Location.X, valueName.Location.Y);
-            graphics.DrawString("Gender:", font_bold, blackBrush, lblGender.Location.X, lblGender.Location.Y);
-            graphics.DrawString(valueGender.Text, font, blackBrush, valueGender.Location.X, valueGender.Location.Y);
-            graphics.DrawString("DOB", font_bold, blackBrush, lblDOB.Location.X, lblDOB.Location.Y);
-            graphics.DrawString(valueDOB.Text, font, blackBrush, valueDOB.Location.X, valueDOB.Location.Y);
-            graphics.DrawString("Address", font_bold, blackBrush, lblAddress.Location.X, lblAddress.Location.Y);
-            graphics.DrawString(valueAddress.Text, font, blackBrush, valueAddress.Location.X, valueAddress.Location.Y);
-            graphics.DrawString("Postcode", font_bold, blackBrush, lblPcode.Location.X, lblPcode.Location.Y);
-            graphics.DrawString(valuePcode.Text, font, blackBrush, valuePcode.Location.X, valuePcode.Location.Y);
+            
+            RectangleF printPage = e.PageBounds;
+
+            //Drawing the print page
+            graphics.DrawString("Employee ID:", font_bold, blackBrush, new RectangleF(lblID.Location, lblID.Size));
+            graphics.DrawString(valueID.Text, font, blackBrush, new RectangleF(valueID.Location, valueID.Size));
+            graphics.DrawString("Name:" ,font_bold, blackBrush, new RectangleF(lblName.Location, lblName.Size));
+            graphics.DrawString(valueName.Text, font, blackBrush, new RectangleF(valueName.Location, valueName.Size));
+            graphics.DrawString("Gender:", font_bold, blackBrush, new RectangleF(lblGender.Location, lblGender.Size));
+            graphics.DrawString(valueGender.Text, font, blackBrush, new RectangleF(valueGender.Location, valueGender.Size));
+            graphics.DrawString("DOB", font_bold, blackBrush, new RectangleF(lblDOB.Location, lblDOB.Size));
+            graphics.DrawString(valueDOB.Text, font, blackBrush, new RectangleF(valueDOB.Location, valueDOB.Size));
+            graphics.DrawString("Address", font_bold, blackBrush, new RectangleF(lblAddress.Location, lblAddress.Size));
+            graphics.DrawString(valueAddress.Text, font, blackBrush, new RectangleF(valueAddress.Location, valueAddress.Size));
+            graphics.DrawString("Postcode", font_bold, blackBrush, new RectangleF(lblPcode.Location, lblPcode.Size));
+            graphics.DrawString(valuePcode.Text, font, blackBrush, new RectangleF(valuePcode.Location, valuePcode.Size));
             btmPhoto = new Bitmap(empPhoto.Image, empPhoto.Size);
             graphics.DrawImage(btmPhoto, empPhoto.Location.X, empPhoto.Location.Y);            
         }
@@ -305,6 +320,8 @@ namespace EDApp
         //    panel.DrawToBitmap(memoryImage, new Rectangle(0, 0, panel.Width, panel.Height));
         //}
 
+
+        //Close the preview after printing
         private void printButton_Click(object sender, EventArgs e)
         {
             Console.WriteLine("Close clicked");
@@ -313,6 +330,7 @@ namespace EDApp
             closeButton.PerformClick();
         }
 
+        //Change the target printer to the selected option
         private void printersList_SelectionChanged(object sender, System.EventArgs e)
         {
             if (printersList.SelectedIndex != -1)
