@@ -29,8 +29,9 @@ namespace EDApp{
         //Image upload
         public Image browseUpload(String dir, String empid)
         {
-            using(OpenFileDialog dialog = new OpenFileDialog() { Filter = "Image files(*.jpg;*.jpeg)|*.jpg;*.jpeg*", Multiselect = false })
+            using(OpenFileDialog dialog = new OpenFileDialog() { Filter = "Image files(*.jpg;*.jpeg;*png)|*.jpg;*.jpeg*;*.png*", Multiselect = false, Title = "Upload Employee's Image" })
             {
+            
                if(dialog.ShowDialog() == DialogResult.OK)
                {
                    photo = Image.FromFile(dialog.FileName);
@@ -47,7 +48,7 @@ namespace EDApp{
         public int docsUpload(String dir, String empid)
         {
             int docsCount = 0;
-            using(OpenFileDialog dialog = new OpenFileDialog() { Filter = "PDF Files (*.pdf)|*.pdf", Multiselect = true })
+            using(OpenFileDialog dialog = new OpenFileDialog() { Filter = "PDF Files (*.pdf)|*.pdf", Multiselect = true, Title = "Upload Employee's Documents" })
             {
                if(dialog.ShowDialog() == DialogResult.OK)
                {
@@ -70,7 +71,7 @@ namespace EDApp{
         public String docUpload(String dir, String empid)
         {
             String path = "";
-            using(OpenFileDialog dialog = new OpenFileDialog() { Filter = "PDF Files (*.pdf)|*.pdf", Multiselect = true })
+            using(OpenFileDialog dialog = new OpenFileDialog() { Filter = "PDF Files (*.pdf)|*.pdf", Multiselect = false, Title = "Upload Employee's Document" })
             {
                if(dialog.ShowDialog() == DialogResult.OK)
                {

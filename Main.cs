@@ -18,6 +18,7 @@ namespace EDApp{
         private String docDir = "";
         //ID variables to handle photo upload
         private String id = "";
+        private String name="";
         //Int variables to count documents
         private int docCount = 0;
         //Generating form text box for input
@@ -354,6 +355,7 @@ namespace EDApp{
             txbPhoto.Size = new Size(250,20);
             txbPhoto.Enter += (s, e) => {txbPhoto.Parent.Focus(); };
             txbPhoto.ReadOnly = true;
+            txbPhoto.Click += (s, e) => {System.Diagnostics.Process.Start("explorer.exe", photoDir);};
 
             //Document
             lblDoc.Text = "Document";
@@ -364,12 +366,14 @@ namespace EDApp{
             txbDoc.Size = new Size(250,20);
             txbDoc.ReadOnly = true;
             txbDoc.Enter += (s, e) => {txbDoc.Parent.Focus(); };
+            txbDoc.Click += (s, e) => {System.Diagnostics.Process.Start("explorer.exe", docDir);};
 
             //Photo box
             empPhoto.Location = new Point(600,52);
             empPhoto.Size = new Size(120, 120);
             empPhoto.BorderStyle = BorderStyle.Fixed3D;
             empPhoto.SizeMode = PictureBoxSizeMode.StretchImage;
+            empPhoto.Click += (s, e) => {btnBrowse.PerformClick();};
             
             //Search box for view sub panel
             txbSearch.Location = new Point(20,50);
@@ -507,8 +511,8 @@ namespace EDApp{
                 
                 try
                 {
-                    File.Delete(photoDir+"\\"+this.id+".png");
-                    File.Move(photoDir+"\\"+this.id+"_new.png", photoDir+"\\"+this.id+".png");
+                    File.Delete(photoDir+"\\"+this.name+".png");
+                    File.Move(photoDir+"\\"+this.name+"_new.png", photoDir+"\\"+this.name+".png");
                 }
                 catch(FileNotFoundException)
                 {
@@ -597,9 +601,8 @@ namespace EDApp{
                 btnUpdate.Visible = false;
                 btnAdd.Visible = true;
                 txbID.ReadOnly = false;
-                this.id = txbID.Text;
                 try{
-                    File.Move(docDir+"\\"+this.id+"_new.pdf", docDir+"\\"+this.id+".pdf");
+                    File.Move(docDir+"\\"+this.name+"_new.pdf", docDir+"\\"+this.name+".pdf");
                 }
                 catch(FileNotFoundException)
                 {
@@ -613,12 +616,12 @@ namespace EDApp{
                     if(ex.Message.Contains("exists"))
                     {
                         
-                        File.Delete(docDir+"\\"+this.id+".pdf");
-                        File.Move(docDir+"\\"+this.id+"_new.pdf", docDir+"\\"+this.id+".pdf");
+                        File.Delete(docDir+"\\"+this.name+".pdf");
+                        File.Move(docDir+"\\"+this.name+"_new.pdf", docDir+"\\"+this.name+".pdf");
                     }
                 }
                 try{
-                    File.Move(photoDir+"\\"+this.id+"_new.png", photoDir+"\\"+this.id+".png");
+                    File.Move(photoDir+"\\"+this.name+"_new.png", photoDir+"\\"+this.name+".png");
                 }
                 catch(FileNotFoundException)
                 {
@@ -632,8 +635,8 @@ namespace EDApp{
                     if(ex.Message.Contains("exists"))
                     {
                         
-                        File.Delete(photoDir+"\\"+this.id+".png");
-                        File.Move(photoDir+"\\"+this.id+"_new.png", photoDir+"\\"+this.id+".png");
+                        File.Delete(photoDir+"\\"+this.name+".png");
+                        File.Move(photoDir+"\\"+this.name+"_new.png", photoDir+"\\"+this.name+".png");
                     }
                 }
                 clearTextbox("clean");
@@ -661,7 +664,7 @@ namespace EDApp{
                         clearTextbox("clean");
                         txbID.ReadOnly = false;
                         try{
-                            File.Delete(photoDir+"\\"+this.id+".png");
+                            File.Delete(photoDir+"\\"+this.name+".png");
                         }
                         catch(FileNotFoundException)
                         {
@@ -720,7 +723,7 @@ namespace EDApp{
 
             try
             {
-                File.Delete(photoDir+"\\"+this.id+"_new.png");
+                File.Delete(photoDir+"\\"+this.name+"_new.png");
             }
             catch(FileNotFoundException)
             {
@@ -739,10 +742,10 @@ namespace EDApp{
             if (txbID.Text != "")
             {
                 System.Drawing.Image newImage;
-                newImage = upload.browseUpload(photoDir, txbID.Text+"_new");
+                newImage = upload.browseUpload(photoDir, this.name+"_new");
                 if (newImage != null)
                 {
-                    txbPhoto.Text = photoDir + "\\" + txbID.Text+".png";
+                    txbPhoto.Text = photoDir + "\\" + this.name+".png";
                     empPhoto.Image = newImage;
                 }
                 else
@@ -764,10 +767,10 @@ namespace EDApp{
             FileHandler upload = new FileHandler();
             if (txbID.Text != "")
             {
-                String newDoc = upload.docUpload(docDir, txbID.Text+"_new");
+                String newDoc = upload.docUpload(docDir, this.name+"_new");
                 if (newDoc != "")
                 {
-                    txbDoc.Text = docDir + "\\" + txbID.Text+".pdf";
+                    txbDoc.Text = docDir + "\\" + this.name+".pdf";
                     //For multiple docs
                     //this.docCount = docCount + newDoc;
                     //txbDoc.Text = docCount.ToString();
@@ -894,8 +897,8 @@ namespace EDApp{
 
                 try
                 {
-                    File.Delete(photoDir + "\\"+ this.id+"_new.png");
-                    File.Delete(docDir + "\\"+ this.id+"_new.pdf");
+                    File.Delete(photoDir + "\\"+ this.name+"_new.png");
+                    File.Delete(docDir + "\\"+ this.name+"_new.pdf");
                 }
                 
                 catch (FileNotFoundException)
@@ -931,6 +934,7 @@ namespace EDApp{
             txbPhoto.Text = Convert.ToString(gridViewTable.CurrentRow.Cells[7].Value);
             txbDoc.Text = Convert.ToString(gridViewTable.CurrentRow.Cells[8].Value);
             this.id = txbID.Text;
+            this.name = txbFname.Text + "_" +txbLname.Text;
             
             if (e.RowIndex != -1)
             {
