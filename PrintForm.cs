@@ -16,13 +16,14 @@ namespace EDApp
         private ToolStrip toolBar = new ToolStrip();
         //New print button variable to add new action to the button
         private ToolStripButton printButton = new ToolStripButton();
+        
         //Variable to store installed printers in the system
         private ToolStripComboBox printersList = new ToolStripComboBox();
     
         private PrintPreviewDialog printPreview = new PrintPreviewDialog();
         private PrintDocument printDoc = new PrintDocument();
         private Panel printPanel;
-        private Label lblID, lblName, lblAddress, lblPcode, lblDOB, lblGender, lblDoc;
+        private Label lblID, lblName, lblAddress, lblPcode, lblDOB, lblGender, lblDoc,lblTitle;
         private Label valueID, valueName, valueAddress, valuePcode, valueDOB, valueGender, valueDoc;
         private Bitmap btmPhoto;
 
@@ -48,6 +49,7 @@ namespace EDApp
         // create lables
         private void initializeElements()
         {
+            lblTitle = new Label();
             lblID = new Label();
             lblName = new Label();
             lblAddress = new Label();
@@ -79,7 +81,7 @@ namespace EDApp
             Console.WriteLine("Cool!");
             
             //set the form width & height 
-            this.Width = 768;
+            this.Width = 825;
             this.Height = 1024;
             this.BackColor = Color.White;
 
@@ -88,16 +90,26 @@ namespace EDApp
 
             //create the main panel
             printPanel = new Panel();
-            printPanel.Width = 768;
-            printPanel.Height = 824;
+            printPanel.Width = 825;
+            printPanel.Height = 600;
             printPanel.BackColor = Color.White;
             printPanel.Visible = true;
 
             //add print panel in the frame 
             this.Controls.Add(printPanel);
 
+            // title for employee information details
+            lblTitle.Location = new Point(0, 50);
+            lblTitle.Text = "Employee Information Details";
+            lblTitle.Size = new Size(825, 50);
+            lblTitle.Font = new System.Drawing.Font("Century Gothic", 22, FontStyle.Bold);
+            lblTitle.TextAlign = ContentAlignment.MiddleCenter;
+            lblTitle.BackColor = Color.DodgerBlue;
+            lblTitle.ForeColor = Color.White;
+            lblTitle.Visible = true;
+
             //set location and font for Employee ID label
-            lblID.Location = new Point(320, 250);
+            lblID.Location = new Point(320, 150);
             lblID.Text = "Employee ID: ";
             lblID.MaximumSize = new Size(150, 50);
             lblID.AutoSize = true;
@@ -105,15 +117,15 @@ namespace EDApp
             lblID.Visible = true;
 
             //set location and font for Employee ID value
-            valueID.Location = new Point(520, 250);
+            valueID.Location = new Point(520, 150);
             valueID.Text = "Testing ID";
-            valueID.MaximumSize = new Size(150, 50);
-            valueID.AutoSize = true;
+            valueID.Size = new Size(150, 50);
+            //valueID.AutoSize = true;
             valueID.Font = new System.Drawing.Font("Century Gothic", 15);
             valueID.Visible = true;
 
             //set location and font for Name label
-            lblName.Location = new Point(320, 300);
+            lblName.Location = new Point(320, 220);
             lblName.Text = "Name: ";
             lblName.MaximumSize = new Size (150, 50);
             lblName.AutoSize = true;
@@ -121,15 +133,15 @@ namespace EDApp
             lblName.Visible = true;
 
             //set location and font for Name value
-            valueName.Location = new Point(520, 300);
+            valueName.Location = new Point(520, 220);
             valueName.Text = "Testing Name";
-            valueName.MaximumSize = new Size (200, 20);
-            valueName.AutoSize = true;
+            valueName.Size = new Size (200, 20);
+           // valueName.AutoSize = true;
             valueName.Font = new System.Drawing.Font("Century Gothic", 15);
             valueName.Visible = true;
 
             //set location and font for Gender label
-            lblGender.Location = new Point(320, 350);
+            lblGender.Location = new Point(320, 290);
             lblGender.Text = "Gender: ";
             lblGender.MaximumSize = new Size (150, 50);
             lblGender.AutoSize = true;
@@ -137,15 +149,15 @@ namespace EDApp
             lblGender.Visible = true;
             
             //set location and font for Gender value
-            valueGender.Location = new Point(520, 349);
+            valueGender.Location = new Point(520, 289);
             valueGender.Text = "Female";
-            valueGender.MaximumSize = new Size (150, 50);
-            valueGender.AutoSize = true;
+            valueGender.Size = new Size (150, 50);
+            //valueGender.AutoSize = true;
             valueGender.Font = new System.Drawing.Font("Century Gothic", 15);
             valueGender.Visible = true;
 
             //set location and font for DOB label
-            lblDOB.Location = new Point(320, 400);
+            lblDOB.Location = new Point(320, 360);
             lblDOB.Text = "DOB: ";
             lblDOB.MaximumSize = new Size (150, 50);
             lblDOB.AutoSize = true;
@@ -153,15 +165,15 @@ namespace EDApp
             lblDOB.Visible = true;
 
             //set location and font for DOB value
-            valueDOB.Location = new Point(520, 400);
+            valueDOB.Location = new Point(520, 360);
             valueDOB.Text = "21/Jan/1996";
-            valueDOB.MaximumSize = new Size (150, 50);
-            valueDOB.AutoSize = true;
+            valueDOB.Size = new Size (150, 50);
+            //valueDOB.AutoSize = true;
             valueDOB.Font = new System.Drawing.Font("Century Gothic", 15);
             valueDOB.Visible = true;
 
             //set location and font for Address label
-            lblAddress.Location = new Point(320, 450);
+            lblAddress.Location = new Point(320, 430);
             lblAddress.Text = "Address: ";
             lblAddress.MaximumSize = new Size (150, 50);
             lblAddress.AutoSize = true;
@@ -169,10 +181,10 @@ namespace EDApp
             lblAddress.Visible = true;
 
             //set location and font for Address value
-            valueAddress.Location = new Point(520, 449);
+            valueAddress.Location = new Point(520, 430);
             valueAddress.Text = "Testing Address";
-            valueAddress.MaximumSize = new Size (200, 50);
-            valueAddress.AutoSize = true;
+            valueAddress.Size = new Size (200, 50);
+            //valueAddress.AutoSize = true;
             valueAddress.Font = new System.Drawing.Font("Century Gothic", 15);
             valueAddress.Visible = true;
 
@@ -187,28 +199,30 @@ namespace EDApp
             //set location and font for Postcode value
             valuePcode.Location = new Point(520, 500);
             valuePcode.Text = "Testing Postcode";
-            valuePcode.MaximumSize = new Size (150, 50);
-            valuePcode.AutoSize = true;
+            valuePcode.Size = new Size (150, 50);
+            //valuePcode.AutoSize = true;
             valuePcode.Font = new System.Drawing.Font("Century Gothic", 15);
             valuePcode.Visible = true;
 
             //set location for employee profile picture
-            empPhoto.Location = new Point(30,260);
+            empPhoto.Location = new Point(30,150);
             empPhoto.Size = new Size(250, 250);
             empPhoto.BorderStyle = BorderStyle.Fixed3D;
             empPhoto.SizeMode = PictureBoxSizeMode.StretchImage;
             empPhoto.Image = empPhoto.InitialImage;
 
             //set location for print button 
-            btnPrint.Location = new Point(520, 850);
+            btnPrint.Location = new Point(500, 680);
             btnPrint.Text = "Print";
-            btnPrint.MaximumSize = new Size(80,25);
+            btnPrint.Size = new Size(100,25);
+            btnPrint.Font = new System.Drawing.Font("Century Gothic", 13);
             btnPrint.Click += new System.EventHandler(btnPrintClick);
             
 
-            btnCancel.Location = new Point(620, 850);
+            btnCancel.Location = new Point(620, 680);
             btnCancel.Text = "Cancel";
-            btnCancel.Size = new Size(80,25);
+            btnCancel.Size = new Size(100,25);
+            btnCancel.Font = new System.Drawing.Font("Century Gothic", 13);
             btnCancel.Click += new System.EventHandler(btnCancelClick);
             
             
@@ -226,6 +240,7 @@ namespace EDApp
             printPanel.Controls.Add(lblPcode);
             printPanel.Controls.Add(valuePcode);
             printPanel.Controls.Add(empPhoto);
+            printPanel.Controls.Add(lblTitle);
             
             this.Controls.Add(btnPrint);
             this.Controls.Add(btnCancel);
@@ -282,6 +297,8 @@ namespace EDApp
         //Print page setup, print strings instead of the form
         private void printDoc_PrintPage(object sender, PrintPageEventArgs e)
         {
+            
+            printersList.Size= new System.Drawing.Size(180, 30);
             Graphics graphics = e.Graphics;
 
             //Set font for the print
@@ -310,7 +327,18 @@ namespace EDApp
             graphics.DrawString("Postcode", font_bold, blackBrush, new RectangleF(lblPcode.Location, lblPcode.Size));
             graphics.DrawString(valuePcode.Text, font, blackBrush, new RectangleF(valuePcode.Location, valuePcode.Size));
             btmPhoto = new Bitmap(empPhoto.Image, empPhoto.Size);
-            graphics.DrawImage(btmPhoto, empPhoto.Location.X, empPhoto.Location.Y);            
+            graphics.DrawImage(btmPhoto, empPhoto.Location.X, empPhoto.Location.Y);    
+
+            // drawing for title 
+            SolidBrush titleBackgroundBrush = new SolidBrush(Color.DodgerBlue);
+            SolidBrush  titleTextBrush = new SolidBrush(Color.White);
+            RectangleF rectTitle = new Rectangle(lblTitle.Location, lblTitle.Size);
+            graphics.FillRectangle(titleBackgroundBrush, rectTitle);
+            StringFormat sf = new StringFormat();
+            sf.LineAlignment = StringAlignment.Center;
+            sf.Alignment = StringAlignment.Center;
+            graphics.DrawString(lblTitle.Text, lblTitle.Font, titleTextBrush, rectTitle,sf);
+        
         }
 
         // set printing area
