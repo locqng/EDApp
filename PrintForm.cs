@@ -299,6 +299,7 @@ namespace EDApp
         {
             
             printersList.Size= new System.Drawing.Size(180, 30);
+            closeButton.Alignment = System.Windows.Forms.ToolStripItemAlignment.Right;
             Graphics graphics = e.Graphics;
 
             //Set font for the print
