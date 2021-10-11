@@ -250,7 +250,7 @@ namespace EDApp{
             mnuEmp.Click += new System.EventHandler(mnuEmp_Click);
 
             mnuUnit = new ToolStripMenuItem("Unit");
-            //mnuUnit.Click += new System.EventHandler(mnuUnit_Click);
+            mnuUnit.Click += new System.EventHandler(mnuUnit_Click);
             
             ((ToolStripDropDownMenu)(mnuSelectTable.DropDown)).ShowImageMargin = false;
             //((ToolStripDropDownMenu)(mnuSelectTable.DropDown)).ShowCheckMargin = true;
@@ -532,7 +532,10 @@ namespace EDApp{
         //create function when unit table is clicked    
         public void mnuUnit_Click(object sender, EventArgs e)
         {
-            
+            unitTableFormPanel();
+            viewPanel.Visible = false;
+            //createUnitTable();
+            //viewRecordsU("");
         }
 
         //create function when Back to Dashboard is clicked
@@ -1253,16 +1256,12 @@ namespace EDApp{
             msU.BackColor = Color.LightSkyBlue;
 
             mnuEmpU = new ToolStripMenuItem("Employee");
-            //mnuEmpU.Click += new System.EventHandler(mnuEmpU_Click);
+            mnuEmpU.Click += new System.EventHandler(mnuEmpU_Click);
 
             mnuUnitU = new ToolStripMenuItem("Unit");
-            //mnuUnitU.Click += new System.EventHandler(mnuUnitU_Click);
+            mnuUnitU.Click += new System.EventHandler(mnuUnitU_Click);
 
             ((ToolStripDropDownMenu)(mnuSelectTableU.DropDown)).ShowImageMargin = false;
-            //((ToolStripDropDownMenu)(mnuSelectTable.DropDown)).ShowCheckMargin = true;
-
-            // Assign the ToolStripMenuItem
-            //ms.MdiWindowListItem = mnuSelectTable;
 
             // Add the  ToolStripMenuItem to the MenuStrip.
             msU.Items.Add(mnuHomeU);
@@ -1359,8 +1358,6 @@ namespace EDApp{
 
             //unitViewPanel.Controls.Add(gridViewTableU);
 
-
-
             // adding function buttons in unit form panel
             unitFormPanel.Controls.Add(btnAddU);
             unitFormPanel.Controls.Add(btnDeleteU);
@@ -1375,6 +1372,21 @@ namespace EDApp{
         {
             selectPanel.Visible = true;
             unitViewPanel.Visible = false;
+        }
+
+        //create event handler for clicking employee menustrip item in unit table
+        private void mnuEmpU_Click(object sender, EventArgs e)
+        {
+            menuFrame();
+            createTable();
+            viewRecords("");
+            unitViewPanel.Visible = false;
+        }
+
+        // create event handler for clicking unit menustrip item
+        private void mnuUnitU_Click(object sender, EventArgs e)
+        {
+            unitViewPanel.Visible = true;
         }
  
     }
