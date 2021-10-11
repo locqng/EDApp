@@ -6,6 +6,7 @@ using System.Drawing;
 using MySql.Data.MySqlClient;
 using iTextSharp.text;
 using iTextSharp.text.pdf;
+using System.Drawing.Printing;
 
 
 namespace EDApp{
@@ -54,6 +55,8 @@ namespace EDApp{
         private Button btnPrintEmp = new Button();
         private Button btnempImg = new Button();
         private Button btnUnitImg = new Button();
+        private Button  btnPrintToExcel = new Button();
+       
              
         //Generating form labels
         private Label lblID = new Label();
@@ -71,6 +74,12 @@ namespace EDApp{
         private Label lblUnitTable = new Label();
         private Label lblbottom = new Label();
         private Label lbltop = new Label();
+
+        //create combobox for gender
+        ComboBox comboBoxGender = new ComboBox();  
+
+        //create combobox item for gender
+        string  selectedGender;
         
         // image 
         System.Drawing.Image empIconImg = System.Drawing.Image.FromFile( @"resources\emp.PNG" );
@@ -114,6 +123,9 @@ namespace EDApp{
 
         //gridview table for unit table
         private DataGridView gridViewTableU = new DataGridView();
+
+        //
+        private PrintDocument printDoc = new PrintDocument();
         
         //Constructor
         public mainProgram(String pD, String dD){
@@ -325,6 +337,13 @@ namespace EDApp{
             btnprintToPdf.Visible = true;
             btnprintToPdf.Click += new System.EventHandler(btnprintToPdfClick);
 
+            //print to excel button for employee list 
+            btnPrintToExcel.Location = new Point(540, 500);
+            btnPrintToExcel.Text = "Print to Excel";
+            btnPrintToExcel.Size = new Size(100,25);
+            btnPrintToExcel.Visible = true;
+            //btnPrintToExcel.Click += new System.EventHandler(btnPrintToExcelClick);
+
             //Print an individual employee
             btnPrintEmp.Location = new Point(570, 500);     
             btnPrintEmp.Text = "Print";
@@ -402,11 +421,26 @@ namespace EDApp{
             lblGender.Location = new Point(20,302);
             lblGender.Size = new Size(100,20);
             
-            txbGender.Location = new Point(120,300);
-            txbGender.Size = new Size(120,20);
-            txbGender.ReadOnly = true;
-            txbGender.Enter += (s, e) => {txbGender.Parent.Focus(); };
-            txbGender.Click += (s, e) => {txbGender.Text = genderChange(txbGender.Text);};
+            // txbGender.Location = new Point(120,300);
+            // txbGender.Size = new Size(120,20);
+            //txbGender.ReadOnly = true;
+            
+            // txbGender.Enter += (s, e) => {txbGender.Parent.Focus(); };
+            //txbGender.Click += (s, e) => {txbGender.Text = genderChange(txbGender.Text);};
+
+            comboBoxGender .Location = new System.Drawing.Point(120, 300);
+            comboBoxGender.Size = new System.Drawing.Size(120, 20);
+            comboBoxGender.BackColor = System.Drawing.Color.White;  
+            comboBoxGender.ForeColor = System.Drawing.Color.Black; 
+
+            comboBoxGender.Items.Add("Female");  
+            comboBoxGender.Items.Add("Male");  
+            comboBoxGender.Items.Add("Other");
+           
+            comboBoxGender.DropDownStyle = ComboBoxStyle.DropDownList; 
+
+            comboBoxGender.SelectedIndexChanged += new System.EventHandler(comboBoxGender_SelectedIndexChanged);
+        
 
             //Photo
             lblPhoto.Text = "Photo";
@@ -460,7 +494,7 @@ namespace EDApp{
             //Date Time Picker
             dobPicker.Location = new Point(120,260);
             dobPicker.Format = DateTimePickerFormat.Custom;
-            dobPicker.CustomFormat = "dd/MMM/yyyy";
+            dobPicker.CustomFormat = "dd/MM/yyyy";
             dobPicker.MinDate = new DateTime(1930, 01, 01);
             dobPicker.MaxDate = DateTime.Now;
 
@@ -498,7 +532,8 @@ namespace EDApp{
             formPanel.Controls.Add(txbAddress);
             formPanel.Controls.Add(txbPcode);
             formPanel.Controls.Add(dobPicker);
-            formPanel.Controls.Add(txbGender);
+            //formPanel.Controls.Add(txbGender);
+            formPanel.Controls.Add(comboBoxGender);
             formPanel.Controls.Add(txbPhoto);
             formPanel.Controls.Add(txbDoc);
 
@@ -524,6 +559,7 @@ namespace EDApp{
             viewPanel.Controls.Add(btnAddNew);
             //viewPanel.Controls.Add(btnExit);
             viewPanel.Controls.Add(btnprintToPdf);    
+            viewPanel.Controls.Add(btnPrintToExcel);
         }
 
         //create function when employee table is clicked
@@ -549,11 +585,24 @@ namespace EDApp{
             formPanel.Visible = false;
         }
         
+        //get selected gender
+        private void comboBoxGender_SelectedIndexChanged(object sender, EventArgs e)
+        {
+
+            if (comboBoxGender.SelectedIndex == -1) 
+            {
+                txbGender.Text = string.Empty;
+            } 
+            else 
+            {
+                txbGender.Text = comboBoxGender.SelectedItem.ToString();
+            }
+        }
+
         
         //Add button event handler
         private void btnAddClick(object sender, EventArgs e)
         {
-           
             if (string.IsNullOrEmpty(txbID.Text.Trim())||
                 string.IsNullOrEmpty(txbFname.Text.Trim())||
                 string.IsNullOrEmpty(txbLname.Text.Trim())|| 
@@ -625,11 +674,11 @@ namespace EDApp{
             
         }
 
-        private void txbGenderClick(object sender, EventArgs e)
-        {
-            Console.WriteLine("GENDER CLICK");
+        // private void txbGenderClick(object sender, EventArgs e)
+        // {
+        //     Console.WriteLine("GENDER CLICK");
             
-        }
+        // }
 
         //Search button event handler
         private void btnSearchClick(object sender, EventArgs e)
@@ -649,7 +698,7 @@ namespace EDApp{
         private void updateRecord()
         {
             if (string.IsNullOrEmpty(txbID.Text.Trim())||
-            string.IsNullOrEmpty(txbFname.Text.Trim()) ||
+                string.IsNullOrEmpty(txbFname.Text.Trim()) ||
              string.IsNullOrEmpty(txbLname.Text.Trim())|| 
              string.IsNullOrEmpty(txbPcode.Text.Trim())|| 
              string.IsNullOrEmpty(txbAddress.Text.Trim())|| 
@@ -965,7 +1014,7 @@ namespace EDApp{
                 gridViewTable.Columns[6].Width = 50;
                 gridViewTable.Columns[7].Width = 50;
                 gridViewTable.Columns[8].Width = 85;
-            
+
 
                 try
                 {
@@ -1017,6 +1066,8 @@ namespace EDApp{
                     formPanel.Show();      
                     gridViewTable.CurrentRow.Cells[6].Value = genderChange(txbGender.Text);
                     txbGender.Text = Convert.ToString(gridViewTable.CurrentRow.Cells[6].Value);
+                    comboBoxGender.SelectedItem = txbGender.Text;
+
                     updateRecord();
                     formPanel.Hide();
                     gridViewTable.CurrentCell = null;                   
@@ -1128,7 +1179,7 @@ namespace EDApp{
                         document.Close();
                         fileStream.Close();
                     }  
-                    MessageBox.Show("Print to PDF Successfully");
+                    MessageBox.Show("Save to PDF Successfully");
                 } 
             }
             catch (Exception ex)
@@ -1144,6 +1195,16 @@ namespace EDApp{
            saveToPDF();
 
         }
+
+        
+        //print to excel for all employees event handler
+        // private void btnPrintToExcelClick(object sender, EventArgs e)
+        // {
+           
+        // }
+
+
+
 
         //Change gender base on the current value
         private String genderChange(String gender)
