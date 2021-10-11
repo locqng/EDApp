@@ -101,7 +101,13 @@ namespace EDApp{
             this.Width = 800;
             this.Height = 600;
 
+            //Set the start position of the form to the center of the screen
             this.StartPosition = FormStartPosition.CenterScreen;
+
+            //disable resize for the form
+            this.FormBorderStyle = FormBorderStyle.FixedDialog;
+            this.MaximizeBox = false;
+            this.MinimizeBox = false;
 
             selectPanel = new Panel();
             selectPanel .Width = 800;
@@ -170,6 +176,11 @@ namespace EDApp{
 
             //Set the start position of the form to the center of the screen
             this.StartPosition = FormStartPosition.CenterScreen;
+
+            //disable resize for the form
+            this.FormBorderStyle = FormBorderStyle.FixedDialog;
+            this.MaximizeBox = false;
+            this.MinimizeBox = false;
             
             //Creating the main panel
             viewPanel = new Panel();
