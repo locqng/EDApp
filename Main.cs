@@ -92,7 +92,6 @@ namespace EDApp{
         //create label and textbox for unit table!!!
         private Label lblUnitCode = new Label();
         private Label lblUnitDes = new Label();
-        private Label lbltopU = new Label();
 
         private TextBox txbUnitDes = new TextBox();
         private TextBox txbUnitCode = new TextBox();
@@ -132,11 +131,6 @@ namespace EDApp{
             this.Height = 600;
 
             this.StartPosition = FormStartPosition.CenterScreen;
-            
-            //disable resize for the form
-            this.FormBorderStyle = FormBorderStyle.FixedDialog;
-            this.MaximizeBox = false;
-            this.MinimizeBox = false;
 
             selectPanel = new Panel();
             selectPanel .Width = 800;
@@ -222,10 +216,8 @@ namespace EDApp{
             this.Width = 800;
             this.Height = 600;
 
-            //disable resize for the form
-            this.FormBorderStyle = FormBorderStyle.FixedDialog;
-            this.MaximizeBox = false;
-            this.MinimizeBox = false;
+            //Set the start position of the form to the center of the screen
+            this.StartPosition = FormStartPosition.CenterScreen;
             
             //Creating the main panel
             viewPanel = new Panel();
@@ -1194,11 +1186,6 @@ namespace EDApp{
 
             //Set the start position of the form to the center of the screen
             this.StartPosition = FormStartPosition.CenterScreen;
-
-            //disable resize for the form
-            this.FormBorderStyle = FormBorderStyle.FixedDialog;
-            this.MaximizeBox = false;
-            this.MinimizeBox = false;
             
             //Creating the unitFormPanel
             unitFormPanel = new Panel();
@@ -1333,14 +1320,6 @@ namespace EDApp{
             btnBackU.Size = new Size(80,25);
             btnBackU.Click += new System.EventHandler(btnBackUClick);
 
-            //top background for form panel in unit table
-            lbltopU.Location = new Point(0,0);
-            lbltopU.Size = new Size(800,30);
-            lbltopU.BackColor = Color.LightSkyBlue;
-            lbltopU.Text = "Unit Information";
-            lbltopU.Font = new System.Drawing.Font("Arial", 11,FontStyle.Bold);
-            lbltopU.TextAlign = ContentAlignment.MiddleCenter;
-
 
             //Generate the grid view table for unit view panel
             gridViewTableU.Name = "unitDataTableGridView";
@@ -1360,8 +1339,6 @@ namespace EDApp{
 
             unitFormPanel.Controls.Add(lblUnitCode);
             unitFormPanel.Controls.Add(lblUnitDes);
-
-            unitFormPanel.Controls.Add(lbltopU);
 
             unitViewPanel.Controls.Add(txbUnitSearch);
             unitViewPanel.Controls.Add(btnUnitSearch);
