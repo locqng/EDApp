@@ -223,7 +223,7 @@ namespace EDApp{
             btnAdd.Click += new System.EventHandler(btnAddClick);
 
             //Clear button
-            btnClear.Location = new Point(120, 500);
+            btnClear.Location = new Point(470, 500);
             btnClear.Text = "Clear";
             btnClear.Size = new Size(80,25);
             btnClear.Visible = true;
@@ -237,7 +237,7 @@ namespace EDApp{
             btnUpdate.Click += (s, e) => {updateRecord(); };
 
             //Delete button 
-            btnDelete.Location = new Point(220,500);
+            btnDelete.Location = new Point(120,500);
             btnDelete.Text = "Delete";
             btnDelete.Size = new Size(80,25);
             btnDelete.Click += new System.EventHandler(btnDeleteClick);
@@ -251,7 +251,7 @@ namespace EDApp{
             btnAddNew.Click += new System.EventHandler(btnAddNewClick);
 
             //Go back button 
-            btnBack.Location = new Point(570, 500);
+            btnBack.Location = new Point(670, 500);
             btnBack.Text = "Cancel";
             btnBack.Size = new Size(80,25);
             btnBack.Click += new System.EventHandler(btnBackClick);
@@ -264,7 +264,7 @@ namespace EDApp{
             btnprintToPdf.Click += new System.EventHandler(btnprintToPdfClick);
 
             //Print an individual employee
-            btnPrintEmp.Location = new Point(670, 500);     
+            btnPrintEmp.Location = new Point(570, 500);     
             btnPrintEmp.Text = "Print";
             btnPrintEmp.Size = new Size(80,25);
             btnPrintEmp.Visible = true;
@@ -377,10 +377,10 @@ namespace EDApp{
             
             //Search box for view sub panel
             txbSearch.Location = new Point(20,50);
-            txbSearch.Size = new Size(250,25);
+            txbSearch.Size = new Size(640,25);
             txbSearch.KeyDown += App_KeyDown;
 
-            btnSearch.Location = new Point(280,49);
+            btnSearch.Location = new Point(686,49);
             btnSearch.Text = "Search";
             btnSearch.Font = new System.Drawing.Font("Arial", 10);
             btnSearch.Size = new Size(80,25);
