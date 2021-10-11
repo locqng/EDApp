@@ -111,6 +111,9 @@ namespace EDApp{
         private MenuStrip msU;
         private ToolStripMenuItem mnuSelectTableU,mnuHomeU;
         private ToolStripMenuItem mnuEmpU,mnuUnitU,mnuDashboardU;
+
+        //gridview table for unit table
+        private DataGridView gridViewTableU = new DataGridView();
         
         //Constructor
         public mainProgram(String pD, String dD){
@@ -196,8 +199,8 @@ namespace EDApp{
          public void btnUnitImgClick(object sender, EventArgs e)
         {
             unitTableFormPanel();
-           // createUnitTable();
-            //viewRecordsU("");
+            createUnitTable();
+            viewRecordsU("");
             selectPanel.Visible = false;
         }
 
@@ -534,8 +537,8 @@ namespace EDApp{
         {
             unitTableFormPanel();
             viewPanel.Visible = false;
-            //createUnitTable();
-            //viewRecordsU("");
+            createUnitTable();
+            viewRecordsU("");
         }
 
         //create function when Back to Dashboard is clicked
@@ -1207,40 +1210,6 @@ namespace EDApp{
             
             unitViewPanel.Visible = true;
 
-            //Setting labels and text boxes size and location in unit form panel
-            //Unit Code
-            lblUnitCode.Text = "Unit Code";
-            lblUnitCode.Location = new Point(20,62);
-            lblUnitCode.Size = new Size(100,20);
-    
-            txbUnitCode.Location = new Point(120,60);
-            txbUnitCode.Size = new Size(120,25);
-            
-            //unit Description 
-            lblUnitDes.Text = "Unit Name";
-            lblUnitDes.Location = new Point(20,102);
-            lblUnitDes.Size = new Size(100,20);
-            
-            txbUnitDes.Location = new Point(120,100);
-            txbUnitDes.Size = new Size(120,20);
-
-            //add new record button
-            btnUnitAddNew.Location = new Point(20, 500);
-            btnUnitAddNew.Text = "New Record";
-            btnUnitAddNew.Font = new System.Drawing.Font("Arial", 10);
-            btnUnitAddNew.Size = new Size(100,25);
-            btnUnitAddNew.Visible = true;
-            //btnUnitAddNew.Click += new System.EventHandler(btnUnitAddNewClick);
-
-            //print to pdf button
-            btnUnitprintToPdf.Location = new Point(670, 500);
-            btnUnitprintToPdf.Text = "Print to PDF";
-            btnUnitprintToPdf.Size = new Size(100,25);
-            btnUnitprintToPdf.Visible = true;
-           // btnUnitprintToPdf.Click += new System.EventHandler(btnUnitprintToPdfClick);
-
-            //setings for unit view panel 
-            
             // Create a MenuStrip & ToolStripMenuItem
             msU = new MenuStrip();
 
@@ -1277,6 +1246,31 @@ namespace EDApp{
 
             // Add the MenuStrip
             unitViewPanel.Controls.Add(msU);
+
+            //Setting labels and text boxes size and location 
+            //Unit Code
+            lblUnitCode.Text = "Unit Code";
+            lblUnitCode.Location = new Point(20,62);
+            lblUnitCode.Size = new Size(100,20);
+    
+            txbUnitCode.Location = new Point(120,60);
+            txbUnitCode.Size = new Size(120,25);
+            
+            //unit Description 
+            lblUnitDes.Text = "Unit Name";
+            lblUnitDes.Location = new Point(20,102);
+            lblUnitDes.Size = new Size(100,20);
+            
+            txbUnitDes.Location = new Point(120,100);
+            txbUnitDes.Size = new Size(120,20);
+
+            //add new record button
+            btnUnitAddNew.Location = new Point(20, 500);
+            btnUnitAddNew.Text = "New Record";
+            btnUnitAddNew.Font = new System.Drawing.Font("Arial", 10);
+            btnUnitAddNew.Size = new Size(100,25);
+            btnUnitAddNew.Visible = true;
+            btnUnitAddNew.Click += new System.EventHandler(btnUnitAddNewClick);
             
             //Search box for unit view panel
             txbUnitSearch.Location = new Point(20,50);
@@ -1319,7 +1313,7 @@ namespace EDApp{
             btnBackU.Location = new Point(670, 500);
             btnBackU.Text = "Cancel";
             btnBackU.Size = new Size(80,25);
-            //btnBackU.Click += new System.EventHandler(btnBackUClick);
+            btnBackU.Click += new System.EventHandler(btnBackUClick);
 
             //top background for form panel in unit table
             lbltopU.Location = new Point(0,0);
@@ -1330,14 +1324,14 @@ namespace EDApp{
             lbltopU.TextAlign = ContentAlignment.MiddleCenter;
 
 
-            // //Generate the grid view table for unit view panel
-            // gridViewTableU.Name = "unitDataTableGridView";
-            // gridViewTableU.Location = new Point(20,100);
-            // gridViewTableU.Size = new Size(750,380);
-            // gridViewTableU.ColumnHeadersDefaultCellStyle.BackColor = Color.Navy;
-            // gridViewTableU.ColumnHeadersDefaultCellStyle.ForeColor = Color.White;
-            // gridViewTableU.AllowUserToAddRows = false; 
-            // //gridViewTable.CellClick += gridViewTable_CellClick;
+            //Generate the grid view table for unit view panel
+            gridViewTableU.Name = "unitDataTableGridView";
+            gridViewTableU.Location = new Point(20,100);
+            gridViewTableU.Size = new Size(750,380);
+            gridViewTableU.ColumnHeadersDefaultCellStyle.BackColor = Color.Navy;
+            gridViewTableU.ColumnHeadersDefaultCellStyle.ForeColor = Color.White;
+            gridViewTableU.AllowUserToAddRows = false; 
+            //gridViewTable.CellClick += gridViewTable_CellClick;
 
             this.Controls.Add(unitFormPanel);
             this.Controls.Add(unitViewPanel);
@@ -1354,9 +1348,8 @@ namespace EDApp{
             unitViewPanel.Controls.Add(txbUnitSearch);
             unitViewPanel.Controls.Add(btnUnitSearch);
             unitViewPanel.Controls.Add(btnUnitAddNew);
-            unitViewPanel.Controls.Add(btnUnitprintToPdf);
 
-            //unitViewPanel.Controls.Add(gridViewTableU);
+            unitViewPanel.Controls.Add(gridViewTableU);
 
             // adding function buttons in unit form panel
             unitFormPanel.Controls.Add(btnAddU);
@@ -1388,6 +1381,88 @@ namespace EDApp{
         {
             unitViewPanel.Visible = true;
         }
+
+        //create event handler for clicking add new record button 
+        private void btnUnitAddNewClick(object sender, EventArgs e)
+        {
+            unitViewPanel.Visible = false;
+            unitFormPanel.Visible = true;
+        }
+
+        //create event handler for clicking cancel button
+        private void btnBackUClick(object sender, EventArgs e)
+        {
+            unitViewPanel.Visible = true;
+            unitFormPanel.Visible = false;
+        }
+        
+        // Execute SQL command for unit table 
+        private void sqlExecuteU (String sqlCommand)
+        {
+            CRUDforUnitTable.cmd = new MySqlCommand(sqlCommand, CRUDforUnitTable.con);
+            AddParametersU();
+            CRUDforUnitTable.PerformCRUD(CRUDforUnitTable.cmd);
+        }
+
+        //Create unit Table
+        private void createUnitTable()
+        {
+            try
+            {
+                CRUDforUnitTable.sql= "CREATE TABLE IF NOT EXISTS `unit`(unitCode char(20) not null, unitDescription char(255), primary key(unitCode));";
+                sqlExecuteU(CRUDforUnitTable.sql);  
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("Error Creating table" + ex.Message, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+        }
+
+        //Add Parameters for unit table
+        private void AddParametersU()
+        {
+            CRUDforUnitTable.cmd.Parameters.Clear();
+            CRUDforUnitTable.cmd.Parameters.AddWithValue("@unitCode", txbID.Text.Trim().ToString());
+            CRUDforUnitTable.cmd.Parameters.AddWithValue("@unitDescription", txbFname.Text.Trim().ToString());
+        } 
+
+        // //view records in unit table 
+        private void viewRecordsU(string search)
+        {
+            try{      
+                CRUDforUnitTable.sql = "SELECT unitCode, unitDescription FROM unit " +
+                            "WHERE unitCode LIKE @kwExact OR unitDescription LIKE @kw"; 
+                
+                string kw = String.Format("%{0}%", search);
+                
+                CRUDforUnitTable.cmd = new MySqlCommand(CRUDforUnitTable.sql, CRUDforUnitTable.con);
+                CRUDforUnitTable.cmd.Parameters.Clear();
+                CRUDforUnitTable.cmd.Parameters.AddWithValue("kw", kw);
+                CRUDforUnitTable.cmd.Parameters.AddWithValue("kwExact", search);
+
+
+                DataTable table = CRUDforUnitTable.PerformCRUD(CRUDforUnitTable.cmd);
+
+
+                gridViewTableU.MultiSelect = false;
+                gridViewTableU.AutoGenerateColumns = true;
+                //gridViewTable.SelectionMode = DataGridViewSelectionMode.FullRowSelect;
+                gridViewTableU.DataSource = table;
+
+                gridViewTableU.Columns[0].HeaderText = "Unit Code";
+                gridViewTableU.Columns[1].HeaderText = "Unit Name";
+
+                gridViewTableU.Columns[0].Width = 350;
+                gridViewTableU.Columns[1].Width = 350;             
+            }
+            catch (Exception)
+            {
+                MessageBox.Show("Generating table... Click search again for the new table", "ERROR", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                CRUDforUnitTable.sql= "CREATE TABLE IF NOT EXISTS `unit`(unitCode char(20) not null, unitDescription char(255), primary key(unitCode));";
+                sqlExecuteU(CRUDforUnitTable.sql);              
+            }
+        }
+
  
     }
         
