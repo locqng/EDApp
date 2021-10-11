@@ -32,7 +32,7 @@ namespace EDApp{
         private TextBox txbPhoto = new TextBox();
         private TextBox txbDoc = new TextBox();
         private TextBox txbSearch = new TextBox();
-        private Panel viewPanel, formPanel, selectPanel,unitFormPanel,unitViewPanel;
+        private Panel viewPanel, formPanel, selectPanel;
         //public Panel topPanel;
         private DataGridView gridViewTable = new DataGridView();
 
@@ -53,7 +53,7 @@ namespace EDApp{
         private Button btnprintToPdf = new Button();
         private Button btnPrintEmp = new Button();
         private Button btnempImg = new Button();
-        private Button btnUnitImg = new Button();
+        private Button btndeptImg = new Button();
              
         //Generating form labels
         private Label lblID = new Label();
@@ -68,53 +68,24 @@ namespace EDApp{
         
         private Label lblWelcome = new Label();
         private Label lblempTable = new Label();
-        private Label lblUnitTable = new Label();
+        private Label lbldeptTable = new Label();
         private Label lblbottom = new Label();
         private Label lbltop = new Label();
         
         // image 
         System.Drawing.Image empIconImg = System.Drawing.Image.FromFile( @"resources\emp.PNG" );
-        System.Drawing.Image UnitIconImg = System.Drawing.Image.FromFile( @"resources\department.png" );
+        System.Drawing.Image deptIconImg = System.Drawing.Image.FromFile( @"resources\department.png" );
         System.Drawing.Image homeImg = System.Drawing.Image.FromFile( @"resources\home.png");
         System.Drawing.Image empInfo = System.Drawing.Image.FromFile( @"resources\emp_detail.png");
         System.Drawing.Image emptyPhoto = System.Drawing.Image.FromFile( @"resources\profile.jpeg");
-        System.Drawing.Image settingImg = System.Drawing.Image.FromFile(@"resources\setting.png");
 
         //Gerating Image box for photos
         private PictureBox empPhoto = new PictureBox();
 
         //create menu bar 
         private MenuStrip ms;
-        private ToolStripMenuItem mnuSelectTable,mnuHome;
-        private ToolStripMenuItem mnuEmp,mnuUnit,mnuDashboard;
-
-        ///////////////////////////////////////////////////////////////////////////////////////////
-        //create label and textbox for unit table!!!
-        private Label lblUnitCode = new Label();
-        private Label lblUnitDes = new Label();
-
-        private TextBox txbUnitDes = new TextBox();
-        private TextBox txbUnitCode = new TextBox();
-        private TextBox  txbUnitSearch = new TextBox();
-
-        private Button btnUnitprintToPdf = new Button();
-        private Button btnUnitAddNew  = new Button();
-        private Button btnUnitSearch = new Button();
-        private Button btnSettingImg  = new Button();
-        private Button btnAddU  = new Button();
-        private Button btnClearU  = new Button();
-        private Button btnUpdateU  = new Button();
-        private Button btnDeleteU  = new Button();
-        private Button btnBackU = new Button();
-
-        //gridview table for unit table
-        private DataGridView gridViewTableU = new DataGridView();
-
-        ////create menu bar for unit table
-        private MenuStrip msU;
-        private ToolStripMenuItem mnuSelectTableU,mnuHomeU;
-        private ToolStripMenuItem mnuEmpU,mnuUnitU,mnuDashboardU;
-
+        private ToolStripMenuItem mnuSelectTable;
+        private ToolStripMenuItem mnuEmp,mnuDept;
         
         //Constructor
         public mainProgram(String pD, String dD){
@@ -137,6 +108,7 @@ namespace EDApp{
             selectPanel.Height = 580;
             selectPanel .Visible = true;
             
+
             lblWelcome.Text = "Desktop Application";
             lblWelcome.Font = new System.Drawing.Font("Arial", 24,FontStyle.Bold);
             lblWelcome.Location = new Point(0,0);
@@ -157,58 +129,38 @@ namespace EDApp{
             lblempTable.Size = new Size(160,30);
             lblempTable.TextAlign = ContentAlignment.MiddleCenter;
 
-            lblUnitTable.Text = "Unit";
-            lblUnitTable.Font = new System.Drawing.Font("Arial", 11,FontStyle.Bold);
-            lblUnitTable.Location = new Point(480,360);
-            lblUnitTable.Size = new Size(160,30);
-            lblUnitTable.TextAlign = ContentAlignment.MiddleCenter;
+            lbldeptTable.Text = "Department";
+            lbldeptTable.Font = new System.Drawing.Font("Arial", 11,FontStyle.Bold);
+            lbldeptTable.Location = new Point(480,360);
+            lbldeptTable.Size = new Size(160,30);
+            lbldeptTable.TextAlign = ContentAlignment.MiddleCenter;
 
             lblbottom.Location = new Point(0,520);
             lblbottom.Size = new Size(800,50);
             lblbottom.BackColor = Color.LightSkyBlue;
 
-            btnUnitImg .Location = new Point(480,200);
-            btnUnitImg .Size = new Size(160,160);
-            btnUnitImg .BackgroundImage = UnitIconImg;
-            btnUnitImg.Click += new System.EventHandler(btnUnitImgClick);
 
-            btnSettingImg .Location = new Point(733,470);
-            btnSettingImg .Size = new Size(50,50);
-            btnSettingImg .BackgroundImage = settingImg;
-            //btnSettingImg.Click += new System.EventHandler(btnSettingImgClick);
+            btndeptImg .Location = new Point(480,200);
+            btndeptImg .Size = new Size(160,160);
+            btndeptImg .BackgroundImage = deptIconImg;
+            //btndeptImg.Click += new System.EventHandler(btndeptImgClick);
 
             this.Controls.Add(selectPanel);
             selectPanel.Controls.Add(lblWelcome);
             selectPanel.Controls.Add(btnempImg);
-            selectPanel.Controls.Add(btnUnitImg );
+            selectPanel.Controls.Add(btndeptImg );
             selectPanel.Controls.Add(lblempTable);
-            selectPanel.Controls.Add(lblUnitTable);
+            selectPanel.Controls.Add(lbldeptTable);
             selectPanel.Controls.Add(lblbottom);
-            selectPanel.Controls.Add(btnSettingImg);
         }
 
          public void btnempImgClick(object sender, EventArgs e)
         {
             menuFrame();
-            createEmpTable();
+            createTable();
             viewRecords("");
             selectPanel.Visible = false;
         }
-
-
-         public void btnUnitImgClick(object sender, EventArgs e)
-        {
-            unitTableFormPanel();
-            createUnitTable();
-            viewRecordsU("");
-            selectPanel.Visible = false;
-        }
-
-        //setting directory in dashboard
-//          public void btnSettingImgClick(object sender, EventArgs e)
-//         {
-
-//         }
 
         public void menuFrame()
         {
@@ -232,43 +184,34 @@ namespace EDApp{
             formPanel.Font = new System.Drawing.Font("Arial", 10);
             formPanel.Visible = false;
 
-            // Create a MenuStrip & ToolStripMenuItem
+            // Create a MenuStrip control 
             ms = new MenuStrip();
-
-            mnuHome = new ToolStripMenuItem("Home");
-            mnuHome.Font = new System.Drawing.Font("Arial", 12,FontStyle.Bold);
-            ms.BackColor = Color.LightSkyBlue;
-
-            mnuDashboard =  new ToolStripMenuItem("Back to Dashboard");
-            mnuDashboard.Click += new System.EventHandler(mnuDashboard_Click);
-            
-            mnuSelectTable = new ToolStripMenuItem("Switch Table");
+            mnuSelectTable = new ToolStripMenuItem("Switch Table");
             mnuSelectTable.Font = new System.Drawing.Font("Arial", 12,FontStyle.Bold);
             ms.BackColor = Color.LightSkyBlue;
 
+
             mnuEmp = new ToolStripMenuItem("Employee");
-            mnuEmp.Click += new System.EventHandler(mnuEmp_Click);
-
-            mnuUnit = new ToolStripMenuItem("Unit");
-            mnuUnit.Click += new System.EventHandler(mnuUnit_Click);
-
+            mnuDept = new ToolStripMenuItem("Department");
+            
             ((ToolStripDropDownMenu)(mnuSelectTable.DropDown)).ShowImageMargin = false;
             //((ToolStripDropDownMenu)(mnuSelectTable.DropDown)).ShowCheckMargin = true;
 
-            // Assign the ToolStripMenuItem
-            //ms.MdiWindowListItem = mnuSelectTable;
+            mnuEmp.Click += new System.EventHandler(mnuEmp_Click);
+            //mnuDept.Click += new System.EventHandler(mnuDept_Click);
 
-            // Add the  ToolStripMenuItem to the MenuStrip.
-            ms.Items.Add(mnuHome);
-            ms.Items.Add(mnuSelectTable);
+            // Assign the ToolStripMenuItem that displays 
+            ms.MdiWindowListItem = mnuSelectTable;
+            
+            // Add the window ToolStripMenuItem to the MenuStrip.
+            ms.Items.Add(mnuSelectTable);
 
             // Dock the MenuStrip at the top of the form.
             ms.Dock = DockStyle.Top;
 
             //Add the ToolStripMenuItem to the MenuStrip
-            mnuHome.DropDownItems.Add(mnuDashboard);
-            mnuSelectTable.DropDownItems.Add(mnuEmp);
-            mnuSelectTable.DropDownItems.Add(mnuUnit);
+            mnuSelectTable.DropDownItems.Add(mnuEmp);
+            mnuSelectTable.DropDownItems.Add(mnuDept);
 
             // Add the MenuStrip
             viewPanel.Controls.Add(ms);
@@ -524,27 +467,15 @@ namespace EDApp{
         //create function when employee table is clicked
         public void mnuEmp_Click(object sender, EventArgs e)
         {
-            viewPanel.Visible = true;
-            selectPanel.Visible = false;
-            formPanel.Visible = false;
+            viewPanel.Visible =true;
         }
         
         //create function when employee table is clicked 
-        public void mnuUnit_Click(object sender, EventArgs e)
-        {
-            unitTableFormPanel();
-            viewPanel.Visible = false;
-            createUnitTable();
-            viewRecordsU("");
-        }
-
-        //create function when Back to Dashboard is clicked
-        public void mnuDashboard_Click(object sender, EventArgs e)
-        {
-            selectPanel.Visible = true;
-            viewPanel.Visible = false;
-            formPanel.Visible = false;
-        }
+        //need to be done for department table!!
+//         public void mnuDept_Click(object sender, EventArgs e)
+//         {
+            
+//         }
         
         
         //Add button event handler
@@ -906,8 +837,8 @@ namespace EDApp{
             
         }
 
-        // create employee table
-        private void createEmpTable()
+        // create table
+        private void createTable()
         {
             try
             {
@@ -1173,293 +1104,7 @@ namespace EDApp{
             CRUD.cmd.Parameters.AddWithValue("@gender", txbGender.Text.Trim().ToString());
             CRUD.cmd.Parameters.AddWithValue("@photo", txbPhoto.Text.Trim().ToString());
             CRUD.cmd.Parameters.AddWithValue("@document", txbDoc.Text.Trim().ToString());
-        }  
-
-        //The following code is for Unit Table!!!!!!!!!!!!!
-        //////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-
-        private void unitTableFormPanel()
-        {
-            //Set the form width & height 
-            this.Width = 800;
-            this.Height = 600;
-
-            //Set the start position of the form to the center of the screen
-            this.StartPosition = FormStartPosition.CenterScreen;
-            
-            //Creating the unitFormPanel
-            unitFormPanel = new Panel();
-            unitFormPanel.Width = 800;
-            unitFormPanel.Height = 580;
-            unitFormPanel.Font = new System.Drawing.Font("Arial", 10);
-            
-            unitFormPanel.Visible = false;
-
-            unitViewPanel = new Panel();
-            unitViewPanel.Width = 800;
-            unitViewPanel.Height = 580;
-            unitViewPanel.Font = new System.Drawing.Font("Arial", 10);
-            
-            unitViewPanel.Visible = true;
-
-            //Setting labels and text boxes size and location in unit form panel
-            //Unit Code
-            lblUnitCode.Text = "Unit Code";
-            lblUnitCode.Location = new Point(20,62);
-            lblUnitCode.Size = new Size(100,20);
-    
-            txbUnitCode.Location = new Point(120,60);
-            txbUnitCode.Size = new Size(120,25);
-            
-            //unit Description 
-            lblUnitDes.Text = "Unit Name";
-            lblUnitDes.Location = new Point(20,102);
-            lblUnitDes.Size = new Size(100,20);
-            
-            txbUnitDes.Location = new Point(120,100);
-            txbUnitDes.Size = new Size(120,20);
-
-            //add new record button
-            btnUnitAddNew.Location = new Point(20, 500);
-            btnUnitAddNew.Text = "New Record";
-            btnUnitAddNew.Font = new System.Drawing.Font("Arial", 10);
-            btnUnitAddNew.Size = new Size(100,25);
-            btnUnitAddNew.Visible = true;
-            btnUnitAddNew.Click += new System.EventHandler(btnUnitAddNewClick);
-
-            //print to pdf button
-            btnUnitprintToPdf.Location = new Point(670, 500);
-            btnUnitprintToPdf.Text = "Print to PDF";
-            btnUnitprintToPdf.Size = new Size(100,25);
-            btnUnitprintToPdf.Visible = true;
-           // btnUnitprintToPdf.Click += new System.EventHandler(btnUnitprintToPdfClick);
-
-            //setings for unit view panel 
-            
-            // Create a MenuStrip & ToolStripMenuItem
-            msU = new MenuStrip();
-
-            mnuHomeU = new ToolStripMenuItem("Home");
-            mnuHomeU.Font = new System.Drawing.Font("Arial", 12,FontStyle.Bold);
-            msU.BackColor = Color.LightSkyBlue;
-
-            mnuDashboardU =  new ToolStripMenuItem("Back to Dashboard");
-            mnuDashboardU.Click += new System.EventHandler(mnuDashboardU_Click);
-            
-            mnuSelectTableU = new ToolStripMenuItem("Switch Table");
-            mnuSelectTableU.Font = new System.Drawing.Font("Arial", 12,FontStyle.Bold);
-            msU.BackColor = Color.LightSkyBlue;
-
-            mnuEmpU = new ToolStripMenuItem("Employee");
-            mnuEmpU.Click += new System.EventHandler(mnuEmpU_Click);
-
-            mnuUnitU = new ToolStripMenuItem("Unit");
-            mnuUnitU.Click += new System.EventHandler(mnuUnitU_Click);
-
-            ((ToolStripDropDownMenu)(mnuSelectTableU.DropDown)).ShowImageMargin = false;
-            //((ToolStripDropDownMenu)(mnuSelectTable.DropDown)).ShowCheckMargin = true;
-
-            // Assign the ToolStripMenuItem
-            //ms.MdiWindowListItem = mnuSelectTable;
-
-            // Add the  ToolStripMenuItem to the MenuStrip.
-            msU.Items.Add(mnuHomeU);
-            msU.Items.Add(mnuSelectTableU);
-
-            // Dock the MenuStrip at the top of the form.
-            msU.Dock = DockStyle.Top;
-
-            //Add the ToolStripMenuItem to the MenuStrip
-            mnuHomeU.DropDownItems.Add(mnuDashboardU);
-            mnuSelectTableU.DropDownItems.Add(mnuEmpU);
-            mnuSelectTableU.DropDownItems.Add(mnuUnitU);
-
-            // Add the MenuStrip
-            unitViewPanel.Controls.Add(msU);
-            
-            //Search box for unit view panel
-            txbUnitSearch.Location = new Point(20,50);
-            txbUnitSearch.Size = new Size(250,25);
-            
-            // buttons for unit table
-            btnUnitSearch.Location = new Point(280,49);
-            btnUnitSearch.Text = "Search";
-            btnUnitSearch.Font = new System.Drawing.Font("Arial", 10);
-            btnUnitSearch.Size = new Size(80,25);
-            //btnUnitSearch.Click += new System.EventHandler(btnUnitSearchClick);
-
-            //Add button 
-            btnAddU.Location = new Point(20,500);
-            btnAddU.Text = "Add";
-            btnAddU.Size = new Size(80,25);
-            //btnAddU.Click += new System.EventHandler(btnAddUClick);
-
-            //Clear button
-            btnClearU.Location = new Point(120, 500);
-            btnClearU.Text = "Clear";
-            btnClearU.Size = new Size(80,25);
-            btnClearU.Visible = true;
-           // btnClearU.Click += new System.EventHandler(btnClearUClick);
-
-            //Update Button
-            btnUpdateU.Location = new Point(20,500);
-            btnUpdateU.Text = "Update";
-            btnUpdateU.Size = new Size(80,25);
-            btnUpdateU.Visible = true;
-            //btnUpdateU.Click += (s, e) => {updateRecord(); };
-
-            //Delete button 
-            btnDeleteU.Location = new Point(220,500);
-            btnDeleteU.Text = "Delete";
-            btnDeleteU.Size = new Size(80,25);
-            //btnDeleteU.Click += new System.EventHandler(btnDeleteUClick);
-
-            //Go back button 
-            btnBackU.Location = new Point(680, 500);
-            btnBackU.Text = "Cancel";
-            btnBackU.Size = new Size(80,25);
-            btnBackU.Click += new System.EventHandler(btnBackUClick);
-
-
-            //Generate the grid view table for unit view panel
-            gridViewTableU.Name = "unitDataTableGridView";
-            gridViewTableU.Location = new Point(20,100);
-            gridViewTableU.Size = new Size(750,380);
-            gridViewTableU.ColumnHeadersDefaultCellStyle.BackColor = Color.Navy;
-            gridViewTableU.ColumnHeadersDefaultCellStyle.ForeColor = Color.White;
-            gridViewTableU.AllowUserToAddRows = false; 
-            //gridViewTable.CellClick += gridViewTable_CellClick;
-
-            this.Controls.Add(unitFormPanel);
-            this.Controls.Add(unitViewPanel);
-
-
-            unitFormPanel.Controls.Add(txbUnitDes);
-            unitFormPanel.Controls.Add(txbUnitCode);
-
-            unitFormPanel.Controls.Add(lblUnitCode);
-            unitFormPanel.Controls.Add(lblUnitDes);
-
-            unitViewPanel.Controls.Add(txbUnitSearch);
-            unitViewPanel.Controls.Add(btnUnitSearch);
-            unitViewPanel.Controls.Add(btnUnitAddNew);
-            unitViewPanel.Controls.Add(btnUnitprintToPdf);
-
-            unitViewPanel.Controls.Add(gridViewTableU);
-
-
-
-            // adding function buttons in unit form panel
-            unitFormPanel.Controls.Add(btnAddU);
-            unitFormPanel.Controls.Add(btnDeleteU);
-            unitFormPanel.Controls.Add(btnUpdateU);
-            unitFormPanel.Controls.Add(btnBackU);
-            unitFormPanel.Controls.Add(btnClearU);
-
-        }
-
-        //create event handler for clicking dashboard menustrip item 
-        private void mnuDashboardU_Click(object sender, EventArgs e)
-        {
-            selectPanel.Visible = true;
-            unitViewPanel.Visible = false;
-        }
+        }     
+    }
         
-        // create event handler for clicking employee menustrip item
-        private void mnuEmpU_Click(object sender, EventArgs e)
-        {
-            menuFrame();
-            createEmpTable();
-            viewRecords("");
-            unitViewPanel.Visible = false;
-        }
-
-        // create event handler for clicking unit menustrip item
-        private void mnuUnitU_Click(object sender, EventArgs e)
-        {
-            unitViewPanel.Visible = true;
-        }
-        
-        //create event handler for clicking add new record button 
-        private void btnUnitAddNewClick(object sender, EventArgs e)
-        {
-            unitViewPanel.Visible = false;
-            unitFormPanel.Visible = true;
-        }
-        
-        private void btnBackUClick(object sender, EventArgs e)
-        {
-            unitViewPanel.Visible = true;
-            unitFormPanel.Visible = false;
-        }
-        
-        //Create unit Table
-        private void createUnitTable()
-        {
-            try
-            {
-                CRUDforUnitTable.sql= "CREATE TABLE IF NOT EXISTS `unit`(unitCode char(20) not null, unitDescription char(255), primary key(unitCode));";
-                sqlExecuteU(CRUDforUnitTable.sql);  
-            }
-            catch (Exception ex)
-            {
-                MessageBox.Show("Error Creating table" + ex.Message, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
-            }
-        }
-
-        // Execute SQL command for unit table 
-        private void sqlExecuteU (String sqlCommand)
-        {
-            CRUDforUnitTable.cmd = new MySqlCommand(sqlCommand, CRUDforUnitTable.con);
-            AddParametersU();
-            CRUDforUnitTable.PerformCRUD(CRUDforUnitTable.cmd);
-        }
-        
-        //Add Parameters for unit table
-        private void AddParametersU()
-        {
-            CRUDforUnitTable.cmd.Parameters.Clear();
-            CRUDforUnitTable.cmd.Parameters.AddWithValue("@unitCode", txbID.Text.Trim().ToString());
-            CRUDforUnitTable.cmd.Parameters.AddWithValue("@unitDescription", txbFname.Text.Trim().ToString());
-        } 
-
-        //view records in unit table 
-        private void viewRecordsU(string search)
-        {
-            try{      
-                CRUDforUnitTable.sql = "SELECT unitCode, unitDescription FROM unit " +
-                            "WHERE unitCode LIKE @kwExact OR unitDescription LIKE @kw"; 
-                
-                string kw = String.Format("%{0}%", search);
-                
-                CRUDforUnitTable.cmd = new MySqlCommand(CRUDforUnitTable.sql, CRUDforUnitTable.con);
-                CRUDforUnitTable.cmd.Parameters.Clear();
-                CRUDforUnitTable.cmd.Parameters.AddWithValue("kw", kw);
-                CRUDforUnitTable.cmd.Parameters.AddWithValue("kwExact", search);
-
-
-                DataTable table = CRUDforUnitTable.PerformCRUD(CRUDforUnitTable.cmd);
-
-
-                gridViewTableU.MultiSelect = false;
-                gridViewTableU.AutoGenerateColumns = true;
-                //gridViewTable.SelectionMode = DataGridViewSelectionMode.FullRowSelect;
-                gridViewTableU.DataSource = table;
-
-                gridViewTableU.Columns[0].HeaderText = "Unit Code";
-                gridViewTableU.Columns[1].HeaderText = "Unit Name";
-
-                gridViewTableU.Columns[0].Width = 350;
-                gridViewTableU.Columns[1].Width = 350;             
-            }
-            catch (Exception)
-            {
-                MessageBox.Show("Generating table... Click search again for the new table", "ERROR", MessageBoxButtons.OK, MessageBoxIcon.Information);
-                CRUDforUnitTable.sql= "CREATE TABLE IF NOT EXISTS `unit`(unitCode char(20) not null, unitDescription char(255), primary key(unitCode));";
-                sqlExecuteU(CRUDforUnitTable.sql);              
-            }
-        }
-        
-
-    }       
 }
