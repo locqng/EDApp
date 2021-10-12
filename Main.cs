@@ -2,12 +2,13 @@ using System;
 using System.IO;
 using System.Data;
 using System.Windows.Forms;
+using System.Collections.Generic;
 using System.Drawing;
 using MySql.Data.MySqlClient;
 using iTextSharp.text;
 using iTextSharp.text.pdf;
 using System.Drawing.Printing;
-
+using System.Linq;
 
 namespace EDApp{
 
@@ -134,6 +135,7 @@ namespace EDApp{
         public mainProgram(String pD, String dD){
             photoDir = pD;
             docDir = dD; 
+            menuFrame();
             startFrame();
         }
          
@@ -197,7 +199,7 @@ namespace EDApp{
             btnSettingImg .Location = new Point(733,470);
             btnSettingImg .Size = new Size(50,50);
             btnSettingImg .BackgroundImage = settingImg;
-            //btnSettingImg.Click += new System.EventHandler(btnSettingImgClick);
+            btnSettingImg.Click += new System.EventHandler(btnSettingImgClick);
 
 
             this.Controls.Add(selectPanel);
@@ -214,26 +216,31 @@ namespace EDApp{
 
          public void btnempImgClick(object sender, EventArgs e)
         {
-            menuFrame();
+            
+            
             createTable();
-            viewRecords("");
-            selectPanel.Visible = false;
+            viewRecords("Employee", "");
+            viewPanel.Visible = true;
+            
         }
 
          public void btnUnitImgClick(object sender, EventArgs e)
         {
-            unitTableFormPanel();
+            
             createUnitTable();
-            viewRecordsU("");
-            selectPanel.Visible = false;
+            viewRecords("Unit", "");
+            viewPanel.Visible = true;
+            
         }
 
 
        //setting directory in dashboard
-//          public void btnSettingImgClick(object sender, EventArgs e)
-//         {
-
-//         }
+        public void btnSettingImgClick(object sender, EventArgs e)
+        {
+            DirConfig config = new DirConfig();
+            photoDir = config.getPhotoDir();
+            docDir = config.getDocDir();
+        }
 
 
         public void menuFrame()
@@ -254,7 +261,7 @@ namespace EDApp{
             viewPanel = new Panel();
             viewPanel.Width = 800;
             viewPanel.Height = 580;
-            viewPanel.Visible = true;
+            viewPanel.Visible = false;
 
             //Creating the sub panel
             formPanel = new Panel();
@@ -362,7 +369,7 @@ namespace EDApp{
             btnPrintToExcel.Text = "Print to Excel";
             btnPrintToExcel.Size = new Size(100,25);
             btnPrintToExcel.Visible = true;
-            //btnPrintToExcel.Click += new System.EventHandler(btnPrintToExcelClick);
+            btnPrintToExcel.Click += new System.EventHandler(btnPrintToExcelClick);
 
             //Print an individual employee
             btnPrintEmp.Location = new Point(570, 500);     
@@ -585,24 +592,27 @@ namespace EDApp{
         //create function when employee table is clicked
         public void mnuEmp_Click(object sender, EventArgs e)
         {
+            selectPanel.Visible = false;
             viewPanel.Visible =true;
+            viewRecords("Employee", "");
+            
         }
         
         //create function when unit table is clicked    
         public void mnuUnit_Click(object sender, EventArgs e)
         {
-            unitTableFormPanel();
-            viewPanel.Visible = false;
-            createUnitTable();
-            viewRecordsU("");
+
+            selectPanel.Visible = false;
+            viewPanel.Visible =true;
+            viewRecords("Unit", "");
         }
 
         //create function when Back to Dashboard is clicked
         public void mnuDashboard_Click(object sender, EventArgs e)
         {
-            selectPanel.Visible = true;
             viewPanel.Visible = false;
             formPanel.Visible = false;
+            selectPanel.Visible = true;
         }
         
         //get selected gender
@@ -647,7 +657,7 @@ namespace EDApp{
             {
                 this.id = txbID.Text.Trim();
                 CRUD.sql = "INSERT INTO employee(empid, FirstName, LastName,address,postcode, DOB ,gender,photo,document) VALUES(@empID, @firstName, @lastName,@address,@postcode,@DOB,@gender,@photo,@document)";
-                sqlExecute(CRUD.sql);
+                sqlExecute("Employee", CRUD.sql);
                 clearTextbox("clean");
                 
                 try
@@ -660,7 +670,7 @@ namespace EDApp{
                     //Do nothing
                 }
                 clearTextbox("clean");
-                viewRecords("");
+                viewRecords("Employee", "");
                 DialogResult dialogResult = MessageBox.Show("Record saved! Add another record?", "Adding Record", MessageBoxButtons.YesNo, MessageBoxIcon.Information);         
                 
                 if (dialogResult == DialogResult.Yes)
@@ -671,7 +681,7 @@ namespace EDApp{
                 else 
                 {
                     viewPanel.Visible = true;
-                    viewRecords("");
+                    viewRecords("Employee", "");
                 }   
             }
             catch (Exception ex)
@@ -705,11 +715,11 @@ namespace EDApp{
         {
             if (string.IsNullOrEmpty(txbSearch.Text.Trim()))
             {
-                viewRecords("");
+                viewRecords("Employee", "");
             }
             else
             {
-                viewRecords(txbSearch.Text.Trim());
+                viewRecords("Employee", txbSearch.Text.Trim());
             }
             clearTextbox("clean");
         }
@@ -735,7 +745,7 @@ namespace EDApp{
                 CRUD.sql = "UPDATE employee SET FirstName = @firstName, LastName = @lastName, " + 
                 "address = @address, postcode = @postcode, DOB = @DOB, gender = @gender, photo = @photo, document = @document " +
                 "WHERE empid = @empid";
-                sqlExecute(CRUD.sql);
+                sqlExecute("Employee", CRUD.sql);
                 MessageBox.Show("Record saved", "Updating Record", MessageBoxButtons.OK, MessageBoxIcon.Information);
                 viewPanel.Visible = true;
                 //topPanel.Visible = true;
@@ -781,7 +791,7 @@ namespace EDApp{
                     }
                 }
                 clearTextbox("clean");
-                viewRecords("");
+                viewRecords("Employee", "");
             }
             catch (Exception ex)
             {
@@ -798,7 +808,7 @@ namespace EDApp{
                 if (dialogResult == DialogResult.Yes)
                     {
                         CRUD.sql= "Delete from employee where empid = @empID;";
-                        sqlExecute(CRUD.sql);  
+                        sqlExecute("Employee", CRUD.sql);  
                         MessageBox.Show("Record deleted!" , "Deleting Record", MessageBoxButtons.OK, MessageBoxIcon.Information);
                         viewPanel.Visible = true;
                         //topPanel.Visible = true;
@@ -813,8 +823,8 @@ namespace EDApp{
                             //Do nothing
                         }
                 clearTextbox("clean");
-                viewRecords("");
-                        viewRecords("");
+                viewRecords("Employee", "");
+                        viewRecords("Employee", "");
                     }
                 else if (dialogResult == DialogResult.No)
                 {
@@ -837,7 +847,7 @@ namespace EDApp{
             btnUpdate.Visible = false;
             btnAdd.Visible = true;
             viewPanel.Visible = true;
-            viewRecords("");
+            viewRecords("Employee", "");
 
         }
 
@@ -971,6 +981,7 @@ namespace EDApp{
             txbAddress.Text = "";
             dobPicker.Value = dobPicker.MaxDate;
             txbGender.Text = "";
+            comboBoxGender.SelectedItem = null;
             txbPhoto.Text = "";
             txbDoc.Text = "";
             txbSearch.Text = "";
@@ -984,7 +995,7 @@ namespace EDApp{
             try
             {
                 CRUD.sql= "CREATE TABLE IF NOT EXISTS `employee`(empid char(20) not null, FirstName char(255), LastName char(255),address char(255),postcode char(255), DOB char(255), gender char(255) ,photo char(255),document char(255), primary key(empid));";
-                sqlExecute(CRUD.sql);  
+                sqlExecute("Employee", CRUD.sql);  
             }
             catch (Exception ex)
             {
@@ -993,68 +1004,101 @@ namespace EDApp{
         }
 
         //View record, accept search keyword as parameter to show results
-        private void viewRecords(string search)
+        private void viewRecords(String tables, String search)
         {
-            try{      
-                CRUD.sql = "SELECT empid, FirstName, LastName, address, postcode, DOB, gender, photo, document FROM Employee " +
+            
+            gridViewTableU.MultiSelect = false;
+            gridViewTableU.AutoGenerateColumns = true;
+            //gridViewTable.SelectionMode = DataGridViewSelectionMode.FullRowSelect;
+
+            switch (tables){
+                case "Employee":
+                    CRUD.sql = "SELECT empid, FirstName, LastName, address, postcode, DOB, gender, photo, document FROM Employee " +
                             "WHERE empid LIKE @kwExact OR CONCAT(FirstName, ' ', LastName) LIKE @kw OR address LIKE @kw OR postcode LIKE @kwExact " +
                             "OR DOB LIKE @kw OR gender LIKE @kw ORDER BY empid ASC";
+                    try
+                    {
+                        File.Delete(photoDir + "\\"+ this.name+"_new.png");
+                        File.Delete(docDir + "\\"+ this.name+"_new.pdf");
+                    }
+                    
+                    catch (FileNotFoundException)
+                    {
+                        //Do nothing
+                        return;
+                    }
+
+                    break;
+                case "Unit":
+                    CRUD.sql = "SELECT unitCode, unitDescription FROM unit " +
+                            "WHERE unitCode LIKE @kwExact OR unitDescription LIKE @kw";
+                    
+                    break;
+                }
+            try{           
                 string kw = String.Format("%{0}%", search);
-                
                 CRUD.cmd = new MySqlCommand(CRUD.sql, CRUD.con);
                 CRUD.cmd.Parameters.Clear();
                 CRUD.cmd.Parameters.AddWithValue("kw", kw);
                 CRUD.cmd.Parameters.AddWithValue("kwExact", search);
 
-
                 DataTable table = CRUD.PerformCRUD(CRUD.cmd);
-
-
-                gridViewTable.MultiSelect = false;
-                gridViewTable.AutoGenerateColumns = true;
-                //gridViewTable.SelectionMode = DataGridViewSelectionMode.FullRowSelect;
                 gridViewTable.DataSource = table;
-
-                gridViewTable.Columns[0].HeaderText = "EmpID";
-                gridViewTable.Columns[1].HeaderText = "First Name";
-                gridViewTable.Columns[2].HeaderText = "Last Name";
-                gridViewTable.Columns[3].HeaderText = "Address";
-                gridViewTable.Columns[4].HeaderText = "Postcode";
-                gridViewTable.Columns[5].HeaderText = "DOB";
-                gridViewTable.Columns[6].HeaderText = "Gender";
-                gridViewTable.Columns[7].HeaderText = "Photo";
-                gridViewTable.Columns[8].HeaderText = "Document";
-
-                gridViewTable.Columns[0].Width = 50;
-                gridViewTable.Columns[1].Width = 80;
-                gridViewTable.Columns[2].Width = 80;
-                gridViewTable.Columns[3].Width = 170;
-                gridViewTable.Columns[4].Width = 60;
-                gridViewTable.Columns[5].Width = 80;
-                gridViewTable.Columns[6].Width = 50;
-                gridViewTable.Columns[7].Width = 50;
-                gridViewTable.Columns[8].Width = 85;
-
-
-                try
-                {
-                    File.Delete(photoDir + "\\"+ this.name+"_new.png");
-                    File.Delete(docDir + "\\"+ this.name+"_new.pdf");
-                }
-                
-                catch (FileNotFoundException)
-                {
-                    //Do nothing
-                    return;
-                }
-
                 
             }
             catch (Exception)
             {
-                MessageBox.Show("Generating table... Click search again for the new table", "ERROR", MessageBoxButtons.OK, MessageBoxIcon.Information);
-                CRUD.sql= "CREATE TABLE IF NOT EXISTS `employee`(empid char(20) not null, FirstName char(255), LastName char(255),address char(255),postcode char(255), DOB char(255), gender char(255) ,photo char(255),document char(255), primary key(empid));";
-                sqlExecute(CRUD.sql);              
+                switch (tables)
+                {
+                    case "Employee":
+                    MessageBox.Show("Generating table... Click search again for the new table", "ERROR", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                    CRUD.sql= "CREATE TABLE IF NOT EXISTS `employee`(empid char(20) not null, FirstName char(255), LastName char(255),address char(255),postcode char(255), DOB char(255), gender char(255) ,photo char(255),document char(255), primary key(empid));";
+                    sqlExecute("Employee", CRUD.sql); 
+                    break;
+
+                    case "Unit":
+                    MessageBox.Show("Generating table... Click search again for the new table", "ERROR", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                    CRUD.sql= "CREATE TABLE IF NOT EXISTS `unit`(unitCode char(20) not null, unitDescription char(255), primary key(unitCode));";
+                    sqlExecute("Unit", CRUD.sql); 
+                    break;
+                }
+                
+                             
+            }
+
+            switch (tables)
+            {
+                case "Employee":
+                    
+
+                    gridViewTable.Columns[0].HeaderText = "EmpID";
+                    gridViewTable.Columns[1].HeaderText = "First Name";
+                    gridViewTable.Columns[2].HeaderText = "Last Name";
+                    gridViewTable.Columns[3].HeaderText = "Address";
+                    gridViewTable.Columns[4].HeaderText = "Postcode";
+                    gridViewTable.Columns[5].HeaderText = "DOB";
+                    gridViewTable.Columns[6].HeaderText = "Gender";
+                    gridViewTable.Columns[7].HeaderText = "Photo";
+                    gridViewTable.Columns[8].HeaderText = "Document";
+
+                    gridViewTable.Columns[0].Width = 50;
+                    gridViewTable.Columns[1].Width = 80;
+                    gridViewTable.Columns[2].Width = 80;
+                    gridViewTable.Columns[3].Width = 170;
+                    gridViewTable.Columns[4].Width = 60;
+                    gridViewTable.Columns[5].Width = 80;
+                    gridViewTable.Columns[6].Width = 50;
+                    gridViewTable.Columns[7].Width = 50;
+                    gridViewTable.Columns[8].Width = 85;
+                    break;
+                case "Unit": 
+                    
+                    gridViewTable.Columns[0].HeaderText = "Unit Code";
+                    gridViewTable.Columns[1].HeaderText = "Unit Name";
+
+                    gridViewTable.Columns[0].Width = 350;
+                    gridViewTable.Columns[1].Width = 350;
+                    break;
             }
             
 
@@ -1071,7 +1115,7 @@ namespace EDApp{
             txbAddress.Text = Convert.ToString(gridViewTable.CurrentRow.Cells[3].Value);
             txbPcode.Text = Convert.ToString(gridViewTable.CurrentRow.Cells[4].Value);
             dobPicker.Text = Convert.ToString(gridViewTable.CurrentRow.Cells[5].Value);
-            txbGender.Text = Convert.ToString(gridViewTable.CurrentRow.Cells[6].Value);
+            comboBoxGender.SelectedItem = Convert.ToString(gridViewTable.CurrentRow.Cells[6].Value);
             txbPhoto.Text = Convert.ToString(gridViewTable.CurrentRow.Cells[7].Value);
             txbDoc.Text = Convert.ToString(gridViewTable.CurrentRow.Cells[8].Value);
             this.id = txbID.Text;
@@ -1084,10 +1128,8 @@ namespace EDApp{
                 if (e.ColumnIndex == 6)
                 {  
                     formPanel.Show();      
-                    gridViewTable.CurrentRow.Cells[6].Value = genderChange(txbGender.Text);
-                    txbGender.Text = Convert.ToString(gridViewTable.CurrentRow.Cells[6].Value);
-                    comboBoxGender.SelectedItem = txbGender.Text;
-
+                    gridViewTable.CurrentRow.Cells[6].Value = genderChange(comboBoxGender.SelectedItem.ToString());
+                    comboBoxGender.SelectedItem = Convert.ToString(gridViewTable.CurrentRow.Cells[6].Value);
                     updateRecord();
                     formPanel.Hide();
                     gridViewTable.CurrentCell = null;                   
@@ -1153,10 +1195,19 @@ namespace EDApp{
         }
 
         //Execute SQL add Command
-        private void sqlExecute (String sqlCommand)
+        private void sqlExecute (String tables, String sqlCommand)
         {
             CRUD.cmd = new MySqlCommand(sqlCommand, CRUD.con);
-            AddParameters();
+            switch (tables)
+            {
+                case "Employee":
+                    AddParameters();
+                    break;
+                case "Unit":
+                    AddParametersU();
+                    break;
+            }
+            
             CRUD.PerformCRUD(CRUD.cmd);
         }
 
@@ -1218,13 +1269,37 @@ namespace EDApp{
 
         
         //print to excel for all employees event handler
-        // private void btnPrintToExcelClick(object sender, EventArgs e)
-        // {
-           
-        // }
+        private void btnPrintToExcelClick(object sender, EventArgs e)
+        {
+            List<String> data = new List<String>();
+        
+            DataTable dataTable = (DataTable) gridViewTable.DataSource;
 
+            //Using System.Linq to get each column name to save into a new string array and join them into a single string
+            String[] columnNames = dataTable.Columns.Cast<DataColumn>().Select(column => column.ColumnName).ToArray();
+            String dataHeader = String.Join(",", columnNames.Select(name => $"\"{name}\""));
+            data.Add(dataHeader);
 
+            var dataValue = dataTable.AsEnumerable().Select(row => String.Join(",", row.ItemArray.Select(value => $"\"{value}\"")));
+            data.AddRange(dataValue);
+            try {
+                using(SaveFileDialog dialog = new SaveFileDialog() { Filter = "Excel files(*.csv)|*.csv*", RestoreDirectory = true, Title = "Save as...", FileName="EmpExcel"})
+                {
+            
+                    if(dialog.ShowDialog() == DialogResult.OK)
+                    {
+                        File.WriteAllLines(dialog.FileName + ".csv", data);
+                        MessageBox.Show("Excel file generated!", "Excel Export", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                    }   
+                }
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("Error Generating Excel" + ex.Message, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+        
 
+        }
 
         //Change gender base on the current value
         private String genderChange(String gender)
@@ -1262,287 +1337,25 @@ namespace EDApp{
         //The following code is for Unit Table!!!!!!!!!!!!!
         //////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-        private void unitTableFormPanel()
-        {
-            //Set the form width & height 
-            this.Width = 800;
-            this.Height = 600;
-
-            //Set the start position of the form to the center of the screen
-            this.StartPosition = FormStartPosition.CenterScreen;
-
-            //disable resize for the form
-            this.FormBorderStyle = FormBorderStyle.FixedDialog;
-            this.MaximizeBox = false;
-            this.MinimizeBox = false;
-            
-            //Creating the unitFormPanel
-            unitFormPanel = new Panel();
-            unitFormPanel.Width = 800;
-            unitFormPanel.Height = 580;
-            unitFormPanel.Font = new System.Drawing.Font("Arial", 10);
-            
-            unitFormPanel.Visible = false;
-
-            unitViewPanel = new Panel();
-            unitViewPanel.Width = 800;
-            unitViewPanel.Height = 580;
-            unitViewPanel.Font = new System.Drawing.Font("Arial", 10);
-            
-            unitViewPanel.Visible = true;
-
-            // Create a MenuStrip & ToolStripMenuItem
-            msU = new MenuStrip();
-
-            mnuHomeU = new ToolStripMenuItem("Home");
-            mnuHomeU.Font = new System.Drawing.Font("Arial", 12,FontStyle.Bold);
-            msU.BackColor = Color.LightSkyBlue;
-
-            mnuDashboardU =  new ToolStripMenuItem("Back to Dashboard");
-            mnuDashboardU.Click += new System.EventHandler(mnuDashboardU_Click);
-            
-            mnuSelectTableU = new ToolStripMenuItem("Switch Table");
-            mnuSelectTableU.Font = new System.Drawing.Font("Arial", 12,FontStyle.Bold);
-            msU.BackColor = Color.LightSkyBlue;
-
-            mnuEmpU = new ToolStripMenuItem("Employee");
-            mnuEmpU.Click += new System.EventHandler(mnuEmpU_Click);
-
-            mnuUnitU = new ToolStripMenuItem("Unit");
-            mnuUnitU.Click += new System.EventHandler(mnuUnitU_Click);
-
-            ((ToolStripDropDownMenu)(mnuSelectTableU.DropDown)).ShowImageMargin = false;
-
-            // Add the  ToolStripMenuItem to the MenuStrip.
-            msU.Items.Add(mnuHomeU);
-            msU.Items.Add(mnuSelectTableU);
-
-            // Dock the MenuStrip at the top of the form.
-            msU.Dock = DockStyle.Top;
-
-            //Add the ToolStripMenuItem to the MenuStrip
-            mnuHomeU.DropDownItems.Add(mnuDashboardU);
-            mnuSelectTableU.DropDownItems.Add(mnuEmpU);
-            mnuSelectTableU.DropDownItems.Add(mnuUnitU);
-
-            // Add the MenuStrip
-            unitViewPanel.Controls.Add(msU);
-
-            //Setting labels and text boxes size and location 
-            //Unit Code
-            lblUnitCode.Text = "Unit Code";
-            lblUnitCode.Location = new Point(20,62);
-            lblUnitCode.Size = new Size(100,20);
-    
-            txbUnitCode.Location = new Point(120,60);
-            txbUnitCode.Size = new Size(120,25);
-            
-            //unit Description 
-            lblUnitDes.Text = "Unit Name";
-            lblUnitDes.Location = new Point(20,102);
-            lblUnitDes.Size = new Size(100,20);
-            
-            txbUnitDes.Location = new Point(120,100);
-            txbUnitDes.Size = new Size(120,20);
-
-            //add new record button
-            btnUnitAddNew.Location = new Point(20, 500);
-            btnUnitAddNew.Text = "New Record";
-            btnUnitAddNew.Font = new System.Drawing.Font("Arial", 10);
-            btnUnitAddNew.Size = new Size(100,25);
-            btnUnitAddNew.Visible = true;
-            btnUnitAddNew.Click += new System.EventHandler(btnUnitAddNewClick);
-            
-            //Search box for unit view panel
-            txbUnitSearch.Location = new Point(20,50);
-            txbUnitSearch.Size = new Size(640,25);
-            
-            // buttons for unit table
-            btnUnitSearch.Location = new Point(686,49);
-            btnUnitSearch.Text = "Search";
-            btnUnitSearch.Font = new System.Drawing.Font("Arial", 10);
-            btnUnitSearch.Size = new Size(80,25);
-            //btnUnitSearch.Click += new System.EventHandler(btnUnitSearchClick);
-
-            //Add button 
-            btnAddU.Location = new Point(20,500);
-            btnAddU.Text = "Add";
-            btnAddU.Size = new Size(80,25);
-            //btnAddU.Click += new System.EventHandler(btnAddUClick);
-
-            //Clear button
-            btnClearU.Location = new Point(470, 500);
-            btnClearU.Text = "Clear";
-            btnClearU.Size = new Size(80,25);
-            btnClearU.Visible = true;
-           // btnClearU.Click += new System.EventHandler(btnClearUClick);
-
-            //Update Button
-            btnUpdateU.Location = new Point(20,500);
-            btnUpdateU.Text = "Update";
-            btnUpdateU.Size = new Size(80,25);
-            btnUpdateU.Visible = true;
-            //btnUpdateU.Click += (s, e) => {updateRecord(); };
-
-            //Delete button 
-            btnDeleteU.Location = new Point(120,500);
-            btnDeleteU.Text = "Delete";
-            btnDeleteU.Size = new Size(80,25);
-            //btnDeleteU.Click += new System.EventHandler(btnDeleteUClick);
-
-            //Go back button 
-            btnBackU.Location = new Point(670, 500);
-            btnBackU.Text = "Cancel";
-            btnBackU.Size = new Size(80,25);
-            btnBackU.Click += new System.EventHandler(btnBackUClick);
-
-            //top background for form panel in unit table
-            lbltopU.Location = new Point(0,0);
-            lbltopU.Size = new Size(800,30);
-            lbltopU.BackColor = Color.LightSkyBlue;
-            lbltopU.Text = "Unit Information";
-            lbltopU.Font = new System.Drawing.Font("Arial", 11,FontStyle.Bold);
-            lbltopU.TextAlign = ContentAlignment.MiddleCenter;
-
-
-            //Generate the grid view table for unit view panel
-            gridViewTableU.Name = "unitDataTableGridView";
-            gridViewTableU.Location = new Point(20,100);
-            gridViewTableU.Size = new Size(750,380);
-            gridViewTableU.ColumnHeadersDefaultCellStyle.BackColor = Color.Navy;
-            gridViewTableU.ColumnHeadersDefaultCellStyle.ForeColor = Color.White;
-            gridViewTableU.AllowUserToAddRows = false; 
-            //gridViewTable.CellClick += gridViewTable_CellClick;
-
-            this.Controls.Add(unitFormPanel);
-            this.Controls.Add(unitViewPanel);
-
-
-            unitFormPanel.Controls.Add(txbUnitDes);
-            unitFormPanel.Controls.Add(txbUnitCode);
-
-            unitFormPanel.Controls.Add(lblUnitCode);
-            unitFormPanel.Controls.Add(lblUnitDes);
-
-            unitFormPanel.Controls.Add(lbltopU);
-
-            unitViewPanel.Controls.Add(txbUnitSearch);
-            unitViewPanel.Controls.Add(btnUnitSearch);
-            unitViewPanel.Controls.Add(btnUnitAddNew);
-
-            unitViewPanel.Controls.Add(gridViewTableU);
-
-            // adding function buttons in unit form panel
-            unitFormPanel.Controls.Add(btnAddU);
-            unitFormPanel.Controls.Add(btnDeleteU);
-            unitFormPanel.Controls.Add(btnUpdateU);
-            unitFormPanel.Controls.Add(btnBackU);
-            unitFormPanel.Controls.Add(btnClearU);
-
-        }
-
-        //create event handler for clicking dashboard menustrip item  in unit table
-        private void mnuDashboardU_Click(object sender, EventArgs e)
-        {
-            selectPanel.Visible = true;
-            unitViewPanel.Visible = false;
-        }
-
-        //create event handler for clicking employee menustrip item in unit table
-        private void mnuEmpU_Click(object sender, EventArgs e)
-        {
-            menuFrame();
-            createTable();
-            viewRecords("");
-            unitViewPanel.Visible = false;
-        }
-
-        // create event handler for clicking unit menustrip item
-        private void mnuUnitU_Click(object sender, EventArgs e)
-        {
-            unitViewPanel.Visible = true;
-        }
-
-        //create event handler for clicking add new record button 
-        private void btnUnitAddNewClick(object sender, EventArgs e)
-        {
-            unitViewPanel.Visible = false;
-            unitFormPanel.Visible = true;
-        }
-
-        //create event handler for clicking cancel button
-        private void btnBackUClick(object sender, EventArgs e)
-        {
-            unitViewPanel.Visible = true;
-            unitFormPanel.Visible = false;
-        }
-        
-        // Execute SQL command for unit table 
-        private void sqlExecuteU (String sqlCommand)
-        {
-            CRUDforUnitTable.cmd = new MySqlCommand(sqlCommand, CRUDforUnitTable.con);
-            AddParametersU();
-            CRUDforUnitTable.PerformCRUD(CRUDforUnitTable.cmd);
-        }
-
-        //Create unit Table
         private void createUnitTable()
         {
             try
             {
-                CRUDforUnitTable.sql= "CREATE TABLE IF NOT EXISTS `unit`(unitCode char(20) not null, unitDescription char(255), primary key(unitCode));";
-                sqlExecuteU(CRUDforUnitTable.sql);  
+                CRUD.sql= "CREATE TABLE IF NOT EXISTS `unit`(unitCode char(20) not null, unitDescription char(255), primary key(unitCode));";
+                sqlExecute("Unit", CRUD.sql);  
             }
             catch (Exception ex)
             {
                 MessageBox.Show("Error Creating table" + ex.Message, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
         }
-
         //Add Parameters for unit table
         private void AddParametersU()
         {
-            CRUDforUnitTable.cmd.Parameters.Clear();
-            CRUDforUnitTable.cmd.Parameters.AddWithValue("@unitCode", txbID.Text.Trim().ToString());
-            CRUDforUnitTable.cmd.Parameters.AddWithValue("@unitDescription", txbFname.Text.Trim().ToString());
+            CRUD.cmd.Parameters.Clear();
+            CRUD.cmd.Parameters.AddWithValue("@unitCode", txbID.Text.Trim().ToString());
+            CRUD.cmd.Parameters.AddWithValue("@unitDescription", txbFname.Text.Trim().ToString());
         } 
-
-        // //view records in unit table 
-        private void viewRecordsU(string search)
-        {
-            try{      
-                CRUDforUnitTable.sql = "SELECT unitCode, unitDescription FROM unit " +
-                            "WHERE unitCode LIKE @kwExact OR unitDescription LIKE @kw"; 
-                
-                string kw = String.Format("%{0}%", search);
-                
-                CRUDforUnitTable.cmd = new MySqlCommand(CRUDforUnitTable.sql, CRUDforUnitTable.con);
-                CRUDforUnitTable.cmd.Parameters.Clear();
-                CRUDforUnitTable.cmd.Parameters.AddWithValue("kw", kw);
-                CRUDforUnitTable.cmd.Parameters.AddWithValue("kwExact", search);
-
-
-                DataTable table = CRUDforUnitTable.PerformCRUD(CRUDforUnitTable.cmd);
-
-
-                gridViewTableU.MultiSelect = false;
-                gridViewTableU.AutoGenerateColumns = true;
-                //gridViewTable.SelectionMode = DataGridViewSelectionMode.FullRowSelect;
-                gridViewTableU.DataSource = table;
-
-                gridViewTableU.Columns[0].HeaderText = "Unit Code";
-                gridViewTableU.Columns[1].HeaderText = "Unit Name";
-
-                gridViewTableU.Columns[0].Width = 350;
-                gridViewTableU.Columns[1].Width = 350;             
-            }
-            catch (Exception)
-            {
-                MessageBox.Show("Generating table... Click search again for the new table", "ERROR", MessageBoxButtons.OK, MessageBoxIcon.Information);
-                CRUDforUnitTable.sql= "CREATE TABLE IF NOT EXISTS `unit`(unitCode char(20) not null, unitDescription char(255), primary key(unitCode));";
-                sqlExecuteU(CRUDforUnitTable.sql);              
-            }
-        }
 
  
     }
