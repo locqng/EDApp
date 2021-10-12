@@ -56,6 +56,7 @@ namespace EDApp{
         private Button btnempImg = new Button();
         private Button btnUnitImg = new Button();
         private Button  btnPrintToExcel = new Button();
+        private Button btnSettingImg  = new Button();
        
              
         //Generating form labels
@@ -87,6 +88,7 @@ namespace EDApp{
         System.Drawing.Image homeImg = System.Drawing.Image.FromFile( @"resources\home.png");
         System.Drawing.Image empInfo = System.Drawing.Image.FromFile( @"resources\emp_detail.png");
         System.Drawing.Image emptyPhoto = System.Drawing.Image.FromFile( @"resources\profile.jpeg");
+        System.Drawing.Image settingImg = System.Drawing.Image.FromFile(@"resources\setting.png");
 
         //Gerating Image box for photos
         private PictureBox empPhoto = new PictureBox();
@@ -109,12 +111,13 @@ namespace EDApp{
         private Button btnUnitprintToPdf = new Button();
         private Button btnUnitAddNew  = new Button();
         private Button btnUnitSearch = new Button();
-        private Button btnSettingImg  = new Button();
         private Button btnAddU  = new Button();
         private Button btnClearU  = new Button();
         private Button btnUpdateU  = new Button();
         private Button btnDeleteU  = new Button();
         private Button btnBackU = new Button();
+
+       
 
         //create menu bar for unit table
         private MenuStrip msU;
@@ -191,13 +194,22 @@ namespace EDApp{
             btnUnitImg .BackgroundImage = unitIconImg;
             btnUnitImg.Click += new System.EventHandler(btnUnitImgClick);
 
+            btnSettingImg .Location = new Point(733,470);
+            btnSettingImg .Size = new Size(50,50);
+            btnSettingImg .BackgroundImage = settingImg;
+            //btnSettingImg.Click += new System.EventHandler(btnSettingImgClick);
+
+
             this.Controls.Add(selectPanel);
-            selectPanel.Controls.Add(lblWelcome);
             selectPanel.Controls.Add(btnempImg);
+            selectPanel.Controls.Add(btnSettingImg);
             selectPanel.Controls.Add(btnUnitImg );
+
+            selectPanel.Controls.Add(lblWelcome);
             selectPanel.Controls.Add(lblempTable);
             selectPanel.Controls.Add(lblUnitTable);
             selectPanel.Controls.Add(lblbottom);
+            
         }
 
          public void btnempImgClick(object sender, EventArgs e)
@@ -215,6 +227,14 @@ namespace EDApp{
             viewRecordsU("");
             selectPanel.Visible = false;
         }
+
+
+       //setting directory in dashboard
+//          public void btnSettingImgClick(object sender, EventArgs e)
+//         {
+
+//         }
+
 
         public void menuFrame()
         {
