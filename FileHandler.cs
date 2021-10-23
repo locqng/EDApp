@@ -27,16 +27,16 @@ namespace EDApp{
 
 
         //Image upload
-        public Image browseUpload(String dir, String empid)
+        public Image browseUpload(String dir, String name)
         {
-            using(OpenFileDialog dialog = new OpenFileDialog() { Filter = "Image files(*.jpg;*.jpeg;*png)|*.jpg;*.jpeg*;*.png*", Multiselect = false, Title = "Upload Employee's Image" })
+            using(OpenFileDialog dialog = new OpenFileDialog() { Filter = "Image files(*.jpg;*.jpeg;*png;*.gif)|*.jpg;*.jpeg*;*.png*;*.gif", Multiselect = false, Title = "Upload Employee's Image" })
             {
             
                if(dialog.ShowDialog() == DialogResult.OK)
                {
                    photo = Image.FromFile(dialog.FileName);
                    //Config to your photos directory
-                   File.WriteAllBytes(dir+"\\"+empid+".png", ConvertImageToBytes(photo));
+                   File.WriteAllBytes(dir+"\\"+name+".png", ConvertImageToBytes(photo));
                                                     
                    return photo;
                } 
@@ -45,7 +45,7 @@ namespace EDApp{
         }
 
         //Handle upload mutiple doc files
-        public int docsUpload(String dir, String empid)
+        public int docsUpload(String dir, String name)
         {
             int docsCount = 0;
             using(OpenFileDialog dialog = new OpenFileDialog() { Filter = "PDF Files (*.pdf)|*.pdf", Multiselect = true, Title = "Upload Employee's Documents" })
@@ -54,12 +54,12 @@ namespace EDApp{
                {
                 byte[] bytes = File.ReadAllBytes(dialog.FileName);
                 //Config to your doc directory
-                String path = dir+"\\"+empid+" Docs";
+                String path = dir+"\\"+name+" Docs";
                
                 Directory.CreateDirectory(path);
                 foreach(String file in dialog.SafeFileNames)
                 {
-                    File.WriteAllBytes(dir+"\\"+empid+" Docs" + "\\" + file, bytes);
+                    File.WriteAllBytes(dir+"\\"+name+" Docs" + "\\" + file, bytes);
                     docsCount++;
                 }
                 
@@ -68,7 +68,7 @@ namespace EDApp{
             }
         }
 
-        public String docUpload(String dir, String empid)
+        public String docUpload(String dir, String name)
         {
             String path = "";
             using(OpenFileDialog dialog = new OpenFileDialog() { Filter = "PDF Files (*.pdf)|*.pdf", Multiselect = false, Title = "Upload Employee's Document" })
@@ -76,7 +76,7 @@ namespace EDApp{
                if(dialog.ShowDialog() == DialogResult.OK)
                {
                    byte[] bytes = File.ReadAllBytes(dialog.FileName);
-                   path = dir+"\\"+empid+".pdf";
+                   path = dir+"\\"+name+".pdf";
                    try{
                         File.WriteAllBytes(path, bytes);
                    }catch (Exception ex)

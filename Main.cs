@@ -160,6 +160,7 @@ namespace EDApp{
             selectPanel .Visible = true;
             
 
+            //Dashboard elements
             lblWelcome.Text = "Desktop Application";
             lblWelcome.Font = new System.Drawing.Font("Arial", 24,FontStyle.Bold);
             lblWelcome.Location = new Point(0,0);
@@ -189,7 +190,6 @@ namespace EDApp{
             lblbottom.Location = new Point(0,520);
             lblbottom.Size = new Size(800,50);
             lblbottom.BackColor = Color.LightSkyBlue;
-
 
             btnUnitImg .Location = new Point(480,200);
             btnUnitImg .Size = new Size(160,160);
@@ -273,21 +273,21 @@ namespace EDApp{
             // Create a MenuStrip control 
             ms = new MenuStrip();
 
-            //create menustrip item for dashboard
+            //Create menustrip item for dashboard
             mnuHome = new ToolStripMenuItem("Home");
             mnuHome.Font = new System.Drawing.Font("Arial", 12,FontStyle.Bold);
             ms.BackColor = Color.LightSkyBlue;
 
-            //create drop down list item "Back to dashboard" 
+            //Create drop down list item "Back to dashboard" 
             mnuDashboard =  new ToolStripMenuItem("Back to Dashboard");
             mnuDashboard.Click += new System.EventHandler(mnuDashboard_Click);
 
-            //create menustrip item for switching table
+            //Create menustrip item for switching table
             mnuSelectTable = new ToolStripMenuItem("Switch Table");
             mnuSelectTable.Font = new System.Drawing.Font("Arial", 12,FontStyle.Bold);
             ms.BackColor = Color.LightSkyBlue;
 
-            //create drop down list items  "employee"  & "Unit"
+            //Create drop down list items  "employee"  & "Unit"
             mnuEmp = new ToolStripMenuItem("Employee");
             mnuEmp.Click += new System.EventHandler(mnuEmp_Click);
 
@@ -317,6 +317,8 @@ namespace EDApp{
             // Add the MenuStrip
             viewPanel.Controls.Add(ms);
 
+
+            //Form panel elements
             //Add button 
             btnAdd.Location = new Point(20,500);
             btnAdd.Text = "Add";
@@ -343,33 +345,11 @@ namespace EDApp{
             btnDelete.Size = new Size(80,25);
             btnDelete.Click += new System.EventHandler(btnDeleteClick);
 
-            //Add new Record button to change to form panel
-            btnAddNew.Location = new Point(20, 500);
-            btnAddNew.Text = "New Record";
-            btnAddNew.Font = new System.Drawing.Font("Arial", 10);
-            btnAddNew.Size = new Size(100,25);
-            btnAddNew.Visible = true;
-            btnAddNew.Click += new System.EventHandler(btnAddNewClick);
-
             //Go back button 
             btnBack.Location = new Point(670, 500);
             btnBack.Text = "Cancel";
             btnBack.Size = new Size(80,25);
             btnBack.Click += new System.EventHandler(btnBackClick);
-
-            //print to pdf button
-            btnprintToPdf.Location = new Point(670, 500);
-            btnprintToPdf.Text = "Print to PDF";
-            btnprintToPdf.Size = new Size(100,25);
-            btnprintToPdf.Visible = true;
-            btnprintToPdf.Click += new System.EventHandler(btnprintToPdfClick);
-
-            //print to excel button for employee list 
-            btnPrintToExcel.Location = new Point(540, 500);
-            btnPrintToExcel.Text = "Print to Excel";
-            btnPrintToExcel.Size = new Size(100,25);
-            btnPrintToExcel.Visible = true;
-            btnPrintToExcel.Click += new System.EventHandler(btnPrintToExcelClick);
 
             //Print an individual employee
             btnPrintEmp.Location = new Point(570, 500);     
@@ -463,9 +443,8 @@ namespace EDApp{
             comboBoxGender.Items.Add("Female");  
             comboBoxGender.Items.Add("Male");  
             comboBoxGender.Items.Add("Other");
-           
+    
             comboBoxGender.DropDownStyle = ComboBoxStyle.DropDownList; 
-
             comboBoxGender.SelectedIndexChanged += new System.EventHandler(comboBoxGender_SelectedIndexChanged);
         
 
@@ -498,6 +477,7 @@ namespace EDApp{
             empPhoto.SizeMode = PictureBoxSizeMode.StretchImage;
             empPhoto.Click += (s, e) => {btnBrowse.PerformClick();};
             
+            //Table panel elements
             //Search box for view sub panel
             txbSearch.Location = new Point(20,50);
             txbSearch.Size = new Size(640,25);
@@ -508,6 +488,28 @@ namespace EDApp{
             btnSearch.Font = new System.Drawing.Font("Arial", 10);
             btnSearch.Size = new Size(80,25);
             btnSearch.Click += new System.EventHandler(btnSearchClick);
+
+            //Add new Record button to change to form panel
+            btnAddNew.Location = new Point(20, 500);
+            btnAddNew.Text = "New Record";
+            btnAddNew.Font = new System.Drawing.Font("Arial", 10);
+            btnAddNew.Size = new Size(100,25);
+            btnAddNew.Visible = true;
+            btnAddNew.Click += new System.EventHandler(btnAddNewClick);
+
+            //Print to pdf button
+            btnprintToPdf.Location = new Point(670, 500);
+            btnprintToPdf.Text = "Print to PDF";
+            btnprintToPdf.Size = new Size(100,25);
+            btnprintToPdf.Visible = true;
+            btnprintToPdf.Click += new System.EventHandler(btnprintToPdfClick);
+
+            //print to excel button for employee list 
+            btnPrintToExcel.Location = new Point(540, 500);
+            btnPrintToExcel.Text = "Print to Excel";
+            btnPrintToExcel.Size = new Size(100,25);
+            btnPrintToExcel.Visible = true;
+            btnPrintToExcel.Click += new System.EventHandler(btnPrintToExcelClick);
             
             //Generate the grid view table for sub panel
             gridViewTable.Name = "dataTableGridView";
@@ -1006,11 +1008,11 @@ namespace EDApp{
         //View record, accept search keyword as parameter to show results
         private void viewRecords(String tables, String search)
         {
-            
+            try
+            {
             gridViewTableU.MultiSelect = false;
             gridViewTableU.AutoGenerateColumns = true;
             //gridViewTable.SelectionMode = DataGridViewSelectionMode.FullRowSelect;
-
             switch (tables){
                 case "Employee":
                     CRUD.sql = "SELECT empid, FirstName, LastName, address, postcode, DOB, gender, photo, document FROM Employee " +
@@ -1100,6 +1102,11 @@ namespace EDApp{
                     gridViewTable.Columns[1].Width = 350;
                     break;
             }
+            }
+            catch (Exception)
+            {
+                MessageBox.Show("No database connection found", "ERROR", MessageBoxButtons.OK, MessageBoxIcon.Information);
+            }
             
 
         }
@@ -1108,7 +1115,7 @@ namespace EDApp{
         private void gridViewTable_CellClick(object sender, DataGridViewCellEventArgs e)
         {
             
-            
+            try{
             txbID.Text = Convert.ToString(gridViewTable.CurrentRow.Cells[0].Value);
             txbFname.Text = Convert.ToString(gridViewTable.CurrentRow.Cells[1].Value);
             txbLname.Text = Convert.ToString(gridViewTable.CurrentRow.Cells[2].Value);
@@ -1190,6 +1197,10 @@ namespace EDApp{
                     else
                         empPhoto.Image = emptyPhoto;
                 }
+            }
+            }catch 
+            {
+                //DO nothing
             }
             
         }

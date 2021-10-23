@@ -14,7 +14,7 @@ namespace EDApp
         private static string connectionStringBuilder()
         {
 
-            string host = "server=localhost;";
+            string host = "server=127.0.0.1;";
             string port = "port=3306;";
             string db = "database=employee_database;";
             string user = "user=root;";
