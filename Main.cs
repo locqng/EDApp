@@ -366,7 +366,7 @@ namespace EDApp{
 
             //print to excel button for employee list 
             btnPrintToExcel.Location = new Point(540, 500);
-            btnPrintToExcel.Text = "Print to Excel";
+            btnPrintToExcel.Text = "Export to CSV";
             btnPrintToExcel.Size = new Size(100,25);
             btnPrintToExcel.Visible = true;
             btnPrintToExcel.Click += new System.EventHandler(btnPrintToExcelClick);
