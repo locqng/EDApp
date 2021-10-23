@@ -351,6 +351,20 @@ namespace EDApp{
             btnBack.Size = new Size(80,25);
             btnBack.Click += new System.EventHandler(btnBackClick);
 
+            //print to pdf button
+            btnprintToPdf.Location = new Point(670, 500);
+            btnprintToPdf.Text = "Print to PDF";
+            btnprintToPdf.Size = new Size(100,25);
+            btnprintToPdf.Visible = true;
+            btnprintToPdf.Click += new System.EventHandler(btnprintToPdfClick);
+
+            //print to excel button for employee list 
+            btnPrintToExcel.Location = new Point(540, 500);
+            btnPrintToExcel.Text = "Export to CSV";
+            btnPrintToExcel.Size = new Size(100,25);
+            btnPrintToExcel.Visible = true;
+            btnPrintToExcel.Click += new System.EventHandler(btnPrintToExcelClick);
+
             //Print an individual employee
             btnPrintEmp.Location = new Point(570, 500);     
             btnPrintEmp.Text = "Print";
