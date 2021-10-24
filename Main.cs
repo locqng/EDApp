@@ -222,6 +222,7 @@ namespace EDApp{
             viewRecords("Employee", "");
             viewPanel.Visible = true;
             
+            
         }
 
          public void btnUnitImgClick(object sender, EventArgs e)
@@ -229,8 +230,7 @@ namespace EDApp{
             
             createUnitTable();
             viewRecords("Unit", "");
-            viewPanel.Visible = true;
-            
+            viewPanel.Visible = true;                      
         }
 
 
@@ -1029,9 +1029,15 @@ namespace EDApp{
             //gridViewTable.SelectionMode = DataGridViewSelectionMode.FullRowSelect;
             switch (tables){
                 case "Employee":
+                    txbSearch.Enabled = true;
+                    btnSearch.Enabled = true;
+                    btnAddNew.Enabled = true;
+                    btnprintToPdf.Enabled = true;
+                    btnPrintToExcel.Enabled = true;
                     CRUD.sql = "SELECT empid, FirstName, LastName, address, postcode, DOB, gender, photo, document FROM Employee " +
                             "WHERE empid LIKE @kwExact OR CONCAT(FirstName, ' ', LastName) LIKE @kw OR address LIKE @kw OR postcode LIKE @kwExact " +
                             "OR DOB LIKE @kw OR gender LIKE @kw ORDER BY empid ASC";
+                            gridViewTable.CellClick += gridViewTable_CellClick;
                     try
                     {
                         File.Delete(photoDir + "\\"+ this.name+"_new.png");
@@ -1046,10 +1052,22 @@ namespace EDApp{
 
                     break;
                 case "Unit":
+                try{
+                    txbSearch.Enabled = false;
+                    btnSearch.Enabled = false;
+                    btnAddNew.Enabled = false;
+                    btnprintToPdf.Enabled = false;
+                    btnPrintToExcel.Enabled = false;
                     CRUD.sql = "SELECT unitCode, unitDescription FROM unit " +
                             "WHERE unitCode LIKE @kwExact OR unitDescription LIKE @kw";
+                    gridViewTable.CellClick += null;
                     
-                    break;
+                }
+                catch (Exception){
+                    //Do nothing
+                    MessageBox.Show("Function yet to be implemented", "Not Implemented", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                }
+                break;
                 }
             try{           
                 string kw = String.Format("%{0}%", search);
@@ -1108,7 +1126,6 @@ namespace EDApp{
                     gridViewTable.Columns[8].Width = 85;
                     break;
                 case "Unit": 
-                    
                     gridViewTable.Columns[0].HeaderText = "Unit Code";
                     gridViewTable.Columns[1].HeaderText = "Unit Name";
 
