@@ -1,20 +1,20 @@
 {
   "format": 1,
   "restore": {
-    "D:\\Uni Documents\\Applied Research Project\\EDApp\\EDApp.csproj": {}
+    "C:\\Users\\admin\\Documents\\GitHub\\EDApp\\EDApp.csproj": {}
   },
   "projects": {
-    "D:\\Uni Documents\\Applied Research Project\\EDApp\\EDApp.csproj": {
+    "C:\\Users\\admin\\Documents\\GitHub\\EDApp\\EDApp.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "D:\\Uni Documents\\Applied Research Project\\EDApp\\EDApp.csproj",
+        "projectUniqueName": "C:\\Users\\admin\\Documents\\GitHub\\EDApp\\EDApp.csproj",
         "projectName": "EDApp",
-        "projectPath": "D:\\Uni Documents\\Applied Research Project\\EDApp\\EDApp.csproj",
-        "packagesPath": "C:\\Users\\qlocn\\.nuget\\packages\\",
-        "outputPath": "D:\\Uni Documents\\Applied Research Project\\EDApp\\obj\\",
+        "projectPath": "C:\\Users\\admin\\Documents\\GitHub\\EDApp\\EDApp.csproj",
+        "packagesPath": "C:\\Users\\admin\\.nuget\\packages\\",
+        "outputPath": "C:\\Users\\admin\\Documents\\GitHub\\EDApp\\obj\\",
         "projectStyle": "PackageReference",
         "configFilePaths": [
-          "C:\\Users\\qlocn\\AppData\\Roaming\\NuGet\\NuGet.Config"
+          "C:\\Users\\admin\\AppData\\Roaming\\NuGet\\NuGet.Config"
         ],
         "originalTargetFrameworks": [
           "net5.0-windows"
@@ -38,6 +38,10 @@
         "net5.0-windows7.0": {
           "targetAlias": "net5.0-windows",
           "dependencies": {
+            "Microsoft.Office.Interop.Excel": {
+              "target": "Package",
+              "version": "[1.8.0, )"
+            },
             "MySql.Data": {
               "target": "Package",
               "version": "[8.0.18, )"
@@ -69,7 +73,7 @@
               "privateAssets": "none"
             }
           },
-          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\5.0.400\\RuntimeIdentifierGraph.json"
+          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\6.0.301\\RuntimeIdentifierGraph.json"
         }
       }
     }

@@ -94,6 +94,15 @@
           "lib/netstandard1.0/_._": {}
         }
       },
+      "Microsoft.Office.Interop.Excel/12.0.4518.1014": {
+        "type": "package",
+        "compile": {
+          "lib/net20/Microsoft.Office.Interop.Excel.dll": {}
+        },
+        "runtime": {
+          "lib/net20/Microsoft.Office.Interop.Excel.dll": {}
+        }
+      },
       "Microsoft.Win32.Primitives/4.3.0": {
         "type": "package",
         "dependencies": {
@@ -1849,6 +1858,18 @@
         "microsoft.netcore.targets.1.1.0.nupkg.sha512",
         "microsoft.netcore.targets.nuspec",
         "runtime.json"
+      ]
+    },
+    "Microsoft.Office.Interop.Excel/12.0.4518.1014": {
+      "sha512": "d1Cl9PoL5h0WLinxwJ68ZZ26P+6vjCIN0UMqPCEVKe3v/CQLxH4Ij/Fy4in4LK2bYZlzE2bx7j8xSQ6YqK1Vpw==",
+      "type": "package",
+      "path": "microsoft.office.interop.excel/12.0.4518.1014",
+      "files": [
+        ".nupkg.metadata",
+        ".signature.p7s",
+        "lib/net20/Microsoft.Office.Interop.Excel.dll",
+        "microsoft.office.interop.excel.12.0.4518.1014.nupkg.sha512",
+        "microsoft.office.interop.excel.nuspec"
       ]
     },
     "Microsoft.Win32.Primitives/4.3.0": {
@@ -5963,25 +5984,26 @@
   },
   "projectFileDependencyGroups": {
     "net5.0-windows7.0": [
+      "Microsoft.Office.Interop.Excel >= 1.8.0",
       "MySql.Data >= 8.0.18",
       "System.Data.SqlClient >= 4.8.2",
       "iTextSharp >= 5.5.13.2"
     ]
   },
   "packageFolders": {
-    "C:\\Users\\qlocn\\.nuget\\packages\\": {}
+    "C:\\Users\\admin\\.nuget\\packages\\": {}
   },
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "D:\\Uni Documents\\Applied Research Project\\EDApp\\EDApp.csproj",
+      "projectUniqueName": "C:\\Users\\admin\\Documents\\GitHub\\EDApp\\EDApp.csproj",
       "projectName": "EDApp",
-      "projectPath": "D:\\Uni Documents\\Applied Research Project\\EDApp\\EDApp.csproj",
-      "packagesPath": "C:\\Users\\qlocn\\.nuget\\packages\\",
-      "outputPath": "D:\\Uni Documents\\Applied Research Project\\EDApp\\obj\\",
+      "projectPath": "C:\\Users\\admin\\Documents\\GitHub\\EDApp\\EDApp.csproj",
+      "packagesPath": "C:\\Users\\admin\\.nuget\\packages\\",
+      "outputPath": "C:\\Users\\admin\\Documents\\GitHub\\EDApp\\obj\\",
       "projectStyle": "PackageReference",
       "configFilePaths": [
-        "C:\\Users\\qlocn\\AppData\\Roaming\\NuGet\\NuGet.Config"
+        "C:\\Users\\admin\\AppData\\Roaming\\NuGet\\NuGet.Config"
       ],
       "originalTargetFrameworks": [
         "net5.0-windows"
@@ -6005,6 +6027,10 @@
       "net5.0-windows7.0": {
         "targetAlias": "net5.0-windows",
         "dependencies": {
+          "Microsoft.Office.Interop.Excel": {
+            "target": "Package",
+            "version": "[1.8.0, )"
+          },
           "MySql.Data": {
             "target": "Package",
             "version": "[8.0.18, )"
@@ -6036,11 +6062,21 @@
             "privateAssets": "none"
           }
         },
-        "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\5.0.400\\RuntimeIdentifierGraph.json"
+        "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\6.0.301\\RuntimeIdentifierGraph.json"
       }
     }
   },
   "logs": [
+    {
+      "code": "NU1603",
+      "level": "Warning",
+      "warningLevel": 1,
+      "message": "EDApp depends on Microsoft.Office.Interop.Excel (>= 1.8.0) but Microsoft.Office.Interop.Excel 1.8.0 was not found. An approximate best match of Microsoft.Office.Interop.Excel 12.0.4518.1014 was resolved.",
+      "libraryId": "Microsoft.Office.Interop.Excel",
+      "targetGraphs": [
+        "net5.0-windows7.0"
+      ]
+    },
     {
       "code": "NU1701",
       "level": "Warning",
@@ -6057,6 +6093,16 @@
       "warningLevel": 1,
       "message": "Package 'iTextSharp 5.5.13.2' was restored using '.NETFramework,Version=v4.6.1, .NETFramework,Version=v4.6.2, .NETFramework,Version=v4.7, .NETFramework,Version=v4.7.1, .NETFramework,Version=v4.7.2, .NETFramework,Version=v4.8' instead of the project target framework 'net5.0-windows7.0'. This package may not be fully compatible with your project.",
       "libraryId": "iTextSharp",
+      "targetGraphs": [
+        "net5.0-windows7.0"
+      ]
+    },
+    {
+      "code": "NU1701",
+      "level": "Warning",
+      "warningLevel": 1,
+      "message": "Package 'Microsoft.Office.Interop.Excel 12.0.4518.1014' was restored using '.NETFramework,Version=v4.6.1, .NETFramework,Version=v4.6.2, .NETFramework,Version=v4.7, .NETFramework,Version=v4.7.1, .NETFramework,Version=v4.7.2, .NETFramework,Version=v4.8' instead of the project target framework 'net5.0-windows7.0'. This package may not be fully compatible with your project.",
+      "libraryId": "Microsoft.Office.Interop.Excel",
       "targetGraphs": [
         "net5.0-windows7.0"
       ]
